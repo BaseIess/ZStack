@@ -455,47 +455,30 @@ uint16 SampleApp_ProcessEvent( uint8 task_id, uint16 events )
 
 typedef struct
 {
-  int16 temperature;
-  int16 water_level;
-  int32 flow_rate;
-  uint8 PH;
-  uint8 batt_level;
-  int16 GNSS_latitude;
-  int16 GNSS_longitude;
-  
-  uint8 sensors_okay;
-  uint8 node_okay;
-  uint8 error_state;
+  uint8 testData1;
+  uint8 testData2;
+  uint16 testData3;
   char text[10];
-} packet_measurements;
+} dataToSend;
 
 char testString[13] = "banana";
 
-packet_measurements testDummy = {0,0,0,0,0,0,0,0,0,0,"fruit"}; //data information
-
-int dataSize = sizeof(packet_measurements); //need size of data
+dataToSend testDummy = {3,5, 11111,"apple"}; //data information
+int dataSize = sizeof(testDummy); //need size of data
 uint8 structToByte[sizeof(testDummy)]; //converting it to byte to send
+uint8 stringToByte[sizeof(testString)];
 
 void SampleApp_HandleKeys( uint8 shift, uint8 keys )
 {
+  
+  
   if ( keys & HAL_KEY_SW_1 )
   {
-     testDummy.temperature += 1;
-     testDummy.water_level += 1;
-     testDummy.flow_rate += 1; 
-     testDummy.PH += 1;
-     testDummy.batt_level += 1;
-     testDummy.GNSS_latitude += 1;
-     testDummy.GNSS_longitude += 1;
-     testDummy.sensors_okay += 1;
-     testDummy.node_okay += 1;
-     testDummy.error_state += 1;
-    
     memcpy(structToByte,&testDummy,dataSize);
     
     if (AF_DataRequest( &SampleApp_Broadcast, &SampleApp_epDesc,
                        SAMPLEAPP_CLUSTERID1,
-                       dataSize,
+                       5,
                        structToByte,
                        &SampleApp_TransID,
                        AF_DISCV_ROUTE,
@@ -512,22 +495,12 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
 
   if ( keys & HAL_KEY_SW_2 )
   {
-      testDummy.temperature = 20;
-      testDummy.water_level = 0;
-      testDummy.flow_rate = 0; 
-      testDummy.PH = 7;
-      testDummy.batt_level = 50;
-      testDummy.GNSS_latitude = 20;
-      testDummy.GNSS_longitude = 30;
-      testDummy.sensors_okay = 0;
-      testDummy.node_okay = 10;
-      testDummy.error_state = 0;
-      memcpy(structToByte,&testDummy,dataSize);
+    uint8 random = 5;
     
     if (AF_DataRequest( &SampleApp_Broadcast, &SampleApp_epDesc,
                        SAMPLEAPP_CLUSTERID1,
-                       dataSize,
-                       structToByte,
+                       5,
+                       &random,
                        &SampleApp_TransID,
                        AF_DISCV_ROUTE,
                        AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
@@ -542,39 +515,36 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
   
   if ( keys & HAL_KEY_SW_3 )
   {
-     testDummy.temperature = 200;
-     testDummy.water_level = 100;
-     testDummy.flow_rate = 1000; 
-     testDummy.PH = 1;
-     testDummy.batt_level = 1;
-     testDummy.GNSS_latitude = 255;
-     testDummy.GNSS_longitude = 255;
-     testDummy.sensors_okay = 1;
-     testDummy.node_okay += 1;
-     testDummy.error_state += 1;
-    
-    memcpy(structToByte,&testDummy,dataSize);
+    dataSize = sizeof(testDummy);
+    int dataSize2 = sizeof(structToByte);
+    HalLcdWriteStringValue("DummyDataSize", dataSize, 10, HAL_LCD_LINE_1);  
+    HalLcdWriteStringValue("ByteDataSize", dataSize2, 10, HAL_LCD_LINE_2);  
+    HalLcdWriteString(testDummy.text, HAL_LCD_LINE_3);     
+  }
+  
+  if ( keys & HAL_KEY_SW_4 )
+  {
+    int stringSize = sizeof(testString);    
+    HalLcdWriteStringValue("StringSize", stringSize, 10, HAL_LCD_LINE_2);  
+    memcpy(stringToByte,&testString,stringSize);
     
     if (AF_DataRequest( &SampleApp_Broadcast, &SampleApp_epDesc,
                        SAMPLEAPP_CLUSTERID1,
-                       dataSize,
-                       structToByte,
+                       5,
+                       stringToByte,
                        &SampleApp_TransID,
                        AF_DISCV_ROUTE,
                        AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
     {
-      HalLcdWriteString("Down: Sent", HAL_LCD_LINE_1);
+      HalLcdWriteString("Left: Sent", HAL_LCD_LINE_1);
+          
     }
     else
     {
-      HalLcdWriteString("Down: Not Sent", HAL_LCD_LINE_1);
-    }     
+      HalLcdWriteString("Left: Not Sent", HAL_LCD_LINE_1);
+    }
   }
   
-  if ( keys & HAL_KEY_SW_4 )
-  {    
-    HalLcdWriteStringValue("DataLength", dataSize, 10,HAL_LCD_LINE_1);
-  }  
 }
 
 /*********************************************************************

@@ -65,6 +65,7 @@
 #include "ZDApp.h"
 #include "ZDObject.h"
 #include "ZDProfile.h"
+#include "stdio.h"sprin
 #include "string.h"
 
 #include "SampleApp.h"
@@ -122,7 +123,7 @@
 
 // This is the max byte count per OTA message.
 #if !defined( SAMPLE_APP_TX_MAX )
-#define SAMPLE_APP_TX_MAX  80
+#define SAMPLE_APP_TX_MAX  201
 #endif
 
 #define SAMPLE_APP_RSP_CNT  4
@@ -453,24 +454,127 @@ uint16 SampleApp_ProcessEvent( uint8 task_id, uint16 events )
  * @return  none
  */
 
+typedef struct
+{
+  int16 temperature;
+  int16 water_level;
+  int32 flow_rate;
+  uint8 PH;
+  uint8 batt_level;
+  int16 GNSS_latitude;
+  int16 GNSS_longitude;
+  
+  bool sensors_okay;
+  bool node_okay;
+  uint8 error_state;
+  char text[10];
+} packet_measurements;
+packet_measurements receiveData = {0,0,0,0,0,0,0,0,0,0,"nothing"};
+
+char serialOut[200] = "";
+char serialBuffer[40];
+char serialBuffer2[40];
 
 void SampleApp_HandleKeys( uint8 shift, uint8 keys )
 {
 
   if ( keys & HAL_KEY_SW_1 )
   {
+    HalLcdWriteStringValue( "Temperature:", receiveData.temperature, 10, HAL_LCD_LINE_1);
+    HalLcdWriteStringValue( "Water Level:", receiveData.temperature, 10, HAL_LCD_LINE_2);
+    HalLcdWriteStringValue( "Flow Rate:", receiveData.temperature, 10, HAL_LCD_LINE_3);        
   }
 
   if ( keys & HAL_KEY_SW_2 )
   {
+    HalLcdWriteStringValue( "pH:", receiveData.PH, 10, HAL_LCD_LINE_1);
+    HalLcdWriteStringValue( "Battery Level:", receiveData.batt_level, 10, HAL_LCD_LINE_2);
+    HalLcdWriteStringValue( "Latitude:", receiveData.GNSS_latitude, 10, HAL_LCD_LINE_3);
   }
   
   if ( keys & HAL_KEY_SW_3 )
   {
+    HalLcdWriteStringValue( "Longitude:", receiveData.GNSS_longitude, 10, HAL_LCD_LINE_1);
+    HalLcdWriteStringValue( "Battery Level:", receiveData.batt_level, 10, HAL_LCD_LINE_2);
+    HalLcdWriteString( receiveData.text, HAL_LCD_LINE_3);
   }
   
   if ( keys & HAL_KEY_SW_4 )
   {
+ //   HalLcdWriteStringValue( "SensorStat:", receiveData.sensors_okay, 10, HAL_LCD_LINE_1);
+ //   HalLcdWriteStringValue( "NodeStat:", receiveData.node_okay, 10, HAL_LCD_LINE_2);
+      
+      //sprintf(serialOut,"temperature:%d\n",receiveData.temperature);
+        int serialSize;
+/*
+        sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+ 
+        sprintf(serialBuffer,",water_level:%d:\n",receiveData.water_level);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        
+        sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+*/
+ 
+        /*
+        sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+       
+        // HalLedBlink(HAL_LED_2,4,50,1000);
+        
+        sprintf(serialBuffer,",batt_level:%d:\n",receiveData.batt_level);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+ 
+        sprintf(serialBuffer,",GNSS_latitude:%d:\n",receiveData.GNSS_latitude);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+ 
+        sprintf(serialBuffer,",GNSS_longitude:%d:\n",receiveData.GNSS_longitude);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
+        
+*/
+        
+        /*
+        
+        sprintf(serialBuffer,",sensors_okay:%d:\n",receiveData.sensors_okay);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+ 
+        sprintf(serialBuffer,",error_state:%d:\n",receiveData.error_state);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        
+        strcpy(serialBuffer,",node_okay:1:\n");
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        
+        */
+        
+        
+        sprintf(serialBuffer,",sensors_okay:%d,",receiveData.sensors_okay);
+        strcat(serialOut,serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+        
+        /*
+        sprintf(serialBuffer,",error_state:%d,",receiveData.error_state);
+        strcat(serialOut,serialBuffer2);
+        HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+        
+        strcat(serialOut,",node_okay:1:\n,");
+        HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+        
+        serialSize = sizeof(serialOut);
+        HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+*/
+
+        
   }
 }
 
@@ -489,19 +593,27 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
  *
  * @return  none
   */
-
+/*
 typedef struct
 {
-  uint8 testData1;
-  uint8 testData2;
-  uint16 testData3;
-  char text[10];
-} dataToSend;
+  int16 temperature;
+  int16 water_level;
+  int32 flow_rate;
+  uint8 PH;
+  uint8 batt_level;
+  int16 GNSS_latitude;
+  int16 GNSS_longitude;
+  
+  bool sensors_okay;
+  bool node_okay;
+  uint8 error_state;
+} packet_measurements;
 
+packet_measurements receiveData;
+*/
 void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
 {
   int dataSize; //Data size of received packet
-  dataToSend receiveData;
   
   switch ( pkt->clusterId )
   {
@@ -509,10 +621,10 @@ void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
       break;
       
     case SAMPLEAPP_CLUSTERID1:
-      dataSize = sizeof(receiveData);
+      dataSize = sizeof(packet_measurements);
       HalLcdWriteStringValue("Data Size:", dataSize, 10,HAL_LCD_LINE_1);
       memcpy(&receiveData,pkt->cmd.Data,dataSize);
-      HalLcdWriteStringValue("Data:", receiveData.testData2, 10, HAL_LCD_LINE_2);
+      //HalLcdWriteStringValue("Data:", receiveData.testData2, 10, HAL_LCD_LINE_2);
       //HalLcdWriteStringValue("Byte: ", pkt->cmd.Data[4], 10,HAL_LCD_LINE_3);
       
       //char ptr[5] = {pkt->cmd.Data[4], pkt->cmd.Data[5], pkt->cmd.Data[6], pkt->cmd.Data[7], pkt->cmd.Data[8]};
@@ -523,13 +635,9 @@ void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
       HalLcdWriteString((char*)pkt->cmd.Data[5],HAL_LCD_LINE_2);
       
       HalLcdWriteString((char*)pkt->cmd.Data[7],HAL_LCD_LINE_3);
-      */
-      char piece = receiveData.text[0];
+      */ 
       
-      char 
-      
-      char *ptr = &receiveData.text[0];
-      HalLcdWriteStringValue(ptr,piece, 10, HAL_LCD_LINE_3);
+      HalLcdWriteStringValue("Byte: ", pkt->cmd.DataLength, 10,HAL_LCD_LINE_3);
       
       break;
 

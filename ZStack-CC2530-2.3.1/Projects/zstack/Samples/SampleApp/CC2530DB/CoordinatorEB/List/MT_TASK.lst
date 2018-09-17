@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.20.1.5333 for 8051               16/Sep/2018  17:33:19
+# IAR C/C++ Compiler V10.20.1.5333 for 8051               17/Sep/2018  19:56:40
 # Copyright 2004-2018 IAR Systems AB.
 # Evaluation license - IAR Embedded Workbench for 8051, Evaluation version 10.20
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
 #    Command line       =  
-#        -f C:\Users\Re\AppData\Local\Temp\EWE270.tmp
+#        -f C:\Users\Re\AppData\Local\Temp\EW7D80.tmp
 #        (C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
 #        -D ZTOOL_P1 -D MT_TASK -D MT_SYS_FUNC -D MT_ZDO_FUNC -D
 #        LCD_SUPPORTED=DEBUG -lC
@@ -206,8 +206,13 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    \   000010   F9           MOV       R1,A
    \   000011   12....       LCALL     `??MT_Init::?relay`; Banked call to: MT_Init
      88          }
-   \   000014   7F01         MOV       R7,#0x1
-   \   000016   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000014                REQUIRE ?Subroutine0
+   \   000014                ; // Fall through to label ?Subroutine0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   7F01         MOV       R7,#0x1
+   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
      89          
      90          /***************************************************************************************************
      91           * @fn      MT_ProcessEvent
@@ -388,13 +393,13 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    \   00007E   7A00         MOV       R2,#0x0
    \   000080   7B00         MOV       R3,#0x0
    \                     ??MT_ProcessEvent_2:
-   \   000082                REQUIRE ?Subroutine0
-   \   000082                ; // Fall through to label ?Subroutine0
+   \   000082                REQUIRE ?Subroutine1
+   \   000082                ; // Fall through to label ?Subroutine1
     166          
     167          } /* MT_ProcessEvent() */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
+   \                     ?Subroutine1:
    \   000000   7F02         MOV       R7,#0x2
    \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
     168          
@@ -457,10 +462,10 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    \   000025   24FE         ADD       A,#-0x2
    \   000027   6018         JZ        ??MT_ProcessIncomingCommand_2
    \   000029   24FE         ADD       A,#-0x2
-   \   00002B   6058         JZ        ??MT_ProcessIncomingCommand_3
+   \   00002B   604B         JZ        ??MT_ProcessIncomingCommand_3
    \   00002D   24E2         ADD       A,#-0x1e
-   \   00002F   605D         JZ        ??MT_ProcessIncomingCommand_4
-   \   000031   8069         SJMP      ??MT_ProcessIncomingCommand_5
+   \   00002F   6050         JZ        ??MT_ProcessIncomingCommand_4
+   \   000031   805C         SJMP      ??MT_ProcessIncomingCommand_5
     193            {
     194              case CMD_SERIAL_MSG:
     195                MT_ProcessIncoming(msg->msg);
@@ -468,7 +473,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    \   000033                ; Setup parameters for call to function MT_ProcessIncoming
    \   000033   12....       LCALL     `??MT_ProcessIncoming::?relay`; Banked call to: MT_ProcessIncoming
     196                break;
-   \   000036   8064         SJMP      ??MT_ProcessIncomingCommand_5
+   \   000036   8057         SJMP      ??MT_ProcessIncomingCommand_5
     197          
     198              case CMD_DEBUG_MSG:
     199                MT_ProcessDebugMsg( (mtDebugMsg_t *)msg );
@@ -478,7 +483,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    \   00003A   AB..         MOV       R3,?V1
    \   00003C   12....       LCALL     `??MT_ProcessDebugMsg::?relay`; Banked call to: MT_ProcessDebugMsg
     200                break;
-   \   00003F   805B         SJMP      ??MT_ProcessIncomingCommand_5
+   \   00003F   804E         SJMP      ??MT_ProcessIncomingCommand_5
     201          
     202              case CB_FUNC:
     203                /*
@@ -533,45 +538,36 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
     216          
     217          #ifdef MT_UART_DEFAULT_PORT
     218                // change if the incoming command should not be echoed back to the serial 
-    219                HalUARTWrite ( MT_UART_DEFAULT_PORT, msg_ptr, len );
-   \   000076                ; Setup parameters for call to function HalUARTWrite
-   \   000076   AC..         MOV       R4,?V2
-   \   000078   7D00         MOV       R5,#0x0
-   \   00007A   EE           MOV       A,R6
-   \   00007B   FA           MOV       R2,A
-   \   00007C   EF           MOV       A,R7
-   \   00007D   FB           MOV       R3,A
-   \   00007E   7900         MOV       R1,#0x0
-   \   000080   12....       LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+    219                // HalUARTWrite ( MT_UART_DEFAULT_PORT, msg_ptr, len );
     220          #endif
     221                break;
-   \   000083   8017         SJMP      ??MT_ProcessIncomingCommand_5
+   \   000076   8017         SJMP      ??MT_ProcessIncomingCommand_5
     222          
     223              case CMD_DEBUG_STR:
     224                MT_ProcessDebugStr( (mtDebugStr_t *)msg );
    \                     ??MT_ProcessIncomingCommand_3:
-   \   000085                ; Setup parameters for call to function MT_ProcessDebugStr
-   \   000085   AA..         MOV       R2,?V0
-   \   000087   AB..         MOV       R3,?V1
-   \   000089   12....       LCALL     `??MT_ProcessDebugStr::?relay`; Banked call to: MT_ProcessDebugStr
+   \   000078                ; Setup parameters for call to function MT_ProcessDebugStr
+   \   000078   AA..         MOV       R2,?V0
+   \   00007A   AB..         MOV       R3,?V1
+   \   00007C   12....       LCALL     `??MT_ProcessDebugStr::?relay`; Banked call to: MT_ProcessDebugStr
     225                break;
-   \   00008C   800E         SJMP      ??MT_ProcessIncomingCommand_5
+   \   00007F   800E         SJMP      ??MT_ProcessIncomingCommand_5
     226          
     227          #if !defined ( NONWK )
     228              case MT_SYS_APP_RSP_MSG:
     229                len = SPI_0DATA_MSG_LEN + msg_ptr[DATALEN_FIELD];
     230                MTProcessAppRspMsg( msg_ptr, len );
    \                     ??MT_ProcessIncomingCommand_4:
-   \   00008E                ; Setup parameters for call to function MTProcessAppRspMsg
-   \   00008E   8A82         MOV       DPL,R2
-   \   000090   8B83         MOV       DPH,R3
-   \   000092   A3           INC       DPTR
-   \   000093   A3           INC       DPTR
-   \   000094   A3           INC       DPTR
-   \   000095   E0           MOVX      A,@DPTR
-   \   000096   2405         ADD       A,#0x5
-   \   000098   F9           MOV       R1,A
-   \   000099   12....       LCALL     `??MTProcessAppRspMsg::?relay`; Banked call to: MTProcessAppRspMsg
+   \   000081                ; Setup parameters for call to function MTProcessAppRspMsg
+   \   000081   8A82         MOV       DPL,R2
+   \   000083   8B83         MOV       DPH,R3
+   \   000085   A3           INC       DPTR
+   \   000086   A3           INC       DPTR
+   \   000087   A3           INC       DPTR
+   \   000088   E0           MOVX      A,@DPTR
+   \   000089   2405         ADD       A,#0x5
+   \   00008B   F9           MOV       R1,A
+   \   00008C   12....       LCALL     `??MTProcessAppRspMsg::?relay`; Banked call to: MTProcessAppRspMsg
     231                break;
     232          #endif  // NONWK
     233          
@@ -596,14 +592,14 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
     252            {
     253              osal_msg_deallocate( (uint8 *)msg );
    \                     ??MT_ProcessIncomingCommand_5:
-   \   00009C                ; Setup parameters for call to function osal_msg_deallocate
-   \   00009C   AA..         MOV       R2,?V0
-   \   00009E   AB..         MOV       R3,?V1
-   \   0000A0   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
+   \   00008F                ; Setup parameters for call to function osal_msg_deallocate
+   \   00008F   AA..         MOV       R2,?V0
+   \   000091   AB..         MOV       R3,?V1
+   \   000093   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
     254            }
     255          }
-   \   0000A3   7F03         MOV       R7,#0x3
-   \   0000A5   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000096   7F03         MOV       R7,#0x3
+   \   000098   02....       LJMP      ?BANKED_LEAVE_XDATA
     256          
     257          #ifdef MT_TASK
     258          /***************************************************************************************************
@@ -664,7 +660,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    \   000023   7B00         MOV       R3,#0x0
     285            }
    \                     ??MT_TransportAlloc_1:
-   \   000025   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   000025   02....       LJMP      ?Subroutine1 & 0xFFFF
     286          }
     287          
     288          /***************************************************************************************************
@@ -682,81 +678,70 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    \                     MT_TransportSend:
     298          {
    \   000000                REQUIRE ?V0
-   \   000000                REQUIRE ?V1
-   \   000000   74F6         MOV       A,#-0xa
+   \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 10
+   \   000005                ; Saved register size: 9
    \   000005                ; Auto size: 0
     299            uint8 *msgPtr;
     300            uint8 dataLen = pBuf[0]; /* Data length is on byte #1 from the pointer */
    \   000005   8A82         MOV       DPL,R2
    \   000007   8B83         MOV       DPH,R3
    \   000009   E0           MOVX      A,@DPTR
-   \   00000A   F8           MOV       R0,A
+   \   00000A   F5..         MOV       ?V0,A
     301          
     302            /* Move back to the SOP */
     303            msgPtr = pBuf-1;
-   \   00000B   EA           MOV       A,R2
-   \   00000C   24FF         ADD       A,#-0x1
-   \   00000E   F5..         MOV       ?V0,A
+   \   00000C   EA           MOV       A,R2
+   \   00000D   24FF         ADD       A,#-0x1
+   \   00000F   FE           MOV       R6,A
    \   000010   EB           MOV       A,R3
    \   000011   34FF         ADDC      A,#-0x1
-   \   000013   F5..         MOV       ?V1,A
+   \   000013   FF           MOV       R7,A
     304          
     305            /* Insert SOP */
     306            msgPtr[0] = MT_UART_SOF;
-   \   000015   85..82       MOV       DPL,?V0
-   \   000018   F583         MOV       DPH,A
-   \   00001A   74FE         MOV       A,#-0x2
-   \   00001C   F0           MOVX      @DPTR,A
+   \   000014   8E82         MOV       DPL,R6
+   \   000016   F583         MOV       DPH,A
+   \   000018   74FE         MOV       A,#-0x2
+   \   00001A   F0           MOVX      @DPTR,A
     307          
     308            /* Insert FCS */
     309            msgPtr[SPI_0DATA_MSG_LEN - 1 + dataLen] = MT_UartCalcFCS (pBuf, (3 + dataLen));
-   \   00001D   E8           MOV       A,R0
-   \   00001E   FE           MOV       R6,A
-   \   00001F                ; Setup parameters for call to function MT_UartCalcFCS
-   \   00001F   7403         MOV       A,#0x3
-   \   000021   28           ADD       A,R0
-   \   000022   F9           MOV       R1,A
-   \   000023   12....       LCALL     `??MT_UartCalcFCS::?relay`; Banked call to: MT_UartCalcFCS
-   \   000026   E5..         MOV       A,?V0
-   \   000028   2E           ADD       A,R6
-   \   000029   F582         MOV       DPL,A
-   \   00002B   E4           CLR       A
-   \   00002C   35..         ADDC      A,?V1
-   \   00002E   F583         MOV       DPH,A
+   \   00001B                ; Setup parameters for call to function MT_UartCalcFCS
+   \   00001B   7403         MOV       A,#0x3
+   \   00001D   25..         ADD       A,?V0
+   \   00001F   F9           MOV       R1,A
+   \   000020   12....       LCALL     `??MT_UartCalcFCS::?relay`; Banked call to: MT_UartCalcFCS
+   \   000023   A8..         MOV       R0,?V0
+   \   000025   EE           MOV       A,R6
+   \   000026   28           ADD       A,R0
+   \   000027   F582         MOV       DPL,A
+   \   000029   E4           CLR       A
+   \   00002A   3F           ADDC      A,R7
+   \   00002B   F583         MOV       DPH,A
+   \   00002D   A3           INC       DPTR
+   \   00002E   A3           INC       DPTR
+   \   00002F   A3           INC       DPTR
    \   000030   A3           INC       DPTR
-   \   000031   A3           INC       DPTR
-   \   000032   A3           INC       DPTR
-   \   000033   A3           INC       DPTR
-   \   000034   E9           MOV       A,R1
-   \   000035   F0           MOVX      @DPTR,A
+   \   000031   E9           MOV       A,R1
+   \   000032   F0           MOVX      @DPTR,A
     310          
     311            /* Send to UART */
     312          #ifdef MT_UART_DEFAULT_PORT
     313            // change if the incoming command should not be echoed back to the serial 
-    314            HalUARTWrite(MT_UART_DEFAULT_PORT, msgPtr, dataLen + SPI_0DATA_MSG_LEN);
-   \   000036                ; Setup parameters for call to function HalUARTWrite
-   \   000036   EE           MOV       A,R6
-   \   000037   2405         ADD       A,#0x5
-   \   000039   FC           MOV       R4,A
-   \   00003A   E4           CLR       A
-   \   00003B   3400         ADDC      A,#0x0
-   \   00003D   FD           MOV       R5,A
-   \   00003E   AA..         MOV       R2,?V0
-   \   000040   AB..         MOV       R3,?V1
-   \   000042   7900         MOV       R1,#0x0
-   \   000044   12....       LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+    314            // HalUARTWrite(MT_UART_DEFAULT_PORT, msgPtr, dataLen + SPI_0DATA_MSG_LEN);
     315          #endif
     316          
     317            /* Deallocate */
     318            osal_msg_deallocate(msgPtr);
-   \   000047                ; Setup parameters for call to function osal_msg_deallocate
-   \   000047   AA..         MOV       R2,?V0
-   \   000049   AB..         MOV       R3,?V1
-   \   00004B   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
+   \   000033                ; Setup parameters for call to function osal_msg_deallocate
+   \   000033   EE           MOV       A,R6
+   \   000034   FA           MOV       R2,A
+   \   000035   EF           MOV       A,R7
+   \   000036   FB           MOV       R3,A
+   \   000037   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
     319          }
-   \   00004E   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   00003A   02....       LJMP      ?Subroutine0 & 0xFFFF
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??MT_TaskInit::?relay`:
@@ -796,7 +781,6 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
         0     10   -> MT_SysOsalTimerExpired
         0     10   -> osal_msg_receive
       1     21   MT_ProcessIncomingCommand
-        0     11   -> HalUARTWrite
         0     11   -> MTProcessAppRspMsg
         0     11   -> MT_ProcessDebugMsg
         0     11   -> MT_ProcessDebugStr
@@ -809,10 +793,9 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
         0      9   -> MT_UartRegisterTaskID
       0     10   MT_TransportAlloc
         0     10   -> osal_msg_allocate
-      1     10   MT_TransportSend
-        0     10   -> HalUARTWrite
-        0     10   -> MT_UartCalcFCS
-        0     10   -> osal_msg_deallocate
+      1      9   MT_TransportSend
+        0      9   -> MT_UartCalcFCS
+        0      9   -> osal_msg_deallocate
 
 
    Segment part sizes:
@@ -820,23 +803,24 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
    Bytes  Function/Label
    -----  --------------
        5  ?Subroutine0
+       5  ?Subroutine1
      130  MT_ProcessEvent
        6  MT_ProcessEvent::?relay
-     168  MT_ProcessIncomingCommand
+     155  MT_ProcessIncomingCommand
        6  MT_ProcessIncomingCommand::?relay
-      25  MT_TaskInit
+      20  MT_TaskInit
        6  MT_TaskInit::?relay
       40  MT_TransportAlloc
        6  MT_TransportAlloc::?relay
-      81  MT_TransportSend
+      61  MT_TransportSend
        6  MT_TransportSend::?relay
 
  
- 449 bytes in segment BANKED_CODE
+ 416 bytes in segment BANKED_CODE
   30 bytes in segment BANK_RELAYS
  
   30 bytes of CODE     memory
- 449 bytes of HUGECODE memory
+ 416 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none
