@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.20.1.5333 for 8051              17/Sep/2018  16:58:27
+// IAR C/C++ Compiler V10.20.1.5333 for 8051              19/Sep/2018  15:15:09
 // Copyright 2004-2018 IAR Systems AB.
 // Evaluation license - IAR Embedded Workbench for 8051, Evaluation version 10.20
 //
@@ -14,7 +14,7 @@
 //    Source file        =  
 //        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
 //    Command line       =  
-//        -f C:\Users\Re\AppData\Local\Temp\EW4735.tmp
+//        -f C:\Users\Re\AppData\Local\Temp\EW78D0.tmp
 //        (C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\mt\MT_TASK.c
 //        -D ZTOOL_P1 -D MT_TASK -D MT_SYS_FUNC -D MT_ZDO_FUNC -D
 //        LCD_SUPPORTED=DEBUG -lC
@@ -31,7 +31,7 @@
 //        -DMAC_CFG_TX_DATA_MAX=5 -DMAC_CFG_TX_MAX=8 -DMAC_CFG_RX_MAX=5
 //        -DRTR_NWK) -f
 //        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg
-//        (-DSECURE=0 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+//        (-DSECURE=1 -DZG_SECURE_DYNAMIC=1 -DREFLECTOR
 //        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
 //        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
 //        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
@@ -40,8 +40,8 @@
 //        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
 //        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
 //        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
-//        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x01, 0x03, 0x05, 0x07,
-//        0x09, 0x0B, 0x0D, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
+//        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x03, 0x05, 0x04, 0x06,
+//        0x05, 0x03, 0x04, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
 //        0x0D}" -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
 //        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
 //        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
@@ -156,7 +156,7 @@
         FUNCTION MT_TransportSend,0a1203H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 1, STACK
-        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME XSTACK, 9, STACK
         
           CFI Names cfiNames0
           CFI StackFrame CFA_SP SP IDATA
@@ -237,8 +237,6 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
-HalUARTWrite        SYMBOL "HalUARTWrite"
-`??HalUARTWrite::?relay` SYMBOL "?relay", HalUARTWrite
 MTProcessAppRspMsg  SYMBOL "MTProcessAppRspMsg"
 `??MTProcessAppRspMsg::?relay` SYMBOL "?relay", MTProcessAppRspMsg
 MT_AfExec           SYMBOL "MT_AfExec"
@@ -276,8 +274,6 @@ MT_TransportAlloc   SYMBOL "MT_TransportAlloc"
 MT_TransportSend    SYMBOL "MT_TransportSend"
 `??MT_TransportSend::?relay` SYMBOL "?relay", MT_TransportSend
 
-        EXTERN `??HalUARTWrite::?relay`
-        FUNCTION `??HalUARTWrite::?relay`,00H
         EXTERN `??MTProcessAppRspMsg::?relay`
         FUNCTION `??MTProcessAppRspMsg::?relay`,00H
         EXTERN `??MT_AfExec::?relay`
@@ -304,13 +300,6 @@ MT_TransportSend    SYMBOL "MT_TransportSend"
         FUNCTION `??osal_msg_deallocate::?relay`,00H
         EXTERN `??osal_msg_receive::?relay`
         FUNCTION `??osal_msg_receive::?relay`,00H
-        EXTERN HalUARTWrite
-        FUNCTION HalUARTWrite,0202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 11, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
         EXTERN MTProcessAppRspMsg
         FUNCTION MTProcessAppRspMsg,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -559,9 +548,28 @@ MT_TaskInit:
         MOV       R1,A
         LCALL     `??MT_Init::?relay`; Banked call to: MT_Init
 //   88 }
+          CFI EndBlock cfiBlock0
+        REQUIRE ?Subroutine0
+        ; // Fall through to label ?Subroutine0
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine0:
+          CFI Block cfiBlock1 Using cfiCommon0
+          CFI NoFunction
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 9)
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock0
+          CFI EndBlock cfiBlock1
 //   89 
 //   90 /***************************************************************************************************
 //   91  * @fn      MT_ProcessEvent
@@ -577,7 +585,7 @@ MT_TaskInit:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  100 UINT16 MT_ProcessEvent(uint8 task_id, uint16 events)
 MT_ProcessEvent:
-          CFI Block cfiBlock1 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function MT_ProcessEvent
         CODE
 //  101 {
@@ -834,15 +842,15 @@ MT_ProcessEvent:
         MOV       R2,#0x0
         MOV       R3,#0x0
 ??MT_ProcessEvent_2:
-          CFI EndBlock cfiBlock1
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
+          CFI EndBlock cfiBlock2
+        REQUIRE ?Subroutine1
+        ; // Fall through to label ?Subroutine1
 //  166 
 //  167 } /* MT_ProcessEvent() */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock2 Using cfiCommon0
+?Subroutine1:
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI NoFunction
           CFI CFA_SP SP+0
           CFI CFA_XSP16 add(XSP16, 10)
@@ -858,7 +866,7 @@ MT_ProcessEvent:
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock2
+          CFI EndBlock cfiBlock3
 //  168 
 //  169 /***************************************************************************************************
 //  170  * @fn      MT_ProcessIncomingCommand
@@ -875,7 +883,7 @@ MT_ProcessEvent:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  180 void MT_ProcessIncomingCommand( mtOSALSerialData_t *msg )
 MT_ProcessIncomingCommand:
-          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function MT_ProcessIncomingCommand
         CODE
 //  181 {
@@ -902,17 +910,6 @@ MT_ProcessIncomingCommand:
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL MT_ProcessIncomingCommand, MT_UartCalcFCS
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 11, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 11, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MT_ProcessIncomingCommand, HalUARTWrite
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 11, STACK
@@ -1090,16 +1087,7 @@ MT_ProcessIncomingCommand:
 //  216 
 //  217 #ifdef MT_UART_DEFAULT_PORT
 //  218       // change if the incoming command should not be echoed back to the serial 
-//  219       HalUARTWrite ( MT_UART_DEFAULT_PORT, msg_ptr, len );
-        ; Setup parameters for call to function HalUARTWrite
-        MOV       R4,?V2
-        MOV       R5,#0x0
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
-        MOV       R3,A
-        MOV       R1,#0x0
-        LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+//  219       // HalUARTWrite ( MT_UART_DEFAULT_PORT, msg_ptr, len );
 //  220 #endif
 //  221       break;
         SJMP      ??MT_ProcessIncomingCommand_5
@@ -1161,7 +1149,7 @@ MT_ProcessIncomingCommand:
 //  255 }
         MOV       R7,#0x3
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock3
+          CFI EndBlock cfiBlock4
 //  256 
 //  257 #ifdef MT_TASK
 //  258 /***************************************************************************************************
@@ -1178,7 +1166,7 @@ MT_ProcessIncomingCommand:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  268 uint8 *MT_TransportAlloc(uint8 cmd0, uint8 len)
 MT_TransportAlloc:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function MT_TransportAlloc
         CODE
 //  269 {
@@ -1248,9 +1236,9 @@ MT_TransportAlloc:
         MOV       R3,#0x0
 //  285   }
 ??MT_TransportAlloc_1:
-        LJMP      ?Subroutine0 & 0xFFFF
+        LJMP      ?Subroutine1 & 0xFFFF
 //  286 }
-          CFI EndBlock cfiBlock4
+          CFI EndBlock cfiBlock5
 //  287 
 //  288 /***************************************************************************************************
 //  289  * @fn      MT_TransportSend
@@ -1265,46 +1253,34 @@ MT_TransportAlloc:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  297 void MT_TransportSend(uint8 *pBuf)
 MT_TransportSend:
-          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Block cfiBlock6 Using cfiCommon0
           CFI Function MT_TransportSend
         CODE
 //  298 {
         FUNCALL MT_TransportSend, MT_UartCalcFCS
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME XSTACK, 9, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MT_TransportSend, HalUARTWrite
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL MT_TransportSend, osal_msg_deallocate
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME XSTACK, 9, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
-        REQUIRE ?V1
-        MOV       A,#-0xa
+        MOV       A,#-0x9
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -1312,51 +1288,49 @@ MT_TransportSend:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 10)
-        ; Saved register size: 10
+          CFI CFA_XSP16 add(XSP16, 9)
+        ; Saved register size: 9
         ; Auto size: 0
 //  299   uint8 *msgPtr;
 //  300   uint8 dataLen = pBuf[0]; /* Data length is on byte #1 from the pointer */
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
-        MOV       R0,A
+        MOV       ?V0,A
 //  301 
 //  302   /* Move back to the SOP */
 //  303   msgPtr = pBuf-1;
         MOV       A,R2
         ADD       A,#-0x1
-        MOV       ?V0,A
+        MOV       R6,A
         MOV       A,R3
         ADDC      A,#-0x1
-        MOV       ?V1,A
+        MOV       R7,A
 //  304 
 //  305   /* Insert SOP */
 //  306   msgPtr[0] = MT_UART_SOF;
-        MOV       DPL,?V0
+        MOV       DPL,R6
         MOV       DPH,A
         MOV       A,#-0x2
         MOVX      @DPTR,A
 //  307 
 //  308   /* Insert FCS */
 //  309   msgPtr[SPI_0DATA_MSG_LEN - 1 + dataLen] = MT_UartCalcFCS (pBuf, (3 + dataLen));
-        MOV       A,R0
-        MOV       R6,A
         ; Setup parameters for call to function MT_UartCalcFCS
         MOV       A,#0x3
-        ADD       A,R0
+        ADD       A,?V0
         MOV       R1,A
         LCALL     `??MT_UartCalcFCS::?relay`; Banked call to: MT_UartCalcFCS
-        MOV       A,?V0
-        ADD       A,R6
+        MOV       R0,?V0
+        MOV       A,R6
+        ADD       A,R0
         MOV       DPL,A
         CLR       A
-        ADDC      A,?V1
+        ADDC      A,R7
         MOV       DPH,A
         INC       DPTR
         INC       DPTR
@@ -1368,29 +1342,20 @@ MT_TransportSend:
 //  311   /* Send to UART */
 //  312 #ifdef MT_UART_DEFAULT_PORT
 //  313   // change if the incoming command should not be echoed back to the serial 
-//  314   HalUARTWrite(MT_UART_DEFAULT_PORT, msgPtr, dataLen + SPI_0DATA_MSG_LEN);
-        ; Setup parameters for call to function HalUARTWrite
-        MOV       A,R6
-        ADD       A,#0x5
-        MOV       R4,A
-        CLR       A
-        ADDC      A,#0x0
-        MOV       R5,A
-        MOV       R2,?V0
-        MOV       R3,?V1
-        MOV       R1,#0x0
-        LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+//  314   // HalUARTWrite(MT_UART_DEFAULT_PORT, msgPtr, dataLen + SPI_0DATA_MSG_LEN);
 //  315 #endif
 //  316 
 //  317   /* Deallocate */
 //  318   osal_msg_deallocate(msgPtr);
         ; Setup parameters for call to function osal_msg_deallocate
-        MOV       R2,?V0
-        MOV       R3,?V1
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
         LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
 //  319 }
         LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock5
+          CFI EndBlock cfiBlock6
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??MT_TaskInit::?relay`:
@@ -1432,11 +1397,11 @@ MT_TransportSend:
 //  321 /***************************************************************************************************
 //  322  ***************************************************************************************************/
 // 
-// 449 bytes in segment BANKED_CODE
+// 416 bytes in segment BANKED_CODE
 //  30 bytes in segment BANK_RELAYS
 // 
 //  30 bytes of CODE     memory
-// 449 bytes of HUGECODE memory
+// 416 bytes of HUGECODE memory
 //
 //Errors: none
 //Warnings: none

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.20.1.5333 for 8051              19/Sep/2018  13:27:47
+// IAR C/C++ Compiler V10.20.1.5333 for 8051              19/Sep/2018  15:21:35
 // Copyright 2004-2018 IAR Systems AB.
 // Evaluation license - IAR Embedded Workbench for 8051, Evaluation version 10.20
 //
@@ -14,7 +14,7 @@
 //    Source file        =  
 //        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\nwk\nwk_globals.c
 //    Command line       =  
-//        -f C:\Users\Re\AppData\Local\Temp\EW234C.tmp
+//        -f C:\Users\Re\AppData\Local\Temp\EW5B25.tmp
 //        (C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\nwk\nwk_globals.c
 //        -D ZTOOL_P1 -D MT_TASK -D MT_SYS_FUNC -D MT_ZDO_FUNC -D
 //        LCD_SUPPORTED=DEBUG -lC
@@ -31,7 +31,7 @@
 //        -DMAC_CFG_TX_DATA_MAX=5 -DMAC_CFG_TX_MAX=8 -DMAC_CFG_RX_MAX=5
 //        -DZDO_COORDINATOR -DRTR_NWK) -f
 //        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg
-//        (-DSECURE=0 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+//        (-DSECURE=1 -DZG_SECURE_DYNAMIC=1 -DREFLECTOR
 //        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
 //        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
 //        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
@@ -40,8 +40,8 @@
 //        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
 //        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
 //        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
-//        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x01, 0x03, 0x05, 0x07,
-//        0x09, 0x0B, 0x0D, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
+//        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x03, 0x05, 0x04, 0x06,
+//        0x05, 0x03, 0x04, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
 //        0x0D}" -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
 //        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
 //        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
@@ -520,6 +520,7 @@ nwk_globals_init    SYMBOL "nwk_globals_init"
         EXTERN zgPassiveAckTimeout
         EXTERN zgRouteDiscoveryTime
         EXTERN zgRouteExpiryTime
+        EXTERN zgSecurityMode
 
 // C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\nwk\nwk_globals.c
 //    1 /**************************************************************************************************
@@ -994,13 +995,13 @@ gAPS_MAX_GROUPS:
         DATA8
 //  253 CONST uint8 defaultKey[SEC_KEY_LEN] = DEFAULT_KEY;
 defaultKey:
-        DB 1
         DB 3
         DB 5
-        DB 7
-        DB 9
-        DB 11
-        DB 13
+        DB 4
+        DB 6
+        DB 5
+        DB 3
+        DB 4
         DB 15
         DB 0
         DB 2
@@ -1440,21 +1441,28 @@ NIB_init:
         MOVX      @DPTR,A
 //  385   _NIB.SecureAllFrames = USE_NWK_SECURITY;
         MOV       DPTR,#_NIB + 11
+        INC       A
         MOVX      @DPTR,A
 //  386   _NIB.nwkAllFresh = NWK_ALL_FRESH;
         MOV       DPTR,#_NIB + 104
-        INC       A
         MOVX      @DPTR,A
 //  387 
 //  388   if ( ZG_SECURE_ENABLED )
+        MOV       DPTR,#zgSecurityMode
+        MOVX      A,@DPTR
+        MOV       DPTR,#_NIB + 12
+        JZ        ??NIB_init_0
 //  389   {
 //  390     _NIB.SecurityLevel = SECURITY_LEVEL;
+        MOV       A,#0x5
+        SJMP      ??NIB_init_1
 //  391   }
 //  392   else
 //  393   {
 //  394     _NIB.SecurityLevel = 0;
-        MOV       DPTR,#_NIB + 12
+??NIB_init_0:
         CLR       A
+??NIB_init_1:
         MOVX      @DPTR,A
 //  395   }
 //  396 
@@ -1463,7 +1471,7 @@ NIB_init:
 //  399 #else
 //  400   _NIB.SymLink = TRUE;
         INC       DPTR
-        INC       A
+        MOV       A,#0x1
         MOVX      @DPTR,A
 //  401 #endif
 //  402 
@@ -1491,21 +1499,17 @@ NIB_init:
         MOV       DPTR,#zgRouteExpiryTime
         MOVX      A,@DPTR
         MOV       DPTR,#_NIB + 19
-        MOVX      @DPTR,A
+        LCALL     ?Subroutine1 & 0xFFFF
 //  409 
 //  410   _NIB.nwkDevAddress = INVALID_NODE_ADDR;
-        INC       DPTR
-        MOV       A,#-0x2
-        LCALL     ?Subroutine1 & 0xFFFF
 //  411   _NIB.nwkLogicalChannel = 0;
-//  412   _NIB.nwkCoordAddress = INVALID_NODE_ADDR;
 ??CrossCallReturnLabel_0:
-        MOV       A,#-0x2
-        MOVX      @DPTR,A
         INC       DPTR
-        INC       A
-        MOVX      @DPTR,A
+        CLR       A
+        LCALL     ?Subroutine1 & 0xFFFF
+//  412   _NIB.nwkCoordAddress = INVALID_NODE_ADDR;
 //  413   osal_memset( _NIB.nwkCoordExtAddress, 0, Z_EXTADDR_LEN );
+??CrossCallReturnLabel_1:
         ; Setup parameters for call to function osal_memset
         MOV       R4,#0x8
         MOV       R5,#0x0
@@ -1540,13 +1544,19 @@ NIB_init:
 //  423 #else
 //  424   _NIB.nwkAddrAlloc  = NWK_ADDRESSING_DISTRIBUTED;
         MOV       DPTR,#_NIB + 96
-        LCALL     ?Subroutine1 & 0xFFFF
+        MOVX      @DPTR,A
 //  425   _NIB.nwkUniqueAddr = TRUE;
+        INC       DPTR
+        INC       A
+        MOVX      @DPTR,A
 //  426 #endif
 //  427 
 //  428   _NIB.nwkLinkStatusPeriod = NWK_LINK_STATUS_PERIOD;
+        INC       DPTR
+        CLR       A
+        MOVX      @DPTR,A
 //  429   _NIB.nwkRouterAgeLimit = NWK_ROUTE_AGE_LIMIT;
-??CrossCallReturnLabel_1:
+        INC       DPTR
         MOV       A,#0x3
         MOVX      @DPTR,A
 //  430 
@@ -1622,12 +1632,11 @@ NIB_init:
           CFI (cfiPicker5) Picker
         MOVX      @DPTR,A
         INC       DPTR
+        MOV       A,#-0x2
+        MOVX      @DPTR,A
+        INC       DPTR
         INC       A
         MOVX      @DPTR,A
-        INC       DPTR
-        CLR       A
-        MOVX      @DPTR,A
-        INC       DPTR
         RET
           CFI EndBlock cfiCond3
           CFI EndBlock cfiCond4
@@ -2246,7 +2255,7 @@ nwk_UpdateStatistics:
 //  567 /*********************************************************************
 //  568 *********************************************************************/
 // 
-//   531 bytes in segment BANKED_CODE
+//   542 bytes in segment BANKED_CODE
 //    24 bytes in segment BANK_RELAYS
 //    67 bytes in segment CODE_C
 //    13 bytes in segment XDATA_I
@@ -2256,7 +2265,7 @@ nwk_UpdateStatistics:
 // 
 //   104 bytes of CODE     memory
 //   178 bytes of CONST    memory
-//   531 bytes of HUGECODE memory
+//   542 bytes of HUGECODE memory
 // 1 278 bytes of XDATA    memory
 //
 //Errors: none

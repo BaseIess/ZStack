@@ -94,7 +94,8 @@
 #endif
 
 #if !defined( SAMPLE_APP_BAUD )
-#define SAMPLE_APP_BAUD  HAL_UART_BR_38400
+#define SAMPLE_APP_BAUD  HAL_UART_BR_9600
+//#define SAMPLE_APP_BAUD  HAL_UART_BR_38400
 //#define SAMPLE_APP_BAUD  HAL_UART_BR_115200
 #endif
 
@@ -108,7 +109,7 @@
 #endif
 
 #if !defined( SAMPLE_APP_TX_SZ )
-#define SAMPLE_APP_TX_SZ  128
+#define SAMPLE_APP_TX_SZ  400
 #endif
 
 // Millisecs of idle time after a byte is received before invoking Rx callback.
@@ -469,11 +470,11 @@ typedef struct
   uint8 error_state;
   char text[10];
 } packet_measurements;
+
 packet_measurements receiveData = {0,0,0,0,0,0,0,0,0,0,"nothing"};
 
-char serialOut[150] = "";
-char serialBuffer[150] = "";
-char serialBuffer2[40] = "";
+char serialOut[128] = "";
+char serialBuffer[125] = "";
 
 void SampleApp_HandleKeys( uint8 shift, uint8 keys )
 {
@@ -521,7 +522,46 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
         */
-
+      
+        /*
+        sprintf(serialBuffer,",temperature:%d:\n,water_level:%d:\n",
+                receiveData.temperature,
+                receiveData.water_level);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        */
+        
+        /*
+        sprintf(serialBuffer,
+        ",t:%d:\n,w:%d:\n,f:%d:\n,PH:%d:\n,b:%d:\n,GNSS_latitude:%d:\n,GNSS_longitude:%d:\n,s:%d:\n,e:%d:\n,n:1:\n",
+                  receiveData.temperature, //1
+                  receiveData.water_level, //2
+                  receiveData.flow_rate, //3
+                  receiveData.PH, //4
+                  receiveData.batt_level, //5
+                  receiveData.GNSS_latitude, //6
+                  receiveData.GNSS_longitude, //7
+                  receiveData.sensors_okay, //8
+                  receiveData.error_state); //9
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        */
+        
+        sprintf(serialBuffer,
+        ",temp:%d:\n,water:%d:\n,flow:%d:\n,PH:%d:\n,batt:%d:\n,lat:%d:\n,long:%d:\n,sensOkay:%d:\n,err:%d:\n,ok:1:\n",
+                  receiveData.temperature, //1
+                  receiveData.water_level, //2
+                  receiveData.flow_rate, //3
+                  receiveData.PH, //4
+                  receiveData.batt_level, //5
+                  receiveData.GNSS_latitude, //6
+                  receiveData.GNSS_longitude, //7
+                  receiveData.sensors_okay, //8
+                  receiveData.error_state); //9
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        
+        /*
         sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
@@ -533,9 +573,33 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-
+        
+        sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        
+        sprintf(serialBuffer,",batt_level:%d:\n",receiveData.batt_level);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
  
+        sprintf(serialBuffer,",GNSS_latitude:%d:\n",receiveData.GNSS_latitude);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+*/
+
         /*
+        sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+ 
+        sprintf(serialBuffer,",water_level:%d:\n",receiveData.water_level);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        
+        sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        
         sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
@@ -554,10 +618,6 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
         
-*/
-        
-        /*
-        
         sprintf(serialBuffer,",sensors_okay:%d:\n",receiveData.sensors_okay);
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
@@ -571,7 +631,6 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
         
         */
-        
         /*
         sprintf(serialBuffer,",sensors_okay:%d,",receiveData.sensors_okay);
         strcat(serialOut,serialBuffer);
@@ -588,11 +647,6 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         serialSize = sizeof(serialOut);
         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
 */
-        
-        
-        strcpy(serialBuffer,",node_okay:1:\n");
-        serialSize = sizeof(serialBuffer);
-        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
         
   }
 }
@@ -657,6 +711,7 @@ void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
       */ 
       
       HalLcdWriteStringValue("Byte: ", pkt->cmd.DataLength, 10,HAL_LCD_LINE_3);
+      HalLedBlink(HAL_LED_1,4,50,1000);
       
       break;
 
@@ -742,6 +797,10 @@ static void SampleApp_CallBack(uint8 port, uint8 event)
   uint8 localBuf[81];
   uint16 receivedUARTLen;
 
+  /*
+  if((event & (HAL_UART_TX_FULL | HAL_UART_TX_ABOUT_FULL))
+  {}
+  */
   if ((event & (HAL_UART_RX_FULL | HAL_UART_RX_ABOUT_FULL | HAL_UART_RX_TIMEOUT)) &&
 #if SERIAL_APP_LOOPBACK
       (SampleApp_TxLen < SERIAL_APP_TX_MAX))

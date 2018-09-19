@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.20.1.5333 for 8051               19/Sep/2018  13:27:49
+# IAR C/C++ Compiler V10.20.1.5333 for 8051               19/Sep/2018  15:21:37
 # Copyright 2004-2018 IAR Systems AB.
 # Evaluation license - IAR Embedded Workbench for 8051, Evaluation version 10.20
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\services\saddr\saddr.c
 #    Command line       =  
-#        -f C:\Users\Re\AppData\Local\Temp\EW2C5D.tmp
+#        -f C:\Users\Re\AppData\Local\Temp\EW636B.tmp
 #        (C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\services\saddr\saddr.c
 #        -D ZTOOL_P1 -D MT_TASK -D MT_SYS_FUNC -D MT_ZDO_FUNC -D
 #        LCD_SUPPORTED=DEBUG -lC
@@ -31,7 +31,7 @@
 #        -DMAC_CFG_TX_DATA_MAX=5 -DMAC_CFG_TX_MAX=8 -DMAC_CFG_RX_MAX=5
 #        -DZDO_COORDINATOR -DRTR_NWK) -f
 #        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg
-#        (-DSECURE=0 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+#        (-DSECURE=1 -DZG_SECURE_DYNAMIC=1 -DREFLECTOR
 #        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
 #        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
 #        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
@@ -40,8 +40,8 @@
 #        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
 #        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
 #        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
-#        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x01, 0x03, 0x05, 0x07,
-#        0x09, 0x0B, 0x0D, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
+#        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x03, 0x05, 0x04, 0x06,
+#        0x05, 0x03, 0x04, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
 #        0x0D}" -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
 #        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
 #        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100

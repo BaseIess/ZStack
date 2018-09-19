@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.20.1.5333 for 8051               19/Sep/2018  13:27:40
+# IAR C/C++ Compiler V10.20.1.5333 for 8051               19/Sep/2018  15:21:28
 # Copyright 2004-2018 IAR Systems AB.
 # Evaluation license - IAR Embedded Workbench for 8051, Evaluation version 10.20
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c
 #    Command line       =  
-#        -f C:\Users\Re\AppData\Local\Temp\EW7DB.tmp
+#        -f C:\Users\Re\AppData\Local\Temp\EW41A8.tmp
 #        (C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c
 #        -D ZTOOL_P1 -D MT_TASK -D MT_SYS_FUNC -D MT_ZDO_FUNC -D
 #        LCD_SUPPORTED=DEBUG -lC
@@ -31,7 +31,7 @@
 #        -DMAC_CFG_TX_DATA_MAX=5 -DMAC_CFG_TX_MAX=8 -DMAC_CFG_RX_MAX=5
 #        -DZDO_COORDINATOR -DRTR_NWK) -f
 #        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg
-#        (-DSECURE=0 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+#        (-DSECURE=1 -DZG_SECURE_DYNAMIC=1 -DREFLECTOR
 #        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
 #        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
 #        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
@@ -40,8 +40,8 @@
 #        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
 #        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
 #        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
-#        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x01, 0x03, 0x05, 0x07,
-#        0x09, 0x0B, 0x0D, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
+#        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x03, 0x05, 0x04, 0x06,
+#        0x05, 0x03, 0x04, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
 #        0x0D}" -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
 #        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
 #        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
@@ -197,60 +197,61 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
      94          #endif
      95          
      96          #if !defined( SAMPLE_APP_BAUD )
-     97          #define SAMPLE_APP_BAUD  HAL_UART_BR_38400
-     98          //#define SAMPLE_APP_BAUD  HAL_UART_BR_115200
-     99          #endif
-    100          
-    101          // When the Rx buf space is less than this threshold, invoke the Rx callback.
-    102          #if !defined( SAMPLE_APP_THRESH )
-    103          #define SAMPLE_APP_THRESH  64
-    104          #endif
-    105          
-    106          #if !defined( SAMPLE_APP_RX_SZ )
-    107          #define SAMPLE_APP_RX_SZ  128
-    108          #endif
-    109          
-    110          #if !defined( SAMPLE_APP_TX_SZ )
-    111          #define SAMPLE_APP_TX_SZ  128
-    112          #endif
-    113          
-    114          // Millisecs of idle time after a byte is received before invoking Rx callback.
-    115          #if !defined( SAMPLE_APP_IDLE )
-    116          #define SAMPLE_APP_IDLE  6
-    117          #endif
-    118          
-    119          // Loopback Rx bytes to Tx for throughput testing.
-    120          #if !defined( SAMPLE_APP_LOOPBACK )
-    121          #define SAMPLE_APP_LOOPBACK  FALSE
-    122          #endif
-    123          
-    124          // This is the max byte count per OTA message.
-    125          #if !defined( SAMPLE_APP_TX_MAX )
-    126          #define SAMPLE_APP_TX_MAX  128
-    127          #endif
-    128          
-    129          #define SAMPLE_APP_RSP_CNT  4
-    130          
-    131          /*********************************************************************
-    132           * TYPEDEFS
-    133           */
-    134          
-    135          /*********************************************************************
-    136           * GLOBAL VARIABLES
-    137           */
+     97          #define SAMPLE_APP_BAUD  HAL_UART_BR_9600
+     98          //#define SAMPLE_APP_BAUD  HAL_UART_BR_38400
+     99          //#define SAMPLE_APP_BAUD  HAL_UART_BR_115200
+    100          #endif
+    101          
+    102          // When the Rx buf space is less than this threshold, invoke the Rx callback.
+    103          #if !defined( SAMPLE_APP_THRESH )
+    104          #define SAMPLE_APP_THRESH  64
+    105          #endif
+    106          
+    107          #if !defined( SAMPLE_APP_RX_SZ )
+    108          #define SAMPLE_APP_RX_SZ  128
+    109          #endif
+    110          
+    111          #if !defined( SAMPLE_APP_TX_SZ )
+    112          #define SAMPLE_APP_TX_SZ  400
+    113          #endif
+    114          
+    115          // Millisecs of idle time after a byte is received before invoking Rx callback.
+    116          #if !defined( SAMPLE_APP_IDLE )
+    117          #define SAMPLE_APP_IDLE  6
+    118          #endif
+    119          
+    120          // Loopback Rx bytes to Tx for throughput testing.
+    121          #if !defined( SAMPLE_APP_LOOPBACK )
+    122          #define SAMPLE_APP_LOOPBACK  FALSE
+    123          #endif
+    124          
+    125          // This is the max byte count per OTA message.
+    126          #if !defined( SAMPLE_APP_TX_MAX )
+    127          #define SAMPLE_APP_TX_MAX  128
+    128          #endif
+    129          
+    130          #define SAMPLE_APP_RSP_CNT  4
+    131          
+    132          /*********************************************************************
+    133           * TYPEDEFS
+    134           */
+    135          
+    136          /*********************************************************************
+    137           * GLOBAL VARIABLES
+    138           */
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    138          uint8 SerialApp_TaskID;    // Task ID for internal task/event processing.
+    139          uint8 SerialApp_TaskID;    // Task ID for internal task/event processing.
    \                     SerialApp_TaskID:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
-    139          
-    140          uint8 SampleApp_TaskID;    // Task ID for internal task/event processing.
-    141          
-    142          // This list should be filled with Application specific Cluster IDs.
+    140          
+    141          uint8 SampleApp_TaskID;    // Task ID for internal task/event processing.
+    142          
+    143          // This list should be filled with Application specific Cluster IDs.
 
    \                                 In  segment XDATA_ROM_C, align 1
-    143          const cId_t SampleApp_ClusterList[SAMPLEAPP_MAX_CLUSTERS] =
+    144          const cId_t SampleApp_ClusterList[SAMPLEAPP_MAX_CLUSTERS] =
    \                     SampleApp_ClusterList:
    \   000000   0100         DW 1
    \   000002   0200         DW 2
@@ -258,16 +259,16 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000006   0400         DW 4
    \   000008   0000         DW 0
    \   00000A   0000         DW 0
-    144          {
-    145            SAMPLEAPP_PERIODIC_CLUSTERID,
-    146            SAMPLEAPP_FLASH_CLUSTERID,
-    147            SAMPLEAPP_CLUSTERID1,
-    148            SAMPLEAPP_CLUSTERID2
-    149          };
-    150          
+    145          {
+    146            SAMPLEAPP_PERIODIC_CLUSTERID,
+    147            SAMPLEAPP_FLASH_CLUSTERID,
+    148            SAMPLEAPP_CLUSTERID1,
+    149            SAMPLEAPP_CLUSTERID2
+    150          };
+    151          
 
    \                                 In  segment XDATA_ROM_C, align 1
-    151          const SimpleDescriptionFormat_t SampleApp_SimpleDesc =
+    152          const SimpleDescriptionFormat_t SampleApp_SimpleDesc =
    \                     SampleApp_SimpleDesc:
    \   000000   14           DB 20
    \   000001   080F         DW 3848
@@ -277,190 +278,190 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000007   ....         DW SampleApp_ClusterList
    \   000009   06           DB 6
    \   00000A   ....         DW SampleApp_ClusterList
-    152          {
-    153            SAMPLEAPP_ENDPOINT,              //  int Endpoint;
-    154            SAMPLEAPP_PROFID,                //  uint16 AppProfId[2];
-    155            SAMPLEAPP_DEVICEID,              //  uint16 AppDeviceId[2];
-    156            SAMPLEAPP_DEVICE_VERSION,        //  int   AppDevVer:4;
-    157            SAMPLEAPP_FLAGS,                 //  int   AppFlags:4;
-    158            SAMPLEAPP_MAX_CLUSTERS,          //  uint8  AppNumInClusters;
-    159            (cId_t *)SampleApp_ClusterList,  //  uint8 *pAppInClusterList;
-    160            SAMPLEAPP_MAX_CLUSTERS,          //  uint8  AppNumInClusters;
-    161            (cId_t *)SampleApp_ClusterList   //  uint8 *pAppInClusterList;
-    162          };
-    163          
-    164          // This is the Endpoint/Interface description.  It is defined here, but
-    165          // filled-in in SampleApp_Init().  Another way to go would be to fill
-    166          // in the structure here and make it a "const" (in code space).  The
-    167          // way it's defined in this sample app it is define in RAM.
+    153          {
+    154            SAMPLEAPP_ENDPOINT,              //  int Endpoint;
+    155            SAMPLEAPP_PROFID,                //  uint16 AppProfId[2];
+    156            SAMPLEAPP_DEVICEID,              //  uint16 AppDeviceId[2];
+    157            SAMPLEAPP_DEVICE_VERSION,        //  int   AppDevVer:4;
+    158            SAMPLEAPP_FLAGS,                 //  int   AppFlags:4;
+    159            SAMPLEAPP_MAX_CLUSTERS,          //  uint8  AppNumInClusters;
+    160            (cId_t *)SampleApp_ClusterList,  //  uint8 *pAppInClusterList;
+    161            SAMPLEAPP_MAX_CLUSTERS,          //  uint8  AppNumInClusters;
+    162            (cId_t *)SampleApp_ClusterList   //  uint8 *pAppInClusterList;
+    163          };
+    164          
+    165          // This is the Endpoint/Interface description.  It is defined here, but
+    166          // filled-in in SampleApp_Init().  Another way to go would be to fill
+    167          // in the structure here and make it a "const" (in code space).  The
+    168          // way it's defined in this sample app it is define in RAM.
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    168          endPointDesc_t SampleApp_epDesc;
+    169          endPointDesc_t SampleApp_epDesc;
    \                     SampleApp_epDesc:
    \   000000                DS 6
    \   000006                REQUIRE __INIT_XDATA_Z
-    169          
+    170          
 
    \                                 In  segment XDATA_ROM_C, align 1
-    170          const endPointDesc_t SerialApp_epDesc =
+    171          const endPointDesc_t SerialApp_epDesc =
    \                     SerialApp_epDesc:
    \   000000   14           DB 20
    \   000001   ....         DW SerialApp_TaskID
    \   000003   ....         DW SampleApp_SimpleDesc
    \   000005   00           DB 0
-    171          {
-    172            SAMPLEAPP_ENDPOINT,
-    173           &SerialApp_TaskID,
-    174            (SimpleDescriptionFormat_t *)&SampleApp_SimpleDesc,
-    175            noLatencyReqs
-    176          };
-    177          
-    178          /*********************************************************************
-    179           * EXTERNAL VARIABLES
-    180           */
-    181          
-    182          typedef struct
-    183          {
-    184              int temperature;           // -100 degrees C to 200 degrees C
-    185              int water_level;           // -50m to 50m
-    186              int  flow_rate;   	 // -10000 L/min to 10000 L/min
-    187              uint8  PH;   		 // 0 to 14
-    188              uint32  salinity;   	 // 0 to 2000000 mg
-    189              uint8  batt_level;        // 0 to 100 percent
-    190              float GNSS_latitude;         // -85 to 85 decimal degrees
-    191              float GNSS_longitude;        // -180 to 180 decimal degrees
-    192              
-    193              bool sensors_okay;   	 // 1=good, 0=bad
-    194              bool node_okay;   		 // 1=good, 0=bad
-    195              char error_state[25];    	 // char message, null terminated "\n"
-    196           
-    197          } data_sensor_outgoing;
-    198          
+    172          {
+    173            SAMPLEAPP_ENDPOINT,
+    174           &SerialApp_TaskID,
+    175            (SimpleDescriptionFormat_t *)&SampleApp_SimpleDesc,
+    176            noLatencyReqs
+    177          };
+    178          
+    179          /*********************************************************************
+    180           * EXTERNAL VARIABLES
+    181           */
+    182          
+    183          typedef struct
+    184          {
+    185              int temperature;           // -100 degrees C to 200 degrees C
+    186              int water_level;           // -50m to 50m
+    187              int  flow_rate;   	 // -10000 L/min to 10000 L/min
+    188              uint8  PH;   		 // 0 to 14
+    189              uint32  salinity;   	 // 0 to 2000000 mg
+    190              uint8  batt_level;        // 0 to 100 percent
+    191              float GNSS_latitude;         // -85 to 85 decimal degrees
+    192              float GNSS_longitude;        // -180 to 180 decimal degrees
+    193              
+    194              bool sensors_okay;   	 // 1=good, 0=bad
+    195              bool node_okay;   		 // 1=good, 0=bad
+    196              char error_state[25];    	 // char message, null terminated "\n"
+    197           
+    198          } data_sensor_outgoing;
     199          
-    200          /*********************************************************************
-    201           * EXTERNAL FUNCTIONS
-    202           */
-    203          
-    204          /*********************************************************************
-    205           * LOCAL VARIABLES
-    206           */
+    200          
+    201          /*********************************************************************
+    202           * EXTERNAL FUNCTIONS
+    203           */
+    204          
+    205          /*********************************************************************
+    206           * LOCAL VARIABLES
+    207           */
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    207          static uint8 SampleApp_TaskID;   // Task ID for internal task/event processing
+    208          static uint8 SampleApp_TaskID;   // Task ID for internal task/event processing
    \                     SampleApp_TaskID:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
-    208                                    // This variable will be received when
-    209                                    // SampleApp_Init() is called.
+    209                                    // This variable will be received when
+    210                                    // SampleApp_Init() is called.
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    210          devStates_t SampleApp_NwkState;
+    211          devStates_t SampleApp_NwkState;
    \                     SampleApp_NwkState:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
-    211          
+    212          
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    212          uint8 SampleApp_TransID;  // This is the unique message ID (counter)
+    213          uint8 SampleApp_TransID;  // This is the unique message ID (counter)
    \                     SampleApp_TransID:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
-    213          
+    214          
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    214          afAddrType_t SampleApp_Periodic_DstAddr;
+    215          afAddrType_t SampleApp_Periodic_DstAddr;
    \                     SampleApp_Periodic_DstAddr:
    \   000000                DS 12
    \   00000C                REQUIRE __INIT_XDATA_Z
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    215          afAddrType_t SampleApp_Flash_DstAddr;
+    216          afAddrType_t SampleApp_Flash_DstAddr;
    \                     SampleApp_Flash_DstAddr:
    \   000000                DS 12
    \   00000C                REQUIRE __INIT_XDATA_Z
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    216          afAddrType_t SampleApp_Broadcast;
+    217          afAddrType_t SampleApp_Broadcast;
    \                     SampleApp_Broadcast:
    \   000000                DS 12
    \   00000C                REQUIRE __INIT_XDATA_Z
-    217          
+    218          
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    218          aps_Group_t SampleApp_Group;
+    219          aps_Group_t SampleApp_Group;
    \                     SampleApp_Group:
    \   000000                DS 18
    \   000012                REQUIRE __INIT_XDATA_Z
-    219          
+    220          
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    220          uint8 SampleAppPeriodicCounter = 0;
+    221          uint8 SampleAppPeriodicCounter = 0;
    \                     SampleAppPeriodicCounter:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    221          uint8 SampleAppFlashCounter = 0;
+    222          uint8 SampleAppFlashCounter = 0;
    \                     SampleAppFlashCounter:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
-    222          
-    223          static afAddrType_t SampleApp_TxAddr;
-    224          static uint8 SampleApp_TxSeq;
-    225          static uint8 SampleApp_TxBuf[SAMPLE_APP_TX_MAX+1];
+    223          
+    224          static afAddrType_t SampleApp_TxAddr;
+    225          static uint8 SampleApp_TxSeq;
+    226          static uint8 SampleApp_TxBuf[SAMPLE_APP_TX_MAX+1];
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    226          static uint8 SampleApp_TxLen;
+    227          static uint8 SampleApp_TxLen;
    \                     SampleApp_TxLen:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
-    227          
-    228          static afAddrType_t SampleApp_RxAddr;
+    228          
+    229          static afAddrType_t SampleApp_RxAddr;
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    229          static uint8 SampleApp_RxSeq;
+    230          static uint8 SampleApp_RxSeq;
    \                     SampleApp_RxSeq:
    \   000000                DS 1
    \   000001                REQUIRE __INIT_XDATA_Z
-    230          static uint8 SampleApp_RspBuf[SAMPLE_APP_RSP_CNT];
-    231          
-    232          /*********************************************************************
-    233           * LOCAL FUNCTIONS
-    234           */
-    235          void SampleApp_HandleKeys( uint8 shift, uint8 keys );
-    236          void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pckt );
-    237          void SampleApp_SendPeriodicMessage( void );
-    238          void SampleApp_SendFlashMessage( uint16 flashTime );
-    239          
-    240          static void SampleApp_CallBack(uint8 port, uint8 event);
-    241          
-    242          /*********************************************************************
-    243           * NETWORK LAYER CALLBACKS
-    244           */
-    245          
-    246          /*********************************************************************
-    247           * PUBLIC FUNCTIONS
-    248           */
-    249          
-    250          /*********************************************************************
-    251           * @fn      SampleApp_Init
-    252           *
-    253           * @brief   Initialization function for the Generic App Task.
-    254           *          This is called during initialization and should contain
-    255           *          any application specific initialization (ie. hardware
-    256           *          initialization/setup, table initialization, power up
-    257           *          notificaiton ... ).
-    258           *
-    259           * @param   task_id - the ID assigned by OSAL.  This ID should be
-    260           *                    used to send messages and set timers.
-    261           *
-    262           * @return  none
-    263           */
+    231          static uint8 SampleApp_RspBuf[SAMPLE_APP_RSP_CNT];
+    232          
+    233          /*********************************************************************
+    234           * LOCAL FUNCTIONS
+    235           */
+    236          void SampleApp_HandleKeys( uint8 shift, uint8 keys );
+    237          void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pckt );
+    238          void SampleApp_SendPeriodicMessage( void );
+    239          void SampleApp_SendFlashMessage( uint16 flashTime );
+    240          
+    241          static void SampleApp_CallBack(uint8 port, uint8 event);
+    242          
+    243          /*********************************************************************
+    244           * NETWORK LAYER CALLBACKS
+    245           */
+    246          
+    247          /*********************************************************************
+    248           * PUBLIC FUNCTIONS
+    249           */
+    250          
+    251          /*********************************************************************
+    252           * @fn      SampleApp_Init
+    253           *
+    254           * @brief   Initialization function for the Generic App Task.
+    255           *          This is called during initialization and should contain
+    256           *          any application specific initialization (ie. hardware
+    257           *          initialization/setup, table initialization, power up
+    258           *          notificaiton ... ).
+    259           *
+    260           * @param   task_id - the ID assigned by OSAL.  This ID should be
+    261           *                    used to send messages and set timers.
+    262           *
+    263           * @return  none
+    264           */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    264          void SampleApp_Init( uint8 task_id )
+    265          void SampleApp_Init( uint8 task_id )
    \                     SampleApp_Init:
-    265          {
+    266          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000                REQUIRE ?V2
@@ -472,135 +473,135 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
    \   00000A   E9           MOV       A,R1
    \   00000B   FE           MOV       R6,A
-    266            SampleApp_TaskID = task_id;
+    267            SampleApp_TaskID = task_id;
    \   00000C   90....       MOV       DPTR,#SampleApp_TaskID
    \   00000F   F0           MOVX      @DPTR,A
-    267            SampleApp_NwkState = DEV_INIT;
+    268            SampleApp_NwkState = DEV_INIT;
    \   000010   90....       MOV       DPTR,#SampleApp_NwkState
    \   000013   7401         MOV       A,#0x1
    \   000015   F0           MOVX      @DPTR,A
-    268            SampleApp_TransID = 0;
+    269            SampleApp_TransID = 0;
    \   000016   90....       MOV       DPTR,#SampleApp_TransID
    \   000019   E4           CLR       A
    \   00001A   F0           MOVX      @DPTR,A
-    269          
-    270            // Device hardware initialization can be added here or in main() (Zmain.c).
-    271            // If the hardware is application specific - add it here.
-    272            // If the hardware is other parts of the device add it in main().
-    273          
-    274           #if defined ( BUILD_ALL_DEVICES )
-    275            // The "Demo" target is setup to have BUILD_ALL_DEVICES and HOLD_AUTO_START
-    276            // We are looking at a jumper (defined in SampleAppHw.c) to be jumpered
-    277            // together - if they are - we will start up a coordinator. Otherwise,
-    278            // the device will start as a router.
-    279            if ( readCoordinatorJumper() )
-    280              zgDeviceLogicalType = ZG_DEVICETYPE_COORDINATOR;
-    281            else
-    282              zgDeviceLogicalType = ZG_DEVICETYPE_ROUTER;
-    283          #endif // BUILD_ALL_DEVICES
-    284          
-    285          #if defined ( HOLD_AUTO_START )
-    286            // HOLD_AUTO_START is a compile option that will surpress ZDApp
-    287            //  from starting the device and wait for the application to
-    288            //  start the device.
-    289            ZDOInitDevice(0);
-    290          #endif
-    291          
-    292            // Setup for the periodic message's destination address
-    293            // Broadcast to everyone
-    294            SampleApp_Periodic_DstAddr.addrMode = (afAddrMode_t)AddrBroadcast;
+    270          
+    271            // Device hardware initialization can be added here or in main() (Zmain.c).
+    272            // If the hardware is application specific - add it here.
+    273            // If the hardware is other parts of the device add it in main().
+    274          
+    275           #if defined ( BUILD_ALL_DEVICES )
+    276            // The "Demo" target is setup to have BUILD_ALL_DEVICES and HOLD_AUTO_START
+    277            // We are looking at a jumper (defined in SampleAppHw.c) to be jumpered
+    278            // together - if they are - we will start up a coordinator. Otherwise,
+    279            // the device will start as a router.
+    280            if ( readCoordinatorJumper() )
+    281              zgDeviceLogicalType = ZG_DEVICETYPE_COORDINATOR;
+    282            else
+    283              zgDeviceLogicalType = ZG_DEVICETYPE_ROUTER;
+    284          #endif // BUILD_ALL_DEVICES
+    285          
+    286          #if defined ( HOLD_AUTO_START )
+    287            // HOLD_AUTO_START is a compile option that will surpress ZDApp
+    288            //  from starting the device and wait for the application to
+    289            //  start the device.
+    290            ZDOInitDevice(0);
+    291          #endif
+    292          
+    293            // Setup for the periodic message's destination address
+    294            // Broadcast to everyone
+    295            SampleApp_Periodic_DstAddr.addrMode = (afAddrMode_t)AddrBroadcast;
    \   00001B   90....       MOV       DPTR,#SampleApp_Periodic_DstAddr + 8
    \   00001E   740F         MOV       A,#0xf
    \   000020   F0           MOVX      @DPTR,A
-    295            SampleApp_Periodic_DstAddr.endPoint = SAMPLEAPP_ENDPOINT;
+    296            SampleApp_Periodic_DstAddr.endPoint = SAMPLEAPP_ENDPOINT;
    \   000021   A3           INC       DPTR
    \   000022   7414         MOV       A,#0x14
    \   000024   F0           MOVX      @DPTR,A
-    296            SampleApp_Periodic_DstAddr.addr.shortAddr = 0xFFFF;
+    297            SampleApp_Periodic_DstAddr.addr.shortAddr = 0xFFFF;
    \   000025   90....       MOV       DPTR,#SampleApp_Periodic_DstAddr
    \   000028   74FF         MOV       A,#-0x1
    \   00002A   F0           MOVX      @DPTR,A
    \   00002B   A3           INC       DPTR
    \   00002C   F0           MOVX      @DPTR,A
-    297          
-    298            // Setup for the flash command's destination address - Group 1
-    299            SampleApp_Flash_DstAddr.addrMode = (afAddrMode_t)afAddrGroup;
+    298          
+    299            // Setup for the flash command's destination address - Group 1
+    300            SampleApp_Flash_DstAddr.addrMode = (afAddrMode_t)afAddrGroup;
    \   00002D   90....       MOV       DPTR,#SampleApp_Flash_DstAddr + 8
    \   000030   7401         MOV       A,#0x1
    \   000032   F0           MOVX      @DPTR,A
-    300            SampleApp_Flash_DstAddr.endPoint = SAMPLEAPP_ENDPOINT;
+    301            SampleApp_Flash_DstAddr.endPoint = SAMPLEAPP_ENDPOINT;
    \   000033   A3           INC       DPTR
    \   000034   7414         MOV       A,#0x14
    \   000036   F0           MOVX      @DPTR,A
-    301            SampleApp_Flash_DstAddr.addr.shortAddr = SAMPLEAPP_FLASH_GROUP;
+    302            SampleApp_Flash_DstAddr.addr.shortAddr = SAMPLEAPP_FLASH_GROUP;
    \   000037   90....       MOV       DPTR,#SampleApp_Flash_DstAddr
    \   00003A   7401         MOV       A,#0x1
    \   00003C   F0           MOVX      @DPTR,A
    \   00003D   A3           INC       DPTR
    \   00003E   E4           CLR       A
    \   00003F   F0           MOVX      @DPTR,A
-    302            
-    303            SampleApp_Broadcast.addrMode = (afAddrMode_t)AddrBroadcast;
+    303            
+    304            SampleApp_Broadcast.addrMode = (afAddrMode_t)AddrBroadcast;
    \   000040   90....       MOV       DPTR,#SampleApp_Broadcast + 8
    \   000043   740F         MOV       A,#0xf
    \   000045   F0           MOVX      @DPTR,A
-    304            SampleApp_Broadcast.endPoint = SAMPLEAPP_ENDPOINT;
+    305            SampleApp_Broadcast.endPoint = SAMPLEAPP_ENDPOINT;
    \   000046   A3           INC       DPTR
    \   000047   7414         MOV       A,#0x14
    \   000049   F0           MOVX      @DPTR,A
-    305            SampleApp_Broadcast.addr.shortAddr = 0xFFFF;
+    306            SampleApp_Broadcast.addr.shortAddr = 0xFFFF;
    \   00004A   90....       MOV       DPTR,#SampleApp_Broadcast
    \   00004D   74FF         MOV       A,#-0x1
    \   00004F   F0           MOVX      @DPTR,A
    \   000050   A3           INC       DPTR
    \   000051   F0           MOVX      @DPTR,A
-    306          
-    307            // Fill out the endpoint description.
-    308            SampleApp_epDesc.endPoint = SAMPLEAPP_ENDPOINT;
+    307          
+    308            // Fill out the endpoint description.
+    309            SampleApp_epDesc.endPoint = SAMPLEAPP_ENDPOINT;
    \   000052   90....       MOV       DPTR,#SampleApp_epDesc
    \   000055   7414         MOV       A,#0x14
    \   000057   F0           MOVX      @DPTR,A
-    309            SampleApp_epDesc.task_id = &SampleApp_TaskID;
+    310            SampleApp_epDesc.task_id = &SampleApp_TaskID;
    \   000058   A3           INC       DPTR
    \   000059   74..         MOV       A,#SampleApp_TaskID & 0xff
    \   00005B   F0           MOVX      @DPTR,A
    \   00005C   A3           INC       DPTR
    \   00005D   74..         MOV       A,#(SampleApp_TaskID >> 8) & 0xff
    \   00005F   F0           MOVX      @DPTR,A
-    310            SampleApp_epDesc.simpleDesc
-    311                      = (SimpleDescriptionFormat_t *)&SampleApp_SimpleDesc;
+    311            SampleApp_epDesc.simpleDesc
+    312                      = (SimpleDescriptionFormat_t *)&SampleApp_SimpleDesc;
    \   000060   A3           INC       DPTR
    \   000061   74..         MOV       A,#SampleApp_SimpleDesc & 0xff
    \   000063   F0           MOVX      @DPTR,A
    \   000064   A3           INC       DPTR
    \   000065   74..         MOV       A,#(SampleApp_SimpleDesc >> 8) & 0xff
    \   000067   F0           MOVX      @DPTR,A
-    312            SampleApp_epDesc.latencyReq = noLatencyReqs;
+    313            SampleApp_epDesc.latencyReq = noLatencyReqs;
    \   000068   A3           INC       DPTR
    \   000069   E4           CLR       A
    \   00006A   12....       LCALL     ?Subroutine4 & 0xFFFF
-    313          
-    314            // Register the endpoint description with the AF
-    315            afRegister( &SampleApp_epDesc );
-    316          
-    317            // Register for all key events - This app will handle all key events
-    318            RegisterForKeys( SampleApp_TaskID );
+    314          
+    315            // Register the endpoint description with the AF
+    316            afRegister( &SampleApp_epDesc );
+    317          
+    318            // Register for all key events - This app will handle all key events
+    319            RegisterForKeys( SampleApp_TaskID );
    \                     ??CrossCallReturnLabel_0:
    \   00006D                ; Setup parameters for call to function RegisterForKeys
    \   00006D   90....       MOV       DPTR,#SampleApp_TaskID
    \   000070   E0           MOVX      A,@DPTR
    \   000071   F9           MOV       R1,A
    \   000072   12....       LCALL     `??RegisterForKeys::?relay`; Banked call to: RegisterForKeys
-    319          
-    320            // By default, all devices start out in Group 1
-    321            SampleApp_Group.ID = 0x0001;
+    320          
+    321            // By default, all devices start out in Group 1
+    322            SampleApp_Group.ID = 0x0001;
    \   000075   90....       MOV       DPTR,#SampleApp_Group
    \   000078   7401         MOV       A,#0x1
    \   00007A   F0           MOVX      @DPTR,A
    \   00007B   A3           INC       DPTR
    \   00007C   E4           CLR       A
    \   00007D   F0           MOVX      @DPTR,A
-    322            osal_memcpy( SampleApp_Group.name, "Group 1", 7  );
+    323            osal_memcpy( SampleApp_Group.name, "Group 1", 7  );
    \   00007E                ; Setup parameters for call to function osal_memcpy
    \   00007E   75....       MOV       ?V0,#`?<Constant "Group 1">` & 0xff
    \   000081   75....       MOV       ?V1,#(`?<Constant "Group 1">` >> 8) & 0xff
@@ -614,110 +615,111 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000093   12....       LCALL     `??osal_memcpy::?relay`; Banked call to: osal_memcpy
    \   000096   7403         MOV       A,#0x3
    \   000098   12....       LCALL     ?DEALLOC_XSTACK8
-    323            aps_AddGroup( SAMPLEAPP_ENDPOINT, &SampleApp_Group );
+    324            aps_AddGroup( SAMPLEAPP_ENDPOINT, &SampleApp_Group );
    \   00009B                ; Setup parameters for call to function aps_AddGroup
    \   00009B   7A..         MOV       R2,#SampleApp_Group & 0xff
    \   00009D   7B..         MOV       R3,#(SampleApp_Group >> 8) & 0xff
    \   00009F   7914         MOV       R1,#0x14
    \   0000A1   12....       LCALL     `??aps_AddGroup::?relay`; Banked call to: aps_AddGroup
-    324            
-    325            // Serial initialization start 
-    326            halUARTCfg_t uartConfig;
-    327          
-    328            SampleApp_TaskID = task_id;
+    325            
+    326            // Serial initialization start 
+    327            halUARTCfg_t uartConfig;
+    328          
+    329            SampleApp_TaskID = task_id;
    \   0000A4   EE           MOV       A,R6
    \   0000A5   90....       MOV       DPTR,#SampleApp_TaskID
    \   0000A8   F0           MOVX      @DPTR,A
-    329            SampleApp_RxSeq = 0xC3;
+    330            SampleApp_RxSeq = 0xC3;
    \   0000A9   90....       MOV       DPTR,#SampleApp_RxSeq
    \   0000AC   74C3         MOV       A,#-0x3d
    \   0000AE   12....       LCALL     ?Subroutine4 & 0xFFFF
-    330          
-    331            afRegister( (endPointDesc_t *)&SampleApp_epDesc );
-    332          
-    333            RegisterForKeys( task_id );
+    331          
+    332            afRegister( (endPointDesc_t *)&SampleApp_epDesc );
+    333          
+    334            RegisterForKeys( task_id );
    \                     ??CrossCallReturnLabel_1:
    \   0000B1                ; Setup parameters for call to function RegisterForKeys
    \   0000B1   EE           MOV       A,R6
    \   0000B2   F9           MOV       R1,A
    \   0000B3   12....       LCALL     `??RegisterForKeys::?relay`; Banked call to: RegisterForKeys
-    334          
-    335            uartConfig.configured           = TRUE;              // 2x30 don't care - see uart driver.
+    335          
+    336            uartConfig.configured           = TRUE;              // 2x30 don't care - see uart driver.
    \   0000B6   85..82       MOV       DPL,?XSP + 0
    \   0000B9   85..83       MOV       DPH,?XSP + 1
    \   0000BC   7401         MOV       A,#0x1
    \   0000BE   F0           MOVX      @DPTR,A
-    336            uartConfig.baudRate             = SAMPLE_APP_BAUD;
+    337            uartConfig.baudRate             = SAMPLE_APP_BAUD;
    \   0000BF   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000C2   7402         MOV       A,#0x2
-   \   0000C4   F0           MOVX      @DPTR,A
-    337            uartConfig.flowControl          = TRUE;
-   \   0000C5   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000C8   7401         MOV       A,#0x1
-   \   0000CA   F0           MOVX      @DPTR,A
-    338            uartConfig.flowControlThreshold = SAMPLE_APP_THRESH; // 2x30 don't care - see uart driver.
-   \   0000CB   7403         MOV       A,#0x3
-   \   0000CD   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000D0   7440         MOV       A,#0x40
-   \   0000D2   F0           MOVX      @DPTR,A
-   \   0000D3   A3           INC       DPTR
-   \   0000D4   E4           CLR       A
-   \   0000D5   F0           MOVX      @DPTR,A
-    339            uartConfig.rx.maxBufSize        = SAMPLE_APP_RX_SZ;  // 2x30 don't care - see uart driver.
-   \   0000D6   740A         MOV       A,#0xa
-   \   0000D8   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000DB   7480         MOV       A,#-0x80
-   \   0000DD   F0           MOVX      @DPTR,A
-   \   0000DE   A3           INC       DPTR
-   \   0000DF   E4           CLR       A
-   \   0000E0   F0           MOVX      @DPTR,A
-    340            uartConfig.tx.maxBufSize        = SAMPLE_APP_TX_SZ;  // 2x30 don't care - see uart driver.
-   \   0000E1   7412         MOV       A,#0x12
-   \   0000E3   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000E6   7480         MOV       A,#-0x80
-   \   0000E8   F0           MOVX      @DPTR,A
-   \   0000E9   A3           INC       DPTR
-   \   0000EA   E4           CLR       A
-   \   0000EB   F0           MOVX      @DPTR,A
-    341            uartConfig.idleTimeout          = SAMPLE_APP_IDLE;   // 2x30 don't care - see uart driver.
-   \   0000EC   7405         MOV       A,#0x5
-   \   0000EE   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000F1   7406         MOV       A,#0x6
-   \   0000F3   F0           MOVX      @DPTR,A
-    342            uartConfig.intEnable            = TRUE;              // 2x30 don't care - see uart driver.
-   \   0000F4   7416         MOV       A,#0x16
-   \   0000F6   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000F9   7401         MOV       A,#0x1
-   \   0000FB   F0           MOVX      @DPTR,A
-    343            uartConfig.callBackFunc         = SampleApp_CallBack;
-   \   0000FC   741B         MOV       A,#0x1b
-   \   0000FE   12....       LCALL     ?XSTACK_DISP0_8
-   \   000101   74..         MOV       A,#`??SampleApp_CallBack::?relay` & 0xff
-   \   000103   F0           MOVX      @DPTR,A
-   \   000104   A3           INC       DPTR
-   \   000105   74..         MOV       A,#(`??SampleApp_CallBack::?relay` >> 8) & 0xff
-   \   000107   F0           MOVX      @DPTR,A
-    344            HalUARTOpen (SAMPLE_APP_PORT, &uartConfig);
-   \   000108                ; Setup parameters for call to function HalUARTOpen
-   \   000108   AA..         MOV       R2,?XSP + 0
-   \   00010A   AB..         MOV       R3,?XSP + 1
-   \   00010C   7900         MOV       R1,#0x0
-   \   00010E   12....       LCALL     `??HalUARTOpen::?relay`; Banked call to: HalUARTOpen
-    345            // Serial Initialization end
-    346          
-    347          #if defined ( LCD_SUPPORTED )
-    348            HalLcdWriteString( "SerialApp+Labs", HAL_LCD_LINE_1 );
-   \   000111                ; Setup parameters for call to function HalLcdWriteString
-   \   000111   7901         MOV       R1,#0x1
-   \   000113   7A..         MOV       R2,#`?<Constant "SerialApp+Labs">` & 0xff
-   \   000115   7B..         MOV       R3,#(`?<Constant "SerialApp+Labs">` >> 8) & 0xff
-   \   000117   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
-    349          #endif
-    350          }
-   \   00011A   741D         MOV       A,#0x1d
-   \   00011C   12....       LCALL     ?DEALLOC_XSTACK8
-   \   00011F                REQUIRE ?Subroutine0
-   \   00011F                ; // Fall through to label ?Subroutine0
+   \   0000C2   E4           CLR       A
+   \   0000C3   F0           MOVX      @DPTR,A
+    338            uartConfig.flowControl          = TRUE;
+   \   0000C4   7402         MOV       A,#0x2
+   \   0000C6   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000C9   7401         MOV       A,#0x1
+   \   0000CB   F0           MOVX      @DPTR,A
+    339            uartConfig.flowControlThreshold = SAMPLE_APP_THRESH; // 2x30 don't care - see uart driver.
+   \   0000CC   7403         MOV       A,#0x3
+   \   0000CE   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000D1   7440         MOV       A,#0x40
+   \   0000D3   F0           MOVX      @DPTR,A
+   \   0000D4   A3           INC       DPTR
+   \   0000D5   E4           CLR       A
+   \   0000D6   F0           MOVX      @DPTR,A
+    340            uartConfig.rx.maxBufSize        = SAMPLE_APP_RX_SZ;  // 2x30 don't care - see uart driver.
+   \   0000D7   740A         MOV       A,#0xa
+   \   0000D9   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000DC   7480         MOV       A,#-0x80
+   \   0000DE   F0           MOVX      @DPTR,A
+   \   0000DF   A3           INC       DPTR
+   \   0000E0   E4           CLR       A
+   \   0000E1   F0           MOVX      @DPTR,A
+    341            uartConfig.tx.maxBufSize        = SAMPLE_APP_TX_SZ;  // 2x30 don't care - see uart driver.
+   \   0000E2   7412         MOV       A,#0x12
+   \   0000E4   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000E7   7490         MOV       A,#-0x70
+   \   0000E9   F0           MOVX      @DPTR,A
+   \   0000EA   A3           INC       DPTR
+   \   0000EB   7401         MOV       A,#0x1
+   \   0000ED   F0           MOVX      @DPTR,A
+    342            uartConfig.idleTimeout          = SAMPLE_APP_IDLE;   // 2x30 don't care - see uart driver.
+   \   0000EE   7405         MOV       A,#0x5
+   \   0000F0   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000F3   7406         MOV       A,#0x6
+   \   0000F5   F0           MOVX      @DPTR,A
+    343            uartConfig.intEnable            = TRUE;              // 2x30 don't care - see uart driver.
+   \   0000F6   7416         MOV       A,#0x16
+   \   0000F8   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000FB   7401         MOV       A,#0x1
+   \   0000FD   F0           MOVX      @DPTR,A
+    344            uartConfig.callBackFunc         = SampleApp_CallBack;
+   \   0000FE   741B         MOV       A,#0x1b
+   \   000100   12....       LCALL     ?XSTACK_DISP0_8
+   \   000103   74..         MOV       A,#`??SampleApp_CallBack::?relay` & 0xff
+   \   000105   F0           MOVX      @DPTR,A
+   \   000106   A3           INC       DPTR
+   \   000107   74..         MOV       A,#(`??SampleApp_CallBack::?relay` >> 8) & 0xff
+   \   000109   F0           MOVX      @DPTR,A
+    345            HalUARTOpen (SAMPLE_APP_PORT, &uartConfig);
+   \   00010A                ; Setup parameters for call to function HalUARTOpen
+   \   00010A   AA..         MOV       R2,?XSP + 0
+   \   00010C   AB..         MOV       R3,?XSP + 1
+   \   00010E   7900         MOV       R1,#0x0
+   \   000110   12....       LCALL     `??HalUARTOpen::?relay`; Banked call to: HalUARTOpen
+    346            // Serial Initialization end
+    347          
+    348          #if defined ( LCD_SUPPORTED )
+    349            HalLcdWriteString( "SerialApp+Labs", HAL_LCD_LINE_1 );
+   \   000113                ; Setup parameters for call to function HalLcdWriteString
+   \   000113   7901         MOV       R1,#0x1
+   \   000115   7A..         MOV       R2,#`?<Constant "SerialApp+Labs">` & 0xff
+   \   000117   7B..         MOV       R3,#(`?<Constant "SerialApp+Labs">` >> 8) & 0xff
+   \   000119   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
+    350          #endif
+    351          }
+   \   00011C   741D         MOV       A,#0x1d
+   \   00011E   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000121                REQUIRE ?Subroutine0
+   \   000121                ; // Fall through to label ?Subroutine0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine0:
@@ -733,25 +735,25 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000003   7B..         MOV       R3,#(SampleApp_epDesc >> 8) & 0xff
    \   000005   12....       LCALL     `??afRegister::?relay`; Banked call to: afRegister
    \   000008   22           RET
-    351          
-    352          /*********************************************************************
-    353           * @fn      SampleApp_ProcessEvent
-    354           *
-    355           * @brief   Generic Application Task event processor.  This function
-    356           *          is called to process all events for the task.  Events
-    357           *          include timers, messages and any other user defined events.
-    358           *
-    359           * @param   task_id  - The OSAL assigned task ID.
-    360           * @param   events - events to process.  This is a bit map and can
-    361           *                   contain more than one event.
-    362           *
-    363           * @return  none
-    364           */
+    352          
+    353          /*********************************************************************
+    354           * @fn      SampleApp_ProcessEvent
+    355           *
+    356           * @brief   Generic Application Task event processor.  This function
+    357           *          is called to process all events for the task.  Events
+    358           *          include timers, messages and any other user defined events.
+    359           *
+    360           * @param   task_id  - The OSAL assigned task ID.
+    361           * @param   events - events to process.  This is a bit map and can
+    362           *                   contain more than one event.
+    363           *
+    364           * @return  none
+    365           */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    365          uint16 SampleApp_ProcessEvent( uint8 task_id, uint16 events )
+    366          uint16 SampleApp_ProcessEvent( uint8 task_id, uint16 events )
    \                     SampleApp_ProcessEvent:
-    366          {
+    367          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000                REQUIRE ?V2
@@ -764,41 +766,41 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-    367            afIncomingMSGPacket_t *MSGpkt;
-    368            (void)task_id;  // Intentionally unreferenced parameter
-    369          
-    370            if ( events & SYS_EVENT_MSG )
+    368            afIncomingMSGPacket_t *MSGpkt;
+    369            (void)task_id;  // Intentionally unreferenced parameter
+    370          
+    371            if ( events & SYS_EVENT_MSG )
    \   000009   5480         ANL       A,#0x80
    \   00000B   6078         JZ        ??SampleApp_ProcessEvent_0
-    371            {
-    372              MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( SampleApp_TaskID );
+    372            {
+    373              MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( SampleApp_TaskID );
    \   00000D                ; Setup parameters for call to function osal_msg_receive
    \   00000D   802B         SJMP      ??SampleApp_ProcessEvent_1
-    373              while ( MSGpkt )
-    374              {
-    375                switch ( MSGpkt->hdr.event )
-    376                {
-    377                  // Received when a key is pressed
-    378                  case KEY_CHANGE:
-    379                    SampleApp_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
-    380                    break;
-    381          
-    382                  // Received when a messages is received (OTA) for this endpoint
-    383                  case AF_INCOMING_MSG_CMD:
-    384                    SampleApp_MessageMSGCB( MSGpkt );
-    385                    break;
-    386          
-    387                  // Received whenever the device changes state in the network
-    388                  case ZDO_STATE_CHANGE:
-    389                    SampleApp_NwkState = (devStates_t)(MSGpkt->hdr.status);
+    374              while ( MSGpkt )
+    375              {
+    376                switch ( MSGpkt->hdr.event )
+    377                {
+    378                  // Received when a key is pressed
+    379                  case KEY_CHANGE:
+    380                    SampleApp_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
+    381                    break;
+    382          
+    383                  // Received when a messages is received (OTA) for this endpoint
+    384                  case AF_INCOMING_MSG_CMD:
+    385                    SampleApp_MessageMSGCB( MSGpkt );
+    386                    break;
+    387          
+    388                  // Received whenever the device changes state in the network
+    389                  case ZDO_STATE_CHANGE:
+    390                    SampleApp_NwkState = (devStates_t)(MSGpkt->hdr.status);
    \                     ??SampleApp_ProcessEvent_2:
    \   00000F   A3           INC       DPTR
    \   000010   E0           MOVX      A,@DPTR
    \   000011   90....       MOV       DPTR,#SampleApp_NwkState
    \   000014   F0           MOVX      @DPTR,A
-    390                    if ( (SampleApp_NwkState == DEV_ZB_COORD)
-    391                        || (SampleApp_NwkState == DEV_ROUTER)
-    392                        || (SampleApp_NwkState == DEV_END_DEVICE) )
+    391                    if ( (SampleApp_NwkState == DEV_ZB_COORD)
+    392                        || (SampleApp_NwkState == DEV_ROUTER)
+    393                        || (SampleApp_NwkState == DEV_END_DEVICE) )
    \   000015   6409         XRL       A,#0x9
    \   000017   600A         JZ        ??SampleApp_ProcessEvent_3
    \   000019   E0           MOVX      A,@DPTR
@@ -807,11 +809,11 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   00001E   E0           MOVX      A,@DPTR
    \   00001F   6406         XRL       A,#0x6
    \   000021   7010         JNZ       ??SampleApp_ProcessEvent_4
-    393                    {
-    394                      // Start sending the periodic message in a regular interval.
-    395                      osal_start_timerEx( SampleApp_TaskID,
-    396                                        SAMPLEAPP_SEND_PERIODIC_MSG_EVT,
-    397                                        SAMPLEAPP_SEND_PERIODIC_MSG_TIMEOUT );
+    394                    {
+    395                      // Start sending the periodic message in a regular interval.
+    396                      osal_start_timerEx( SampleApp_TaskID,
+    397                                        SAMPLEAPP_SEND_PERIODIC_MSG_EVT,
+    398                                        SAMPLEAPP_SEND_PERIODIC_MSG_TIMEOUT );
    \                     ??SampleApp_ProcessEvent_3:
    \   000023                ; Setup parameters for call to function osal_start_timerEx
    \   000023   7C88         MOV       R4,#-0x78
@@ -822,27 +824,27 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   00002E   E0           MOVX      A,@DPTR
    \   00002F   F9           MOV       R1,A
    \   000030   12....       LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
-    398                    }
-    399                    else
-    400                    {
-    401                      // Device is no longer in the network
-    402                    }
-    403                    break;
-    404          
-    405                  default:
-    406                    break;
-    407                }
-    408          
-    409                // Release the memory
-    410                osal_msg_deallocate( (uint8 *)MSGpkt );
+    399                    }
+    400                    else
+    401                    {
+    402                      // Device is no longer in the network
+    403                    }
+    404                    break;
+    405          
+    406                  default:
+    407                    break;
+    408                }
+    409          
+    410                // Release the memory
+    411                osal_msg_deallocate( (uint8 *)MSGpkt );
    \                     ??SampleApp_ProcessEvent_4:
    \   000033                ; Setup parameters for call to function osal_msg_deallocate
    \   000033   AA..         MOV       R2,?V0
    \   000035   AB..         MOV       R3,?V1
    \   000037   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
-    411          
-    412                // Next - if one is available
-    413                MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( SampleApp_TaskID );
+    412          
+    413                // Next - if one is available
+    414                MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( SampleApp_TaskID );
    \   00003A                ; Setup parameters for call to function osal_msg_receive
    \                     ??SampleApp_ProcessEvent_1:
    \   00003A   90....       MOV       DPTR,#SampleApp_TaskID
@@ -885,36 +887,36 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000077   AB..         MOV       R3,?V1
    \   000079   12....       LCALL     `??SampleApp_MessageMSGCB::?relay`; Banked call to: SampleApp_MessageMSGCB
    \   00007C   80B5         SJMP      ??SampleApp_ProcessEvent_4
-    414              }
-    415              
+    415              }
     416              
-    417          
-    418              // return unprocessed events
-    419              return (events ^ SYS_EVENT_MSG);
+    417              
+    418          
+    419              // return unprocessed events
+    420              return (events ^ SYS_EVENT_MSG);
    \                     ??SampleApp_ProcessEvent_5:
    \   00007E   EE           MOV       A,R6
    \   00007F   FA           MOV       R2,A
    \   000080   EF           MOV       A,R7
    \   000081   6480         XRL       A,#0x80
    \   000083   8024         SJMP      ??SampleApp_ProcessEvent_8
-    420            }
-    421          
-    422            // Send a message out - This event is generated by a timer
-    423            //  (setup in SampleApp_Init()).
-    424            if ( events & SAMPLEAPP_SEND_PERIODIC_MSG_EVT )
+    421            }
+    422          
+    423            // Send a message out - This event is generated by a timer
+    424            //  (setup in SampleApp_Init()).
+    425            if ( events & SAMPLEAPP_SEND_PERIODIC_MSG_EVT )
    \                     ??SampleApp_ProcessEvent_0:
    \   000085   EA           MOV       A,R2
    \   000086   A2E0         MOV       C,0xE0 /* A   */.0
    \   000088   5022         JNC       ??SampleApp_ProcessEvent_9
-    425            {
-    426              // Send the periodic message
-    427              SampleApp_SendPeriodicMessage();
+    426            {
+    427              // Send the periodic message
+    428              SampleApp_SendPeriodicMessage();
    \   00008A                ; Setup parameters for call to function SampleApp_SendPeriodicMessage
    \   00008A   12....       LCALL     `??SampleApp_SendPeriodicMessage::?relay`; Banked call to: SampleApp_SendPeriodicMessage
-    428          
-    429              // Setup to send message again in normal period (+ a little jitter)
-    430              osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_SEND_PERIODIC_MSG_EVT,
-    431                  (SAMPLEAPP_SEND_PERIODIC_MSG_TIMEOUT + (osal_rand() & 0x00FF)) );
+    429          
+    430              // Setup to send message again in normal period (+ a little jitter)
+    431              osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_SEND_PERIODIC_MSG_EVT,
+    432                  (SAMPLEAPP_SEND_PERIODIC_MSG_TIMEOUT + (osal_rand() & 0x00FF)) );
    \   00008D                ; Setup parameters for call to function osal_rand
    \   00008D   12....       LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
    \   000090                ; Setup parameters for call to function osal_start_timerEx
@@ -930,9 +932,9 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   00009F   E0           MOVX      A,@DPTR
    \   0000A0   F9           MOV       R1,A
    \   0000A1   12....       LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
-    432          
-    433              // return unprocessed events
-    434              return (events ^ SAMPLEAPP_SEND_PERIODIC_MSG_EVT);
+    433          
+    434              // return unprocessed events
+    435              return (events ^ SAMPLEAPP_SEND_PERIODIC_MSG_EVT);
    \   0000A4   EE           MOV       A,R6
    \   0000A5   6401         XRL       A,#0x1
    \   0000A7   FA           MOV       R2,A
@@ -940,81 +942,76 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \                     ??SampleApp_ProcessEvent_8:
    \   0000A9   FB           MOV       R3,A
    \   0000AA   8004         SJMP      ??SampleApp_ProcessEvent_10
-    435            }
-    436          
-    437            // Discard unknown events
-    438            return 0;
+    436            }
+    437          
+    438            // Discard unknown events
+    439            return 0;
    \                     ??SampleApp_ProcessEvent_9:
    \   0000AC   7A00         MOV       R2,#0x0
    \   0000AE   7B00         MOV       R3,#0x0
    \                     ??SampleApp_ProcessEvent_10:
    \   0000B0   7F04         MOV       R7,#0x4
    \   0000B2   02....       LJMP      ?BANKED_LEAVE_XDATA
-    439          }
-    440          
-    441          /*********************************************************************
-    442           * Event Generation Functions
-    443           */
-    444          /*********************************************************************
-    445           * @fn      SampleApp_HandleKeys
-    446           *
-    447           * @brief   Handles all key events for this device.
-    448           *
-    449           * @param   shift - true if in shift/alt.
-    450           * @param   keys - bit field for key events. Valid entries:
-    451           *                 HAL_KEY_SW_2
-    452           *                 HAL_KEY_SW_1
-    453           *
-    454           * @return  none
-    455           */
-    456          
-    457          typedef struct
-    458          {
-    459            int16 temperature;
-    460            int16 water_level;
-    461            int32 flow_rate;
-    462            uint8 PH;
-    463            uint8 batt_level;
-    464            int16 GNSS_latitude;
-    465            int16 GNSS_longitude;
-    466            
-    467            bool sensors_okay;
-    468            bool node_okay;
-    469            uint8 error_state;
-    470            char text[10];
-    471          } packet_measurements;
+    440          }
+    441          
+    442          /*********************************************************************
+    443           * Event Generation Functions
+    444           */
+    445          /*********************************************************************
+    446           * @fn      SampleApp_HandleKeys
+    447           *
+    448           * @brief   Handles all key events for this device.
+    449           *
+    450           * @param   shift - true if in shift/alt.
+    451           * @param   keys - bit field for key events. Valid entries:
+    452           *                 HAL_KEY_SW_2
+    453           *                 HAL_KEY_SW_1
+    454           *
+    455           * @return  none
+    456           */
+    457          
+    458          typedef struct
+    459          {
+    460            int16 temperature;
+    461            int16 water_level;
+    462            int32 flow_rate;
+    463            uint8 PH;
+    464            uint8 batt_level;
+    465            int16 GNSS_latitude;
+    466            int16 GNSS_longitude;
+    467            
+    468            bool sensors_okay;
+    469            bool node_okay;
+    470            uint8 error_state;
+    471            char text[10];
+    472          } packet_measurements;
+    473          
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-    472          packet_measurements receiveData = {0,0,0,0,0,0,0,0,0,0,"nothing"};
+    474          packet_measurements receiveData = {0,0,0,0,0,0,0,0,0,0,"nothing"};
    \                     receiveData:
    \   000000                DS 27
    \   00001B                REQUIRE `?<Initializer for receiveData>`
    \   00001B                REQUIRE __INIT_XDATA_I
-    473          
+    475          
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    474          char serialOut[150] = "";
+    476          char serialOut[128] = "";
    \                     serialOut:
-   \   000000                DS 150
-   \   000096                REQUIRE __INIT_XDATA_Z
+   \   000000                DS 128
+   \   000080                REQUIRE __INIT_XDATA_Z
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-    475          char serialBuffer[150] = "";
+    477          char serialBuffer[125] = "";
    \                     serialBuffer:
-   \   000000                DS 150
-   \   000096                REQUIRE __INIT_XDATA_Z
-
-   \                                 In  segment XDATA_Z, align 1, keep-with-next
-    476          char serialBuffer2[40] = "";
-   \                     serialBuffer2:
-   \   000000                DS 40
-   \   000028                REQUIRE __INIT_XDATA_Z
-    477          
+   \   000000                DS 125
+   \   00007D                REQUIRE __INIT_XDATA_Z
+    478          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    478          void SampleApp_HandleKeys( uint8 shift, uint8 keys )
+    479          void SampleApp_HandleKeys( uint8 shift, uint8 keys )
    \                     SampleApp_HandleKeys:
-    479          {
+    480          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000                REQUIRE ?V2
@@ -1024,12 +1021,12 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000005                ; Auto size: 0
    \   000005   EA           MOV       A,R2
    \   000006   FE           MOV       R6,A
-    480          
-    481            if ( keys & HAL_KEY_SW_1 )
+    481          
+    482            if ( keys & HAL_KEY_SW_1 )
    \   000007   A2E0         MOV       C,0xE0 /* A   */.0
    \   000009   503F         JNC       ??SampleApp_HandleKeys_0
-    482            {
-    483              HalLcdWriteStringValue( "Temperature:", receiveData.temperature, 10, HAL_LCD_LINE_1);
+    483            {
+    484              HalLcdWriteStringValue( "Temperature:", receiveData.temperature, 10, HAL_LCD_LINE_1);
    \   00000B                ; Setup parameters for call to function HalLcdWriteStringValue
    \   00000B   75..01       MOV       ?V0,#0x1
    \   00000E   78..         MOV       R0,#?V0
@@ -1041,7 +1038,7 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   00001A   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_11:
    \   00001D   12....       LCALL     ?DEALLOC_XSTACK8
-    484              HalLcdWriteStringValue( "Water Level:", receiveData.temperature, 10, HAL_LCD_LINE_2);
+    485              HalLcdWriteStringValue( "Water Level:", receiveData.temperature, 10, HAL_LCD_LINE_2);
    \   000020                ; Setup parameters for call to function HalLcdWriteStringValue
    \   000020   75..02       MOV       ?V0,#0x2
    \   000023   78..         MOV       R0,#?V0
@@ -1053,29 +1050,29 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   00002F   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_12:
    \   000032   12....       LCALL     ?DEALLOC_XSTACK8
-    485              HalLcdWriteStringValue( "Flow Rate:", receiveData.temperature, 10, HAL_LCD_LINE_3);        
+    486              HalLcdWriteStringValue( "Flow Rate:", receiveData.temperature, 10, HAL_LCD_LINE_3);        
    \   000035                ; Setup parameters for call to function HalLcdWriteStringValue
    \   000035   75..03       MOV       ?V0,#0x3
    \   000038   78..         MOV       R0,#?V0
    \   00003A   12....       LCALL     ?PUSH_XSTACK_I_ONE
    \   00003D   12....       LCALL     ?Subroutine3 & 0xFFFF
-    486            }
+    487            }
    \                     ??CrossCallReturnLabel_8:
    \   000040   7A..         MOV       R2,#`?<Constant "Flow Rate:">` & 0xff
    \   000042   7B..         MOV       R3,#(`?<Constant "Flow Rate:">` >> 8) & 0xff
    \   000044   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_13:
    \   000047   12....       LCALL     ?DEALLOC_XSTACK8
-    487          
-    488            if ( keys & HAL_KEY_SW_2 )
+    488          
+    489            if ( keys & HAL_KEY_SW_2 )
    \                     ??SampleApp_HandleKeys_0:
    \   00004A   75....       MOV       ?V0,#`?<Constant "Battery Level:">` & 0xff
    \   00004D   75....       MOV       ?V1,#(`?<Constant "Battery Level:">` >> 8) & 0xff
    \   000050   EE           MOV       A,R6
    \   000051   A2E1         MOV       C,0xE0 /* A   */.1
    \   000053   5043         JNC       ??SampleApp_HandleKeys_1
-    489            {
-    490              HalLcdWriteStringValue( "pH:", receiveData.PH, 10, HAL_LCD_LINE_1);
+    490            {
+    491              HalLcdWriteStringValue( "pH:", receiveData.PH, 10, HAL_LCD_LINE_1);
    \   000055                ; Setup parameters for call to function HalLcdWriteStringValue
    \   000055   75..01       MOV       ?V2,#0x1
    \   000058   78..         MOV       R0,#?V2
@@ -1090,7 +1087,7 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   00006A   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_14:
    \   00006D   12....       LCALL     ?DEALLOC_XSTACK8
-    491              HalLcdWriteStringValue( "Battery Level:", receiveData.batt_level, 10, HAL_LCD_LINE_2);
+    492              HalLcdWriteStringValue( "Battery Level:", receiveData.batt_level, 10, HAL_LCD_LINE_2);
    \   000070                ; Setup parameters for call to function HalLcdWriteStringValue
    \   000070   75..02       MOV       ?V2,#0x2
    \   000073   78..         MOV       R0,#?V2
@@ -1098,7 +1095,7 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000078   12....       LCALL     ?Subroutine2 & 0xFFFF
    \                     ??CrossCallReturnLabel_9:
    \   00007B   12....       LCALL     ?DEALLOC_XSTACK8
-    492              HalLcdWriteStringValue( "Latitude:", receiveData.GNSS_latitude, 10, HAL_LCD_LINE_3);
+    493              HalLcdWriteStringValue( "Latitude:", receiveData.GNSS_latitude, 10, HAL_LCD_LINE_3);
    \   00007E                ; Setup parameters for call to function HalLcdWriteStringValue
    \   00007E   75..03       MOV       ?V2,#0x3
    \   000081   78..         MOV       R0,#?V2
@@ -1106,21 +1103,21 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   000086   790A         MOV       R1,#0xa
    \   000088   90....       MOV       DPTR,#receiveData + 10
    \   00008B   12....       LCALL     ??Subroutine5_0 & 0xFFFF
-    493            }
+    494            }
    \                     ??CrossCallReturnLabel_2:
    \   00008E   7A..         MOV       R2,#`?<Constant "Latitude:">` & 0xff
    \   000090   7B..         MOV       R3,#(`?<Constant "Latitude:">` >> 8) & 0xff
    \   000092   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_15:
    \   000095   12....       LCALL     ?DEALLOC_XSTACK8
-    494            
-    495            if ( keys & HAL_KEY_SW_3 )
+    495            
+    496            if ( keys & HAL_KEY_SW_3 )
    \                     ??SampleApp_HandleKeys_1:
    \   000098   EE           MOV       A,R6
    \   000099   A2E4         MOV       C,0xE0 /* A   */.4
    \   00009B   5031         JNC       ??SampleApp_HandleKeys_2
-    496            {
-    497              HalLcdWriteStringValue( "Longitude:", receiveData.GNSS_longitude, 10, HAL_LCD_LINE_1);
+    497            {
+    498              HalLcdWriteStringValue( "Longitude:", receiveData.GNSS_longitude, 10, HAL_LCD_LINE_1);
    \   00009D                ; Setup parameters for call to function HalLcdWriteStringValue
    \   00009D   75..01       MOV       ?V2,#0x1
    \   0000A0   78..         MOV       R0,#?V2
@@ -1134,7 +1131,7 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   0000B1   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_16:
    \   0000B4   12....       LCALL     ?DEALLOC_XSTACK8
-    498              HalLcdWriteStringValue( "Battery Level:", receiveData.batt_level, 10, HAL_LCD_LINE_2);
+    499              HalLcdWriteStringValue( "Battery Level:", receiveData.batt_level, 10, HAL_LCD_LINE_2);
    \   0000B7                ; Setup parameters for call to function HalLcdWriteStringValue
    \   0000B7   75..02       MOV       ?V2,#0x2
    \   0000BA   78..         MOV       R0,#?V2
@@ -1142,194 +1139,222 @@ Warning[Pe014]: extra text after expected end of preprocessing directive
    \   0000BF   12....       LCALL     ?Subroutine2 & 0xFFFF
    \                     ??CrossCallReturnLabel_10:
    \   0000C2   12....       LCALL     ?DEALLOC_XSTACK8
-    499              HalLcdWriteString( receiveData.text, HAL_LCD_LINE_3);
+    500              HalLcdWriteString( receiveData.text, HAL_LCD_LINE_3);
    \   0000C5                ; Setup parameters for call to function HalLcdWriteString
    \   0000C5   7903         MOV       R1,#0x3
    \   0000C7   7A..         MOV       R2,#(receiveData + 17) & 0xff
    \   0000C9   7B..         MOV       R3,#((receiveData + 17) >> 8) & 0xff
    \   0000CB   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
-    500            }
-    501            
-    502            if ( keys & HAL_KEY_SW_4 )
+    501            }
+    502            
+    503            if ( keys & HAL_KEY_SW_4 )
    \                     ??SampleApp_HandleKeys_2:
    \   0000CE   EE           MOV       A,R6
    \   0000CF   A2E3         MOV       C,0xE0 /* A   */.3
-   \   0000D1   507D         JNC       ??SampleApp_HandleKeys_3
-    503            {
-    504           //   HalLcdWriteStringValue( "SensorStat:", receiveData.sensors_okay, 10, HAL_LCD_LINE_1);
-    505           //   HalLcdWriteStringValue( "NodeStat:", receiveData.node_okay, 10, HAL_LCD_LINE_2);
-    506                
-    507                //sprintf(serialOut,"temperature:%d\n",receiveData.temperature);
-    508                  int serialSize;
-    509                  /*
-    510                  sprintf(serialBuffer,
-    511             ",temperature:%d:\n,water_level:%d:\n,flow_rate:%d:\n,PH:%d:\n,batt_level:%d:\n,GNSS_latitude:%d:\n,GNSS_longitude:%d:\n,sensors_okay:%d:\n,error_state:%d:\n,node_okay:1:\n",
-    512                            receiveData.temperature, //1
-    513                            receiveData.water_level, //2
-    514                            receiveData.flow_rate, //3
-    515                            receiveData.PH, //4
-    516                            receiveData.batt_level, //5
-    517                            receiveData.GNSS_latitude, //6
-    518                            receiveData.GNSS_longitude, //7
-    519                            receiveData.sensors_okay, //8
-    520                            receiveData.error_state); //9
-    521                  serialSize = sizeof(serialBuffer);
-    522                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
-    523                  */
-    524          
-    525                  sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
-   \   0000D3                ; Setup parameters for call to function sprintf
-   \   0000D3   90....       MOV       DPTR,#receiveData
-   \   0000D6   12....       LCALL     ?PUSH_XSTACK8_X_TWO
-   \   0000D9   7C..         MOV       R4,#`?<Constant ",temperature:%d:\\n">` & 0xff
-   \   0000DB   7D..         MOV       R5,#(`?<Constant ",temperature:%d:\\n">` >> 8) & 0xff
-   \   0000DD   7A..         MOV       R2,#serialBuffer & 0xff
-   \   0000DF   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
-   \   0000E1   12....       LCALL     `??sprintf::?relay`; Banked call to: sprintf
-   \   0000E4   7402         MOV       A,#0x2
-   \   0000E6   12....       LCALL     ?DEALLOC_XSTACK8
-    526                  serialSize = sizeof(serialBuffer);
-    527                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-                                                       ^
-Warning[Pe167]: argument of type "char *" is incompatible with parameter of
-          type "uint8 *"
-   \   0000E9                ; Setup parameters for call to function HalUARTWrite
-   \   0000E9   7C96         MOV       R4,#-0x6a
-   \   0000EB   7D00         MOV       R5,#0x0
-   \   0000ED   7A..         MOV       R2,#serialBuffer & 0xff
-   \   0000EF   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
-   \   0000F1   7900         MOV       R1,#0x0
-   \   0000F3   12....       LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
-    528           
-    529                  sprintf(serialBuffer,",water_level:%d:\n",receiveData.water_level);
-   \   0000F6                ; Setup parameters for call to function sprintf
-   \   0000F6   90....       MOV       DPTR,#receiveData + 2
-   \   0000F9   12....       LCALL     ?PUSH_XSTACK8_X_TWO
-   \   0000FC   7C..         MOV       R4,#`?<Constant ",water_level:%d:\\n">` & 0xff
-   \   0000FE   7D..         MOV       R5,#(`?<Constant ",water_level:%d:\\n">` >> 8) & 0xff
-   \   000100   7A..         MOV       R2,#serialBuffer & 0xff
-   \   000102   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
-   \   000104   12....       LCALL     `??sprintf::?relay`; Banked call to: sprintf
-   \   000107   7402         MOV       A,#0x2
-   \   000109   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000D1   506A         JNC       ??SampleApp_HandleKeys_3
+    504            {
+    505           //   HalLcdWriteStringValue( "SensorStat:", receiveData.sensors_okay, 10, HAL_LCD_LINE_1);
+    506           //   HalLcdWriteStringValue( "NodeStat:", receiveData.node_okay, 10, HAL_LCD_LINE_2);
+    507                
+    508                //sprintf(serialOut,"temperature:%d\n",receiveData.temperature);
+    509                  int serialSize;
+    510                  /*
+    511                  sprintf(serialBuffer,
+    512             ",temperature:%d:\n,water_level:%d:\n,flow_rate:%d:\n,PH:%d:\n,batt_level:%d:\n,GNSS_latitude:%d:\n,GNSS_longitude:%d:\n,sensors_okay:%d:\n,error_state:%d:\n,node_okay:1:\n",
+    513                            receiveData.temperature, //1
+    514                            receiveData.water_level, //2
+    515                            receiveData.flow_rate, //3
+    516                            receiveData.PH, //4
+    517                            receiveData.batt_level, //5
+    518                            receiveData.GNSS_latitude, //6
+    519                            receiveData.GNSS_longitude, //7
+    520                            receiveData.sensors_okay, //8
+    521                            receiveData.error_state); //9
+    522                  serialSize = sizeof(serialBuffer);
+    523                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
+    524                  */
+    525                
+    526                  /*
+    527                  sprintf(serialBuffer,",temperature:%d:\n,water_level:%d:\n",
+    528                          receiveData.temperature,
+    529                          receiveData.water_level);
     530                  serialSize = sizeof(serialBuffer);
     531                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-                                                       ^
-Warning[Pe167]: argument of type "char *" is incompatible with parameter of
-          type "uint8 *"
-   \   00010C                ; Setup parameters for call to function HalUARTWrite
-   \   00010C   7C96         MOV       R4,#-0x6a
-   \   00010E   7D00         MOV       R5,#0x0
-   \   000110   7A..         MOV       R2,#serialBuffer & 0xff
-   \   000112   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
-   \   000114   7900         MOV       R1,#0x0
-   \   000116   12....       LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
-    532                  
-    533                  sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
-                                                                 ^
-Warning[Pe181]: argument is incompatible with corresponding format string
-          conversion
-   \   000119                ; Setup parameters for call to function sprintf
-   \   000119   90....       MOV       DPTR,#receiveData + 4
-   \   00011C   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   00011F   7C..         MOV       R4,#`?<Constant ",flow_rate:%d:\\n">` & 0xff
-   \   000121   7D..         MOV       R5,#(`?<Constant ",flow_rate:%d:\\n">` >> 8) & 0xff
-   \   000123   7A..         MOV       R2,#serialBuffer & 0xff
-   \   000125   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
-   \   000127   12....       LCALL     `??sprintf::?relay`; Banked call to: sprintf
-   \   00012A   7404         MOV       A,#0x4
-   \   00012C   12....       LCALL     ?DEALLOC_XSTACK8
-    534                  serialSize = sizeof(serialBuffer);
-    535                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-                                                       ^
-Warning[Pe167]: argument of type "char *" is incompatible with parameter of
-          type "uint8 *"
-   \   00012F                ; Setup parameters for call to function HalUARTWrite
-   \   00012F   7C96         MOV       R4,#-0x6a
-   \   000131   7D00         MOV       R5,#0x0
-   \   000133   7A..         MOV       R2,#serialBuffer & 0xff
-   \   000135   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
-   \   000137   7900         MOV       R1,#0x0
-   \   000139   12....       LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
-    536          
-    537           
-    538                  /*
-    539                  sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
-    540                  serialSize = sizeof(serialBuffer);
-    541                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-    542                 
-    543                  // HalLedBlink(HAL_LED_2,4,50,1000);
-    544                  
-    545                  sprintf(serialBuffer,",batt_level:%d:\n",receiveData.batt_level);
+    532                  */
+    533                  
+    534                  /*
+    535                  sprintf(serialBuffer,
+    536                  ",t:%d:\n,w:%d:\n,f:%d:\n,PH:%d:\n,b:%d:\n,GNSS_latitude:%d:\n,GNSS_longitude:%d:\n,s:%d:\n,e:%d:\n,n:1:\n",
+    537                            receiveData.temperature, //1
+    538                            receiveData.water_level, //2
+    539                            receiveData.flow_rate, //3
+    540                            receiveData.PH, //4
+    541                            receiveData.batt_level, //5
+    542                            receiveData.GNSS_latitude, //6
+    543                            receiveData.GNSS_longitude, //7
+    544                            receiveData.sensors_okay, //8
+    545                            receiveData.error_state); //9
     546                  serialSize = sizeof(serialBuffer);
     547                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-    548           
-    549                  sprintf(serialBuffer,",GNSS_latitude:%d:\n",receiveData.GNSS_latitude);
-    550                  serialSize = sizeof(serialBuffer);
-    551                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-    552           
-    553                  sprintf(serialBuffer,",GNSS_longitude:%d:\n",receiveData.GNSS_longitude);
-    554                  serialSize = sizeof(serialBuffer);
-    555                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
-    556                  
-    557          */
-    558                  
-    559                  /*
-    560                  
-    561                  sprintf(serialBuffer,",sensors_okay:%d:\n",receiveData.sensors_okay);
-    562                  serialSize = sizeof(serialBuffer);
-    563                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-    564           
-    565                  sprintf(serialBuffer,",error_state:%d:\n",receiveData.error_state);
+    548                  */
+    549                  
+    550                  sprintf(serialBuffer,
+    551                  ",temp:%d:\n,water:%d:\n,flow:%d:\n,PH:%d:\n,batt:%d:\n,lat:%d:\n,long:%d:\n,sensOkay:%d:\n,err:%d:\n,ok:1:\n",
+    552                            receiveData.temperature, //1
+    553                            receiveData.water_level, //2
+    554                            receiveData.flow_rate, //3
+                                   ^
+Warning[Pe181]: argument is incompatible with corresponding format string
+          conversion
+    555                            receiveData.PH, //4
+    556                            receiveData.batt_level, //5
+    557                            receiveData.GNSS_latitude, //6
+    558                            receiveData.GNSS_longitude, //7
+    559                            receiveData.sensors_okay, //8
+    560                            receiveData.error_state); //9
+   \   0000D3                ; Setup parameters for call to function sprintf
+   \   0000D3   90....       MOV       DPTR,#receiveData + 16
+   \   0000D6   E0           MOVX      A,@DPTR
+   \   0000D7   F5..         MOV       ?V0,A
+   \   0000D9   75..00       MOV       ?V1,#0x0
+   \   0000DC   78..         MOV       R0,#?V0
+   \   0000DE   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000E1   90....       MOV       DPTR,#receiveData + 14
+   \   0000E4   E0           MOVX      A,@DPTR
+   \   0000E5   F5..         MOV       ?V0,A
+   \   0000E7   78..         MOV       R0,#?V0
+   \   0000E9   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000EC   90....       MOV       DPTR,#receiveData + 12
+   \   0000EF   12....       LCALL     ?PUSH_XSTACK8_X_TWO
+   \   0000F2   90....       MOV       DPTR,#receiveData + 10
+   \   0000F5   12....       LCALL     ?PUSH_XSTACK8_X_TWO
+   \   0000F8   90....       MOV       DPTR,#receiveData + 9
+   \   0000FB   E0           MOVX      A,@DPTR
+   \   0000FC   F5..         MOV       ?V0,A
+   \   0000FE   78..         MOV       R0,#?V0
+   \   000100   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000103   90....       MOV       DPTR,#receiveData + 8
+   \   000106   E0           MOVX      A,@DPTR
+   \   000107   F5..         MOV       ?V0,A
+   \   000109   78..         MOV       R0,#?V0
+   \   00010B   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00010E   90....       MOV       DPTR,#receiveData + 4
+   \   000111   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
+   \   000114   90....       MOV       DPTR,#receiveData + 2
+   \   000117   12....       LCALL     ?PUSH_XSTACK8_X_TWO
+   \   00011A   90....       MOV       DPTR,#receiveData
+   \   00011D   12....       LCALL     ?PUSH_XSTACK8_X_TWO
+   \   000120   7C..         MOV       R4,#`?<Constant ",temp:%d:\\n,water:%d:\\n...">` & 0xff
+   \   000122   7D..         MOV       R5,#(`?<Constant ",temp:%d:\\n,water:%d:\\n...">` >> 8) & 0xff
+   \   000124   7A..         MOV       R2,#serialBuffer & 0xff
+   \   000126   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
+   \   000128   12....       LCALL     `??sprintf::?relay`; Banked call to: sprintf
+   \   00012B   7414         MOV       A,#0x14
+   \   00012D   12....       LCALL     ?DEALLOC_XSTACK8
+    561                  serialSize = sizeof(serialBuffer);
+    562                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+                                                       ^
+Warning[Pe167]: argument of type "char *" is incompatible with parameter of
+          type "uint8 *"
+   \   000130                ; Setup parameters for call to function HalUARTWrite
+   \   000130   7C7D         MOV       R4,#0x7d
+   \   000132   7D00         MOV       R5,#0x0
+   \   000134   7A..         MOV       R2,#serialBuffer & 0xff
+   \   000136   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
+   \   000138   7900         MOV       R1,#0x0
+   \   00013A   12....       LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+    563                  
+    564                  /*
+    565                  sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
     566                  serialSize = sizeof(serialBuffer);
     567                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-    568                  
-    569                  strcpy(serialBuffer,",node_okay:1:\n");
+    568           
+    569                  sprintf(serialBuffer,",water_level:%d:\n",receiveData.water_level);
     570                  serialSize = sizeof(serialBuffer);
     571                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
     572                  
-    573                  */
-    574                  
-    575                  /*
-    576                  sprintf(serialBuffer,",sensors_okay:%d,",receiveData.sensors_okay);
-    577                  strcat(serialOut,serialBuffer);
-    578                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-    579                  */
-    580                  /*
-    581                  sprintf(serialBuffer,",error_state:%d,",receiveData.error_state);
-    582                  strcat(serialOut,serialBuffer2);
-    583                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-    584                  
-    585                  strcat(serialOut,",node_okay:1:\n,");
-    586                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-    587                  
-    588                  serialSize = sizeof(serialOut);
-    589                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-    590          */
-    591                  
-    592                  
-    593                  strcpy(serialBuffer,",node_okay:1:\n");
-   \   00013C                ; Setup parameters for call to function strcpy
-   \   00013C   7C..         MOV       R4,#`?<Constant ",node_okay:1:\\n">` & 0xff
-   \   00013E   7D..         MOV       R5,#(`?<Constant ",node_okay:1:\\n">` >> 8) & 0xff
-   \   000140   7A..         MOV       R2,#serialBuffer & 0xff
-   \   000142   7B..         MOV       R3,#(serialBuffer >> 8) & 0xff
-   \   000144   12....       LCALL     `??strcpy::?relay`; Banked call to: strcpy
-    594                  serialSize = sizeof(serialBuffer);
-    595                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-                                                       ^
-Warning[Pe167]: argument of type "char *" is incompatible with parameter of
-          type "uint8 *"
-   \   000147                ; Setup parameters for call to function HalUARTWrite
-   \   000147   7C96         MOV       R4,#-0x6a
-   \   000149   7D00         MOV       R5,#0x0
-   \   00014B   7900         MOV       R1,#0x0
-   \   00014D   12....       LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
-    596                  
-    597            }
-    598          }
+    573                  sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
+    574                  serialSize = sizeof(serialBuffer);
+    575                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    576                  
+    577                  sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
+    578                  serialSize = sizeof(serialBuffer);
+    579                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    580                  
+    581                  sprintf(serialBuffer,",batt_level:%d:\n",receiveData.batt_level);
+    582                  serialSize = sizeof(serialBuffer);
+    583                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    584           
+    585                  sprintf(serialBuffer,",GNSS_latitude:%d:\n",receiveData.GNSS_latitude);
+    586                  serialSize = sizeof(serialBuffer);
+    587                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    588          */
+    589          
+    590                  /*
+    591                  sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
+    592                  serialSize = sizeof(serialBuffer);
+    593                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    594           
+    595                  sprintf(serialBuffer,",water_level:%d:\n",receiveData.water_level);
+    596                  serialSize = sizeof(serialBuffer);
+    597                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    598                  
+    599                  sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
+    600                  serialSize = sizeof(serialBuffer);
+    601                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    602                  
+    603                  sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
+    604                  serialSize = sizeof(serialBuffer);
+    605                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    606                 
+    607                  // HalLedBlink(HAL_LED_2,4,50,1000);
+    608                  
+    609                  sprintf(serialBuffer,",batt_level:%d:\n",receiveData.batt_level);
+    610                  serialSize = sizeof(serialBuffer);
+    611                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    612           
+    613                  sprintf(serialBuffer,",GNSS_latitude:%d:\n",receiveData.GNSS_latitude);
+    614                  serialSize = sizeof(serialBuffer);
+    615                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    616           
+    617                  sprintf(serialBuffer,",GNSS_longitude:%d:\n",receiveData.GNSS_longitude);
+    618                  serialSize = sizeof(serialBuffer);
+    619                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
+    620                  
+    621                  sprintf(serialBuffer,",sensors_okay:%d:\n",receiveData.sensors_okay);
+    622                  serialSize = sizeof(serialBuffer);
+    623                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    624           
+    625                  sprintf(serialBuffer,",error_state:%d:\n",receiveData.error_state);
+    626                  serialSize = sizeof(serialBuffer);
+    627                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    628                  
+    629                  strcpy(serialBuffer,",node_okay:1:\n");
+    630                  serialSize = sizeof(serialBuffer);
+    631                  HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+    632                  
+    633                  */
+    634                  /*
+    635                  sprintf(serialBuffer,",sensors_okay:%d,",receiveData.sensors_okay);
+    636                  strcat(serialOut,serialBuffer);
+    637                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+    638                  */
+    639                  /*
+    640                  sprintf(serialBuffer,",error_state:%d,",receiveData.error_state);
+    641                  strcat(serialOut,serialBuffer2);
+    642                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+    643                  
+    644                  strcat(serialOut,",node_okay:1:\n,");
+    645                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+    646                  
+    647                  serialSize = sizeof(serialOut);
+    648                  HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+    649          */
+    650                  
+    651            }
+    652          }
    \                     ??SampleApp_HandleKeys_3:
-   \   000150   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   00013D   02....       LJMP      ?Subroutine0 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine3:
@@ -1364,45 +1389,45 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000000   12....       LCALL     `??HalLcdWriteStringValue::?relay`; Banked call to: HalLcdWriteStringValue
    \   000003   7401         MOV       A,#0x1
    \   000005   22           RET
-    599          
-    600          /*********************************************************************
-    601           * LOCAL FUNCTIONS
-    602           */
-    603          
-    604          /*********************************************************************
-    605           * @fn      SampleApp_MessageMSGCB
-    606           *
-    607           * @brief   Data message processor callback.  This function processes
-    608           *          any incoming data - probably from other devices.  So, based
-    609           *          on cluster ID, perform the intended action.
-    610           *
-    611           * @param   none
-    612           *
-    613           * @return  none
-    614            */
-    615          /*
-    616          typedef struct
-    617          {
-    618            int16 temperature;
-    619            int16 water_level;
-    620            int32 flow_rate;
-    621            uint8 PH;
-    622            uint8 batt_level;
-    623            int16 GNSS_latitude;
-    624            int16 GNSS_longitude;
-    625            
-    626            bool sensors_okay;
-    627            bool node_okay;
-    628            uint8 error_state;
-    629          } packet_measurements;
-    630          
-    631          packet_measurements receiveData;
-    632          */
+    653          
+    654          /*********************************************************************
+    655           * LOCAL FUNCTIONS
+    656           */
+    657          
+    658          /*********************************************************************
+    659           * @fn      SampleApp_MessageMSGCB
+    660           *
+    661           * @brief   Data message processor callback.  This function processes
+    662           *          any incoming data - probably from other devices.  So, based
+    663           *          on cluster ID, perform the intended action.
+    664           *
+    665           * @param   none
+    666           *
+    667           * @return  none
+    668            */
+    669          /*
+    670          typedef struct
+    671          {
+    672            int16 temperature;
+    673            int16 water_level;
+    674            int32 flow_rate;
+    675            uint8 PH;
+    676            uint8 batt_level;
+    677            int16 GNSS_latitude;
+    678            int16 GNSS_longitude;
+    679            
+    680            bool sensors_okay;
+    681            bool node_okay;
+    682            uint8 error_state;
+    683          } packet_measurements;
+    684          
+    685          packet_measurements receiveData;
+    686          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    633          void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
+    687          void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
    \                     SampleApp_MessageMSGCB:
-    634          {
+    688          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000   74F6         MOV       A,#-0xa
@@ -1413,9 +1438,9 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-    635            int dataSize; //Data size of received packet
-    636            
-    637            switch ( pkt->clusterId )
+    689            int dataSize; //Data size of received packet
+    690            
+    691            switch ( pkt->clusterId )
    \   000009   8A82         MOV       DPL,R2
    \   00000B   F583         MOV       DPH,A
    \   00000D   A3           INC       DPTR
@@ -1428,14 +1453,14 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000016   A3           INC       DPTR
    \   000017   E0           MOVX      A,@DPTR
    \                     ??SampleApp_MessageMSGCB_0:
-   \   000018   705B         JNZ       ??SampleApp_MessageMSGCB_1
-    638            {
-    639              case SAMPLEAPP_PERIODIC_CLUSTERID:
-    640                break;
-    641                
-    642              case SAMPLEAPP_CLUSTERID1:
-    643                dataSize = sizeof(packet_measurements);
-    644                HalLcdWriteStringValue("Data Size:", dataSize, 10,HAL_LCD_LINE_1);
+   \   000018   7068         JNZ       ??SampleApp_MessageMSGCB_1
+    692            {
+    693              case SAMPLEAPP_PERIODIC_CLUSTERID:
+    694                break;
+    695                
+    696              case SAMPLEAPP_CLUSTERID1:
+    697                dataSize = sizeof(packet_measurements);
+    698                HalLcdWriteStringValue("Data Size:", dataSize, 10,HAL_LCD_LINE_1);
    \   00001A                ; Setup parameters for call to function HalLcdWriteStringValue
    \   00001A   75..01       MOV       ?V0,#0x1
    \   00001D   78..         MOV       R0,#?V0
@@ -1448,7 +1473,7 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   00002C   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_17:
    \   00002F   12....       LCALL     ?DEALLOC_XSTACK8
-    645                memcpy(&receiveData,pkt->cmd.Data,dataSize);
+    699                memcpy(&receiveData,pkt->cmd.Data,dataSize);
    \   000032                ; Setup parameters for call to function memcpy
    \   000032   75..1B       MOV       ?V0,#0x1b
    \   000035   75..00       MOV       ?V1,#0x0
@@ -1467,20 +1492,20 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   00004D   12....       LCALL     `??memcpy::?relay`; Banked call to: memcpy
    \   000050   7402         MOV       A,#0x2
    \   000052   12....       LCALL     ?DEALLOC_XSTACK8
-    646                //HalLcdWriteStringValue("Data:", receiveData.testData2, 10, HAL_LCD_LINE_2);
-    647                //HalLcdWriteStringValue("Byte: ", pkt->cmd.Data[4], 10,HAL_LCD_LINE_3);
-    648                
-    649                //char ptr[5] = {pkt->cmd.Data[4], pkt->cmd.Data[5], pkt->cmd.Data[6], pkt->cmd.Data[7], pkt->cmd.Data[8]};
-    650                
-    651                /*
-    652                HalLcdWriteString((char*)pkt->cmd.Data[4],HAL_LCD_LINE_1);
-    653           
-    654                HalLcdWriteString((char*)pkt->cmd.Data[5],HAL_LCD_LINE_2);
-    655                
-    656                HalLcdWriteString((char*)pkt->cmd.Data[7],HAL_LCD_LINE_3);
-    657                */ 
-    658                
-    659                HalLcdWriteStringValue("Byte: ", pkt->cmd.DataLength, 10,HAL_LCD_LINE_3);
+    700                //HalLcdWriteStringValue("Data:", receiveData.testData2, 10, HAL_LCD_LINE_2);
+    701                //HalLcdWriteStringValue("Byte: ", pkt->cmd.Data[4], 10,HAL_LCD_LINE_3);
+    702                
+    703                //char ptr[5] = {pkt->cmd.Data[4], pkt->cmd.Data[5], pkt->cmd.Data[6], pkt->cmd.Data[7], pkt->cmd.Data[8]};
+    704                
+    705                /*
+    706                HalLcdWriteString((char*)pkt->cmd.Data[4],HAL_LCD_LINE_1);
+    707           
+    708                HalLcdWriteString((char*)pkt->cmd.Data[5],HAL_LCD_LINE_2);
+    709                
+    710                HalLcdWriteString((char*)pkt->cmd.Data[7],HAL_LCD_LINE_3);
+    711                */ 
+    712                
+    713                HalLcdWriteStringValue("Byte: ", pkt->cmd.DataLength, 10,HAL_LCD_LINE_3);
    \   000055                ; Setup parameters for call to function HalLcdWriteStringValue
    \   000055   75..03       MOV       ?V0,#0x3
    \   000058   78..         MOV       R0,#?V0
@@ -1499,48 +1524,56 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   00006F   12....       LCALL     ??Subroutine6_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_18:
    \   000072   12....       LCALL     ?DEALLOC_XSTACK8
-    660                
-    661                break;
-    662          
-    663              case SAMPLEAPP_FLASH_CLUSTERID:
-    664                break;
-    665            }
-    666          }
+    714                HalLedBlink(HAL_LED_1,4,50,1000);
+   \   000075                ; Setup parameters for call to function HalLedBlink
+   \   000075   7CE8         MOV       R4,#-0x18
+   \   000077   7D03         MOV       R5,#0x3
+   \   000079   7B32         MOV       R3,#0x32
+   \   00007B   7A04         MOV       R2,#0x4
+   \   00007D   7901         MOV       R1,#0x1
+   \   00007F   12....       LCALL     `??HalLedBlink::?relay`; Banked call to: HalLedBlink
+    715                
+    716                break;
+    717          
+    718              case SAMPLEAPP_FLASH_CLUSTERID:
+    719                break;
+    720            }
+    721          }
    \                     ??SampleApp_MessageMSGCB_1:
-   \   000075   02....       LJMP      ??Subroutine7_0 & 0xFFFF
+   \   000082   02....       LJMP      ??Subroutine7_0 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ??Subroutine7_0:
    \   000000   7F02         MOV       R7,#0x2
    \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
-    667          
-    668          /*********************************************************************
-    669           * @fn      SampleApp_SendPeriodicMessage
-    670           *
-    671           * @brief   Send the periodic message.
-    672           *
-    673           * @param   none
-    674           *
-    675           * @return  none
-    676           */
+    722          
+    723          /*********************************************************************
+    724           * @fn      SampleApp_SendPeriodicMessage
+    725           *
+    726           * @brief   Send the periodic message.
+    727           *
+    728           * @param   none
+    729           *
+    730           * @return  none
+    731           */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    677          void SampleApp_SendPeriodicMessage( void )
+    732          void SampleApp_SendPeriodicMessage( void )
    \                     SampleApp_SendPeriodicMessage:
-    678          {
+    733          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000   74F6         MOV       A,#-0xa
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 10
    \   000005                ; Auto size: 0
-    679            if ( AF_DataRequest( &SampleApp_Periodic_DstAddr, &SampleApp_epDesc,
-    680                                 SAMPLEAPP_PERIODIC_CLUSTERID,
-    681                                 1,
-    682                                 (uint8*)&SampleAppPeriodicCounter,
-    683                                 &SampleApp_TransID,
-    684                                 AF_DISCV_ROUTE,
-    685                                 AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
+    734            if ( AF_DataRequest( &SampleApp_Periodic_DstAddr, &SampleApp_epDesc,
+    735                                 SAMPLEAPP_PERIODIC_CLUSTERID,
+    736                                 1,
+    737                                 (uint8*)&SampleAppPeriodicCounter,
+    738                                 &SampleApp_TransID,
+    739                                 AF_DISCV_ROUTE,
+    740                                 AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
    \   000005                ; Setup parameters for call to function AF_DataRequest
    \   000005   75..1E       MOV       ?V0,#0x1e
    \   000008   78..         MOV       R0,#?V0
@@ -1567,34 +1600,34 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   00003D   12....       LCALL     `??AF_DataRequest::?relay`; Banked call to: AF_DataRequest
    \   000040   7409         MOV       A,#0x9
    \   000042   02....       LJMP      ?Subroutine1 & 0xFFFF
-    686            {
-    687            }
-    688            else
-    689            {
-    690              // Error occurred in request to send.
-    691            }
-    692          }
+    741            {
+    742            }
+    743            else
+    744            {
+    745              // Error occurred in request to send.
+    746            }
+    747          }
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine1:
    \   000000   12....       LCALL     ?DEALLOC_XSTACK8
    \   000003                REQUIRE ??Subroutine7_0
    \   000003                ; // Fall through to label ??Subroutine7_0
-    693          
-    694          /*********************************************************************
-    695           * @fn      SampleApp_SendFlashMessage
-    696           *
-    697           * @brief   Send the flash message to group 1.
-    698           *
-    699           * @param   flashTime - in milliseconds
-    700           *
-    701           * @return  none
-    702           */
+    748          
+    749          /*********************************************************************
+    750           * @fn      SampleApp_SendFlashMessage
+    751           *
+    752           * @brief   Send the flash message to group 1.
+    753           *
+    754           * @param   flashTime - in milliseconds
+    755           *
+    756           * @return  none
+    757           */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    703          void SampleApp_SendFlashMessage( uint16 flashTime )
+    758          void SampleApp_SendFlashMessage( uint16 flashTime )
    \                     SampleApp_SendFlashMessage:
-    704          {
+    759          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000   74F6         MOV       A,#-0xa
@@ -1603,8 +1636,8 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000005                ; Auto size: 3
    \   000005   74FD         MOV       A,#-0x3
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
-    705            uint8 buffer[3];
-    706            buffer[0] = (uint8)(SampleAppFlashCounter++);
+    760            uint8 buffer[3];
+    761            buffer[0] = (uint8)(SampleAppFlashCounter++);
    \   00000A   90....       MOV       DPTR,#SampleAppFlashCounter
    \   00000D   E0           MOVX      A,@DPTR
    \   00000E   85..82       MOV       DPL,?XSP + 0
@@ -1614,24 +1647,24 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000018   E0           MOVX      A,@DPTR
    \   000019   04           INC       A
    \   00001A   F0           MOVX      @DPTR,A
-    707            buffer[1] = LO_UINT16( flashTime );
+    762            buffer[1] = LO_UINT16( flashTime );
    \   00001B   7401         MOV       A,#0x1
    \   00001D   12....       LCALL     ?XSTACK_DISP0_8
    \   000020   EA           MOV       A,R2
    \   000021   F0           MOVX      @DPTR,A
-    708            buffer[2] = HI_UINT16( flashTime );
+    763            buffer[2] = HI_UINT16( flashTime );
    \   000022   7402         MOV       A,#0x2
    \   000024   12....       LCALL     ?XSTACK_DISP0_8
    \   000027   EB           MOV       A,R3
    \   000028   F0           MOVX      @DPTR,A
-    709          
-    710            if ( AF_DataRequest( &SampleApp_Flash_DstAddr, &SampleApp_epDesc,
-    711                                 SAMPLEAPP_FLASH_CLUSTERID,
-    712                                 3,
-    713                                 buffer,
-    714                                 &SampleApp_TransID,
-    715                                 AF_DISCV_ROUTE,
-    716                                 AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
+    764          
+    765            if ( AF_DataRequest( &SampleApp_Flash_DstAddr, &SampleApp_epDesc,
+    766                                 SAMPLEAPP_FLASH_CLUSTERID,
+    767                                 3,
+    768                                 buffer,
+    769                                 &SampleApp_TransID,
+    770                                 AF_DISCV_ROUTE,
+    771                                 AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
    \   000029                ; Setup parameters for call to function AF_DataRequest
    \   000029   75..1E       MOV       ?V0,#0x1e
    \   00002C   78..         MOV       R0,#?V0
@@ -1661,35 +1694,35 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000067   12....       LCALL     `??AF_DataRequest::?relay`; Banked call to: AF_DataRequest
    \   00006A   7409         MOV       A,#0x9
    \   00006C   12....       LCALL     ?DEALLOC_XSTACK8
-    717            {
-    718            }
-    719            else
-    720            {
-    721              // Error occurred in request to send.
-    722            }
-    723          }
+    772            {
+    773            }
+    774            else
+    775            {
+    776              // Error occurred in request to send.
+    777            }
+    778          }
    \   00006F   7403         MOV       A,#0x3
    \   000071   80..         SJMP      ?Subroutine1
-    724          
-    725          /*********************************************************************
-    726          *********************************************************************/
-    727          
-    728          /*********************************************************************
-    729           * @fn      SampleApp_CallBack
-    730           *
-    731           * @brief   Send data OTA.
-    732           *
-    733           * @param   port - UART port.
-    734           * @param   event - the UART port event flag.
-    735           *
-    736           * @return  none
-    737           */
-    738          
+    779          
+    780          /*********************************************************************
+    781          *********************************************************************/
+    782          
+    783          /*********************************************************************
+    784           * @fn      SampleApp_CallBack
+    785           *
+    786           * @brief   Send data OTA.
+    787           *
+    788           * @param   port - UART port.
+    789           * @param   event - the UART port event flag.
+    790           *
+    791           * @return  none
+    792           */
+    793          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    739          static void SampleApp_CallBack(uint8 port, uint8 event)
+    794          static void SampleApp_CallBack(uint8 port, uint8 event)
    \                     SampleApp_CallBack:
-    740          {
+    795          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000   74F6         MOV       A,#-0xa
@@ -1700,26 +1733,30 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
    \   00000A   EA           MOV       A,R2
    \   00000B   FE           MOV       R6,A
-    741            (void)port;
-    742            uint8 localBuf[81];
-    743            uint16 receivedUARTLen;
-    744          
-    745            if ((event & (HAL_UART_RX_FULL | HAL_UART_RX_ABOUT_FULL | HAL_UART_RX_TIMEOUT)) &&
-    746          #if SERIAL_APP_LOOPBACK
-    747                (SampleApp_TxLen < SERIAL_APP_TX_MAX))
-    748          #else
-    749                !SampleApp_TxLen)
+    796            (void)port;
+    797            uint8 localBuf[81];
+    798            uint16 receivedUARTLen;
+    799          
+    800            /*
+    801            if((event & (HAL_UART_TX_FULL | HAL_UART_TX_ABOUT_FULL))
+    802            {}
+    803            */
+    804            if ((event & (HAL_UART_RX_FULL | HAL_UART_RX_ABOUT_FULL | HAL_UART_RX_TIMEOUT)) &&
+    805          #if SERIAL_APP_LOOPBACK
+    806                (SampleApp_TxLen < SERIAL_APP_TX_MAX))
+    807          #else
+    808                !SampleApp_TxLen)
    \   00000C   7407         MOV       A,#0x7
    \   00000E   5E           ANL       A,R6
    \   00000F   603B         JZ        ??SampleApp_CallBack_0
    \   000011   90....       MOV       DPTR,#SampleApp_TxLen
    \   000014   E0           MOVX      A,@DPTR
    \   000015   7035         JNZ       ??SampleApp_CallBack_0
-    750          #endif
-    751            {
-    752              // buffer needed to be emptied for the new liner
-    753              for(int i = 0; i < 81; i++){
-    754                localBuf[i] = 0;
+    809          #endif
+    810            {
+    811              // buffer needed to be emptied for the new liner
+    812              for(int i = 0; i < 81; i++){
+    813                localBuf[i] = 0;
    \   000017   E4           CLR       A
    \   000018   85..82       MOV       DPL,?XSP + 0
    \   00001B   85..83       MOV       DPH,?XSP + 1
@@ -1728,8 +1765,8 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000020   F0           MOVX      @DPTR,A
    \   000021   A3           INC       DPTR
    \   000022   D8FC         DJNZ      R0,??SampleApp_CallBack_1
-    755              }   
-    756              receivedUARTLen= HalUARTRead(SAMPLE_APP_PORT, localBuf, SAMPLE_APP_TX_MAX);
+    814              }   
+    815              receivedUARTLen= HalUARTRead(SAMPLE_APP_PORT, localBuf, SAMPLE_APP_TX_MAX);
    \   000024                ; Setup parameters for call to function HalUARTRead
    \   000024   7C80         MOV       R4,#-0x80
    \   000026   FD           MOV       R5,A
@@ -1741,39 +1778,39 @@ Warning[Pe167]: argument of type "char *" is incompatible with parameter of
    \   000031   8B..         MOV       ?V1,R3
    \   000033   AC..         MOV       R4,?V0
    \   000035   AD..         MOV       R5,?V1
-    757              HalLcdWriteStringValue( localBuf,  receivedUARTLen, 16, HAL_LCD_LINE_3 ); 
+    816              HalLcdWriteStringValue( localBuf,  receivedUARTLen, 16, HAL_LCD_LINE_3 ); 
                                              ^
 Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
           type "char *"
 
   static afAddrType_t SampleApp_TxAddr;
                       ^
-"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",223  Warning[Pe177]: 
+"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",224  Warning[Pe177]: 
           variable "SampleApp_TxAddr" was declared but never referenced
 
   static uint8 SampleApp_TxSeq;
                ^
-"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",224  Warning[Pe177]: 
+"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",225  Warning[Pe177]: 
           variable "SampleApp_TxSeq" was declared but never referenced
 
   static uint8 SampleApp_TxBuf[SAMPLE_APP_TX_MAX+1];
                ^
-"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",225  Warning[Pe177]: 
+"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",226  Warning[Pe177]: 
           variable "SampleApp_TxBuf" was declared but never referenced
 
   static afAddrType_t SampleApp_RxAddr;
                       ^
-"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",228  Warning[Pe177]: 
+"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",229  Warning[Pe177]: 
           variable "SampleApp_RxAddr" was declared but never referenced
 
   static uint8 SampleApp_RxSeq;
                ^
-"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",229  Warning[Pe550]: 
+"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",230  Warning[Pe550]: 
           variable "SampleApp_RxSeq" was set but never used
 
   static uint8 SampleApp_RspBuf[SAMPLE_APP_RSP_CNT];
                ^
-"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",230  Warning[Pe177]: 
+"C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c",231  Warning[Pe177]: 
           variable "SampleApp_RspBuf" was declared but never referenced
    \   000037                ; Setup parameters for call to function HalLcdWriteStringValue
    \   000037   75..03       MOV       ?V0,#0x3
@@ -1783,14 +1820,14 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
    \   000041   7401         MOV       A,#0x1
    \   000043   12....       LCALL     ?XSTACK_DISP101_8
    \   000046   12....       LCALL     ??Subroutine6_0 & 0xFFFF
-    758              
-    759              
-    760              //HalUARTWrite(SAMPLE_APP_PORT, *localBuf, 81);
-    761              //SampleApp_Send();
-    762            }
+    817              
+    818              
+    819              //HalUARTWrite(SAMPLE_APP_PORT, *localBuf, 81);
+    820              //SampleApp_Send();
+    821            }
    \                     ??CrossCallReturnLabel_19:
    \   000049   12....       LCALL     ?DEALLOC_XSTACK8
-    763          }
+    822          }
    \                     ??SampleApp_CallBack_0:
    \   00004C   7451         MOV       A,#0x51
    \   00004E                REQUIRE ?Subroutine1
@@ -1903,34 +1940,32 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
    \            653A00  
 
    \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant ",temperature:%d:\\n">`:
-   \   000000   2C74656D     DB ",temperature:%d:\012"
-   \            70657261
-   \            74757265
+   \                     `?<Constant ",temp:%d:\\n,water:%d:\\n...">`:
+   \   000000   2C74656D     DB 2CH, 74H, 65H, 6DH, 70H, 3AH, 25H, 64H
+   \            703A2564
+   \   000008   3A0A2C77     DB 3AH, 0AH, 2CH, 77H, 61H, 74H, 65H, 72H
+   \            61746572
+   \   000010   3A25643A     DB 3AH, 25H, 64H, 3AH, 0AH, 2CH, 66H, 6CH
+   \            0A2C666C
+   \   000018   6F773A25     DB 6FH, 77H, 3AH, 25H, 64H, 3AH, 0AH, 2CH
+   \            643A0A2C
+   \   000020   50483A25     DB 50H, 48H, 3AH, 25H, 64H, 3AH, 0AH, 2CH
+   \            643A0A2C
+   \   000028   62617474     DB 62H, 61H, 74H, 74H, 3AH, 25H, 64H, 3AH
    \            3A25643A
-   \            0A00    
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant ",water_level:%d:\\n">`:
-   \   000000   2C776174     DB ",water_level:%d:\012"
-   \            65725F6C
-   \            6576656C
-   \            3A25643A
-   \            0A00    
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant ",flow_rate:%d:\\n">`:
-   \   000000   2C666C6F     DB ",flow_rate:%d:\012"
-   \            775F7261
-   \            74653A25
-   \            643A0A00
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant ",node_okay:1:\\n">`:
-   \   000000   2C6E6F64     DB ",node_okay:1:\012"
-   \            655F6F6B
-   \            61793A31
-   \            3A0A00  
+   \   000030   0A2C6C61     DB 0AH, 2CH, 6CH, 61H, 74H, 3AH, 25H, 64H
+   \            743A2564
+   \   000038   3A0A2C6C     DB 3AH, 0AH, 2CH, 6CH, 6FH, 6EH, 67H, 3AH
+   \            6F6E673A
+   \   000040   25643A0A     DB 25H, 64H, 3AH, 0AH, 2CH, 73H, 65H, 6EH
+   \            2C73656E
+   \   000048   734F6B61     DB 73H, 4FH, 6BH, 61H, 79H, 3AH, 25H, 64H
+   \            793A2564
+   \   000050   3A0A2C65     DB 3AH, 0AH, 2CH, 65H, 72H, 72H, 3AH, 25H
+   \            72723A25
+   \   000058   643A0A2C     DB 64H, 3AH, 0AH, 2CH, 6FH, 6BH, 3AH, 31H
+   \            6F6B3A31
+   \   000060   3A0A00       DB 3AH, 0AH, 0
 
    \                                 In  segment XDATA_ROM_C, align 1
    \                     `?<Constant "Data Size:">`:
@@ -1942,10 +1977,10 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
    \                     `?<Constant "Byte: ">`:
    \   000000   42797465     DB "Byte: "
    \            3A2000  
-    764          
-    765          
-    766          /*********************************************************************
-    767          *********************************************************************/
+    823          
+    824          
+    825          /*********************************************************************
+    826          *********************************************************************/
 
    Maximum stack usage in bytes:
 
@@ -1954,13 +1989,11 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
       1     92   SampleApp_CallBack
         0     92   -> HalLcdWriteStringValue
         0     91   -> HalUARTRead
-      0     27   SampleApp_HandleKeys
+      0     43   SampleApp_HandleKeys
         0     11   -> HalLcdWriteString
         0     12   -> HalLcdWriteStringValue
         0     11   -> HalUARTWrite
-        0     13   -> sprintf
-        0     15   -> sprintf
-        0     11   -> strcpy
+        0     31   -> sprintf
       0     43   SampleApp_Init
         0     40   -> HalLcdWriteString
         0     40   -> HalUARTOpen
@@ -1970,6 +2003,7 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
         0     43   -> osal_memcpy
       0     24   SampleApp_MessageMSGCB
         0     11   -> HalLcdWriteStringValue
+        0     10   -> HalLedBlink
         0     12   -> memcpy
       0     12   SampleApp_ProcessEvent
         0     12   -> SampleApp_HandleKeys
@@ -1989,10 +2023,7 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
 
    Bytes  Function/Label
    -----  --------------
-      16  ?<Constant ",flow_rate:%d:\n">
-      15  ?<Constant ",node_okay:1:\n">
-      18  ?<Constant ",temperature:%d:\n">
-      18  ?<Constant ",water_level:%d:\n">
+      99  ?<Constant ",temp:%d:\n,water:%d:\n...">
       15  ?<Constant "Battery Level:">
        7  ?<Constant "Byte: ">
       11  ?<Constant "Data Size:">
@@ -2021,11 +2052,11 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
       12  SampleApp_ClusterList
       12  SampleApp_Flash_DstAddr
       18  SampleApp_Group
-     339  SampleApp_HandleKeys
+     320  SampleApp_HandleKeys
        6  SampleApp_HandleKeys::?relay
-     287  SampleApp_Init
+     289  SampleApp_Init
        6  SampleApp_Init::?relay
-     120  SampleApp_MessageMSGCB
+     133  SampleApp_MessageMSGCB
        6  SampleApp_MessageMSGCB::?relay
        1  SampleApp_NwkState
       12  SampleApp_Periodic_DstAddr
@@ -2044,22 +2075,21 @@ Warning[Pe167]: argument of type "uint8 *" is incompatible with parameter of
        1  SerialApp_TaskID
        6  SerialApp_epDesc
       27  receiveData
-     150  serialBuffer
-      40  serialBuffer2
-     150  serialOut
+     125  serialBuffer
+     128  serialOut
 
  
- 1 241 bytes in segment BANKED_CODE
+ 1 237 bytes in segment BANKED_CODE
     42 bytes in segment BANK_RELAYS
     27 bytes in segment XDATA_I
     27 bytes in segment XDATA_ID
-   215 bytes in segment XDATA_ROM_C
-   408 bytes in segment XDATA_Z
+   247 bytes in segment XDATA_ROM_C
+   321 bytes in segment XDATA_Z
  
     69 bytes of CODE     memory
-   215 bytes of CONST    memory
- 1 241 bytes of HUGECODE memory
-   435 bytes of XDATA    memory
+   247 bytes of CONST    memory
+ 1 237 bytes of HUGECODE memory
+   348 bytes of XDATA    memory
 
 Errors: none
-Warnings: 13
+Warnings: 10

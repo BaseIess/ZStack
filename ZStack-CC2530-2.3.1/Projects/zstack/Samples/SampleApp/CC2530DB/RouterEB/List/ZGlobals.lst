@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.20.1.5333 for 8051               17/Sep/2018  16:58:35
+# IAR C/C++ Compiler V10.20.1.5333 for 8051               19/Sep/2018  15:15:17
 # Copyright 2004-2018 IAR Systems AB.
 # Evaluation license - IAR Embedded Workbench for 8051, Evaluation version 10.20
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
 #    Command line       =  
-#        -f C:\Users\Re\AppData\Local\Temp\EW65F0.tmp
+#        -f C:\Users\Re\AppData\Local\Temp\EW97BA.tmp
 #        (C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
 #        -D ZTOOL_P1 -D MT_TASK -D MT_SYS_FUNC -D MT_ZDO_FUNC -D
 #        LCD_SUPPORTED=DEBUG -lC
@@ -31,7 +31,7 @@
 #        -DMAC_CFG_TX_DATA_MAX=5 -DMAC_CFG_TX_MAX=8 -DMAC_CFG_RX_MAX=5
 #        -DRTR_NWK) -f
 #        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg
-#        (-DSECURE=0 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+#        (-DSECURE=1 -DZG_SECURE_DYNAMIC=1 -DREFLECTOR
 #        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
 #        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
 #        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
@@ -40,8 +40,8 @@
 #        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
 #        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
 #        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
-#        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x01, 0x03, 0x05, 0x07,
-#        0x09, 0x0B, 0x0D, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
+#        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x03, 0x05, 0x04, 0x06,
+#        0x05, 0x03, 0x04, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
 #        0x0D}" -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
 #        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
 #        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
@@ -257,11 +257,12 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
      96          
      97          // Security mode
 
-   \                                 In  segment XDATA_Z, align 1, keep-with-next
+   \                                 In  segment XDATA_I, align 1, keep-with-next
      98          uint8 zgSecurityMode = ZG_SECURITY_MODE;
    \                     zgSecurityMode:
    \   000000                DS 1
-   \   000001                REQUIRE __INIT_XDATA_Z
+   \   000001                REQUIRE `?<Initializer for zgSecurityMode>`
+   \   000001                REQUIRE __INIT_XDATA_I
      99          
     100          // Secure permit join
 
@@ -792,24 +793,29 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
     439          uint8 zgInit( void )
    \                     zgInit:
     440          {
-   \   000000   74F7         MOV       A,#-0x9
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000   74F5         MOV       A,#-0xb
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 9
-   \   000005                ; Auto size: 0
+   \   000005                ; Saved register size: 11
+   \   000005                ; Auto size: 16
+   \   000005   74F0         MOV       A,#-0x10
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
     441            uint8  setDefault = FALSE;
-   \   000005   7E00         MOV       R6,#0x0
+   \   00000A   7E00         MOV       R6,#0x0
     442          
     443            // Do we want to default the Config state values
     444            if ( zgReadStartupOptions() & ZCD_STARTOPT_DEFAULT_CONFIG_STATE )
-   \   000007                ; Setup parameters for call to function zgReadStartupOptions
-   \   000007   12....       LCALL     `??zgReadStartupOptions::?relay`; Banked call to: zgReadStartupOptions
-   \   00000A   E9           MOV       A,R1
-   \   00000B   F8           MOV       R0,A
-   \   00000C   A2E0         MOV       C,0xE0 /* A   */.0
-   \   00000E   5002         JNC       ??zgInit_0
+   \   00000C                ; Setup parameters for call to function zgReadStartupOptions
+   \   00000C   12....       LCALL     `??zgReadStartupOptions::?relay`; Banked call to: zgReadStartupOptions
+   \   00000F   E9           MOV       A,R1
+   \   000010   F8           MOV       R0,A
+   \   000011   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000013   5002         JNC       ??zgInit_0
     445            {
     446              setDefault = TRUE;
-   \   000010   7E01         MOV       R6,#0x1
+   \   000015   7E01         MOV       R6,#0x1
     447            }
     448          
     449          #if 0
@@ -835,49 +841,118 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
     469            // Initialize the Extended PAN ID as my own extended address
     470            ZMacGetReq( ZMacExtAddr, zgExtendedPANID );
    \                     ??zgInit_0:
-   \   000012                ; Setup parameters for call to function ZMacGetReq
-   \   000012   7A..         MOV       R2,#zgExtendedPANID & 0xff
-   \   000014   7B..         MOV       R3,#(zgExtendedPANID >> 8) & 0xff
-   \   000016   79E2         MOV       R1,#-0x1e
-   \   000018   12....       LCALL     `??ZMacGetReq::?relay`; Banked call to: ZMacGetReq
+   \   000017                ; Setup parameters for call to function ZMacGetReq
+   \   000017   7A..         MOV       R2,#zgExtendedPANID & 0xff
+   \   000019   7B..         MOV       R3,#(zgExtendedPANID >> 8) & 0xff
+   \   00001B   79E2         MOV       R1,#-0x1e
+   \   00001D   12....       LCALL     `??ZMacGetReq::?relay`; Banked call to: ZMacGetReq
     471          
     472            // Initialize the items table
     473            zgInitItems( setDefault );
-   \   00001B                ; Setup parameters for call to function zgInitItems
-   \   00001B   EE           MOV       A,R6
-   \   00001C   F9           MOV       R1,A
-   \   00001D   12....       LCALL     `??zgInitItems::?relay`; Banked call to: zgInitItems
+   \   000020                ; Setup parameters for call to function zgInitItems
+   \   000020   EE           MOV       A,R6
+   \   000021   F9           MOV       R1,A
+   \   000022   12....       LCALL     `??zgInitItems::?relay`; Banked call to: zgInitItems
     474          
     475          #ifndef NONWK
     476            if ( ZG_SECURE_ENABLED )
+   \   000025   90....       MOV       DPTR,#zgSecurityMode
+   \   000028   E0           MOVX      A,@DPTR
+   \   000029   6076         JZ        ??zgInit_1
     477            {
     478              // Initialize the Pre-Configured Key to the default key
     479              zgPreconfigKeyInit( setDefault );
+   \   00002B                ; Setup parameters for call to function osal_memcpy
+   \   00002B   75....       MOV       ?V0,#defaultKey & 0xff
+   \   00002E   75....       MOV       ?V1,#(defaultKey >> 8) & 0xff
+   \   000031   75..80       MOV       ?V2,#-0x80
+   \   000034   78..         MOV       R0,#?V0
+   \   000036   12....       LCALL     ?PUSH_XSTACK_I_THREE
+   \   000039   7C10         MOV       R4,#0x10
+   \   00003B   7D00         MOV       R5,#0x0
+   \   00003D   7403         MOV       A,#0x3
+   \   00003F   12....       LCALL     ?XSTACK_DISP101_8
+   \   000042   12....       LCALL     `??osal_memcpy::?relay`; Banked call to: osal_memcpy
+   \   000045   7403         MOV       A,#0x3
+   \   000047   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00004A                ; Setup parameters for call to function osal_nv_item_init
+   \   00004A   A8..         MOV       R0,?XSP + 0
+   \   00004C   A9..         MOV       R1,?XSP + 1
+   \   00004E   88..         MOV       ?V0,R0
+   \   000050   89..         MOV       ?V1,R1
+   \   000052   78..         MOV       R0,#?V0
+   \   000054   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000057   7C10         MOV       R4,#0x10
+   \   000059   7D00         MOV       R5,#0x0
+   \   00005B   7A62         MOV       R2,#0x62
+   \   00005D   7B00         MOV       R3,#0x0
+   \   00005F   12....       LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
+   \   000062   7402         MOV       A,#0x2
+   \   000064   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000067   E9           MOV       A,R1
+   \   000068   7025         JNZ       ??zgInit_2
+   \   00006A   EE           MOV       A,R6
+   \   00006B   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00006D   5020         JNC       ??zgInit_2
+   \   00006F                ; Setup parameters for call to function osal_nv_write
+   \   00006F   78..         MOV       R0,#?V0
+   \   000071   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000074   75..10       MOV       ?V0,#0x10
+   \   000077   75..00       MOV       ?V1,#0x0
+   \   00007A   78..         MOV       R0,#?V0
+   \   00007C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00007F   7C00         MOV       R4,#0x0
+   \   000081   7D00         MOV       R5,#0x0
+   \   000083   7A62         MOV       R2,#0x62
+   \   000085   7B00         MOV       R3,#0x0
+   \   000087   12....       LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
+   \   00008A   7404         MOV       A,#0x4
+   \   00008C   12....       LCALL     ?DEALLOC_XSTACK8
+   \                     ??zgInit_2:
+   \   00008F                ; Setup parameters for call to function osal_memset
+   \   00008F   7C10         MOV       R4,#0x10
+   \   000091   7D00         MOV       R5,#0x0
+   \   000093   7900         MOV       R1,#0x0
+   \   000095   AA..         MOV       R2,?XSP + 0
+   \   000097   AB..         MOV       R3,?XSP + 1
+   \   000099   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
     480          
     481              // Initialize NV items for all Keys: NWK, APS, TCLK and Master
     482              ZDSecMgrInitNVKeyTables( setDefault );
+   \   00009C                ; Setup parameters for call to function ZDSecMgrInitNVKeyTables
+   \   00009C   EE           MOV       A,R6
+   \   00009D   F9           MOV       R1,A
+   \   00009E   12....       LCALL     `??ZDSecMgrInitNVKeyTables::?relay`; Banked call to: ZDSecMgrInitNVKeyTables
     483            }
     484          #endif // NONWK
     485          
     486            // Clear the Config State default
     487            if ( setDefault )
-   \   000020   EE           MOV       A,R6
-   \   000021   A2E0         MOV       C,0xE0 /* A   */.0
-   \   000023   5007         JNC       ??zgInit_1
+   \                     ??zgInit_1:
+   \   0000A1   EE           MOV       A,R6
+   \   0000A2   A2E0         MOV       C,0xE0 /* A   */.0
+   \   0000A4   5007         JNC       ??zgInit_3
     488            {
     489              zgWriteStartupOptions( ZG_STARTUP_CLEAR, ZCD_STARTOPT_DEFAULT_CONFIG_STATE );
-   \   000025                ; Setup parameters for call to function zgWriteStartupOptions
-   \   000025   7A01         MOV       R2,#0x1
-   \   000027   7900         MOV       R1,#0x0
-   \   000029   12....       LCALL     `??zgWriteStartupOptions::?relay`; Banked call to: zgWriteStartupOptions
+   \   0000A6                ; Setup parameters for call to function zgWriteStartupOptions
+   \   0000A6   7A01         MOV       R2,#0x1
+   \   0000A8   7900         MOV       R1,#0x0
+   \   0000AA   12....       LCALL     `??zgWriteStartupOptions::?relay`; Banked call to: zgWriteStartupOptions
     490            }
     491          
     492            return ( ZSUCCESS );
-   \                     ??zgInit_1:
-   \   00002C   7900         MOV       R1,#0x0
-   \   00002E   7F01         MOV       R7,#0x1
-   \   000030   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \                     ??zgInit_3:
+   \   0000AD   7900         MOV       R1,#0x0
+   \   0000AF   7410         MOV       A,#0x10
+   \   0000B1   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000B4                REQUIRE ?Subroutine0
+   \   0000B4                ; // Fall through to label ?Subroutine0
     493          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   7F03         MOV       R7,#0x3
+   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
     494          
     495          /*********************************************************************
     496           * @fn          zgInitItems
@@ -1051,7 +1126,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
     531            // Default to Use Config State and Use Network State
     532            uint8 startupOption = 0;
-   \   00000A   12....       LCALL     ?Subroutine1 & 0xFFFF
+   \   00000A   12....       LCALL     ?Subroutine2 & 0xFFFF
     533          
     534            // This should have been done in ZMain.c, but just in case.
     535            if ( osal_nv_item_init( ZCD_NV_STARTUP_OPTION,
@@ -1095,27 +1170,27 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
    \   000046   85..83       MOV       DPH,?XSP + 1
    \   000049   E0           MOVX      A,@DPTR
    \   00004A   F9           MOV       R1,A
-   \   00004B                REQUIRE ?Subroutine0
-   \   00004B                ; // Fall through to label ?Subroutine0
+   \   00004B                REQUIRE ?Subroutine1
+   \   00004B                ; // Fall through to label ?Subroutine1
     546          }
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
+   \                     ?Subroutine1:
    \   000000   7401         MOV       A,#0x1
    \   000002   12....       LCALL     ?DEALLOC_XSTACK8
    \   000005   7F02         MOV       R7,#0x2
    \   000007   02....       LJMP      ?BANKED_LEAVE_XDATA
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
+   \                     ?Subroutine2:
    \   000000   85..82       MOV       DPL,?XSP + 0
    \   000003   85..83       MOV       DPH,?XSP + 1
    \   000006   E4           CLR       A
-   \   000007                REQUIRE ??Subroutine2_0
-   \   000007                ; // Fall through to label ??Subroutine2_0
+   \   000007                REQUIRE ??Subroutine3_0
+   \   000007                ; // Fall through to label ??Subroutine3_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine2_0:
+   \                     ??Subroutine3_0:
    \   000000   F0           MOVX      @DPTR,A
    \   000001                ; Setup parameters for call to function osal_nv_item_init
    \   000001                ; Setup parameters for call to function osal_nv_read
@@ -1161,7 +1236,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
    \   00000D   FF           MOV       R7,A
     565            uint8 status;
     566            uint8 startupOptions = 0;
-   \   00000E   12....       LCALL     ?Subroutine1 & 0xFFFF
+   \   00000E   12....       LCALL     ?Subroutine2 & 0xFFFF
     567          
     568            status = osal_nv_read( ZCD_NV_STARTUP_OPTION,
     569                          0,
@@ -1220,7 +1295,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
     590                           &startupOptions );
     591            }
    \                     ??zgWriteStartupOptions_2:
-   \   00004E   12....       LCALL     ??Subroutine2_0 & 0xFFFF
+   \   00004E   12....       LCALL     ??Subroutine3_0 & 0xFFFF
    \                     ??CrossCallReturnLabel_2:
    \   000051   12....       LCALL     ?PUSH_XSTACK_I_TWO
    \   000054   75..01       MOV       ?V0,#0x1
@@ -1239,7 +1314,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
     592          
     593            return ( status );
    \                     ??zgWriteStartupOptions_0:
-   \   000071   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   000071   02....       LJMP      ?Subroutine1 & 0xFFFF
     594          }
     595          
     596          /*********************************************************************
@@ -1368,8 +1443,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
     625            }
     626          }
    \                     ??zgSetItem_2:
-   \   000080   7F03         MOV       R7,#0x3
-   \   000082   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000080   02....       LJMP      ?Subroutine0 & 0xFFFF
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for zgPollRate>`:
@@ -1410,6 +1484,10 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for zgIndirectMsgTimeout>`:
    \   000000   07           DB 7
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for zgSecurityMode>`:
+   \   000000   01           DB 1
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for zgSecurePermitJoin>`:
@@ -1581,21 +1659,26 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
 
    XSTACK Function
    ------ --------
-      9   zgInit
-        9   -> ZMacGetReq
-        9   -> zgInitItems
-        9   -> zgReadStartupOptions
-        9   -> zgWriteStartupOptions
-     27   zgInitItems
+     31   zgInit
+       27   -> ZDSecMgrInitNVKeyTables
+       27   -> ZMacGetReq
+       30   -> osal_memcpy
+       27   -> osal_memset
+       29   -> osal_nv_item_init
+       31   -> osal_nv_write
+       27   -> zgInitItems
+       27   -> zgReadStartupOptions
+       27   -> zgWriteStartupOptions
+     45   zgInitItems
        16   -> osal_nv_item_init
        18   -> osal_nv_read
        18   -> osal_nv_write
-     24   zgReadStartupOptions
+     42   zgReadStartupOptions
        13   -> osal_nv_item_init
        15   -> osal_nv_read
      16   zgSetItem
        14   -> osal_memcpy
-     24   zgWriteStartupOptions
+     42   zgWriteStartupOptions
        15   -> osal_nv_read
        15   -> osal_nv_write
 
@@ -1635,12 +1718,14 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
        1  ?<Initializer for zgRouteExpiryTime>
        1  ?<Initializer for zgSapiEndpoint>
        1  ?<Initializer for zgSecurePermitJoin>
+       1  ?<Initializer for zgSecurityMode>
        1  ?<Initializer for zgStackProfile>
        1  ?<Initializer for zgStartDelay>
        1  ?<Initializer for zgUseDefaultTCLK>
-      12  ??Subroutine2_0
-      10  ?Subroutine0
-       7  ?Subroutine1
+      12  ??Subroutine3_0
+       5  ?Subroutine0
+      10  ?Subroutine1
+       7  ?Subroutine2
        1  zgApsAckWaitMultiplier
        2  zgApsDefaultMaxBindingTime
        1  zgApsNonMemberRadius
@@ -1661,7 +1746,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
        1  zgDeviceLogicalType
        8  zgExtendedPANID
        1  zgIndirectMsgTimeout
-      51  zgInit
+     180  zgInit
        6  zgInit::?relay
      185  zgInitItems
        6  zgInitItems::?relay
@@ -1686,7 +1771,7 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
        1  zgSapiEndpoint
        1  zgSecurePermitJoin
        1  zgSecurityMode
-     133  zgSetItem
+     131  zgSetItem
        6  zgSetItem::?relay
        1  zgStackProfile
        1  zgStartDelay
@@ -1696,15 +1781,15 @@ C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Components\stack\sys\ZGlobals.c
        6  zgWriteStartupOptions::?relay
 
  
- 589 bytes in segment BANKED_CODE
+ 721 bytes in segment BANKED_CODE
   30 bytes in segment BANK_RELAYS
    6 bytes in segment CODE_C
-  45 bytes in segment XDATA_I
-  45 bytes in segment XDATA_ID
-  23 bytes in segment XDATA_Z
+  46 bytes in segment XDATA_I
+  46 bytes in segment XDATA_ID
+  22 bytes in segment XDATA_Z
  
-  81 bytes of CODE     memory
- 589 bytes of HUGECODE memory
+  82 bytes of CODE     memory
+ 721 bytes of HUGECODE memory
   68 bytes of XDATA    memory
 
 Errors: none

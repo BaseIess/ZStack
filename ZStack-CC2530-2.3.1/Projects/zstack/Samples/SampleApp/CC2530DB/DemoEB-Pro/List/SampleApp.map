@@ -1,0 +1,2 @@
+Warning[w69]: Address translation (-M, -b# or -b@) has no effect on the output format 'debug'. The output file will be generated but noaddress translation will be performed.
+Error[e27]: Entry "SampleApp_HandleKeys::?relay" in module Coordinator ( C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\CC2530DB\DemoEB-Pro\Obj\Coordinator.r51 ) redefined in module Router ( C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\CC2530DB\DemoEB-Pro\Obj\Router.r51 )
