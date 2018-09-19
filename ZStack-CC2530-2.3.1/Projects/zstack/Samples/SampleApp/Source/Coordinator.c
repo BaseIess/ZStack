@@ -123,7 +123,7 @@
 
 // This is the max byte count per OTA message.
 #if !defined( SAMPLE_APP_TX_MAX )
-#define SAMPLE_APP_TX_MAX  201
+#define SAMPLE_APP_TX_MAX  128
 #endif
 
 #define SAMPLE_APP_RSP_CNT  4
@@ -471,9 +471,9 @@ typedef struct
 } packet_measurements;
 packet_measurements receiveData = {0,0,0,0,0,0,0,0,0,0,"nothing"};
 
-char serialOut[200] = "";
-char serialBuffer[40];
-char serialBuffer2[40];
+char serialOut[150] = "";
+char serialBuffer[150] = "";
+char serialBuffer2[40] = "";
 
 void SampleApp_HandleKeys( uint8 shift, uint8 keys )
 {
@@ -506,7 +506,22 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
       
       //sprintf(serialOut,"temperature:%d\n",receiveData.temperature);
         int serialSize;
-/*
+        /*
+        sprintf(serialBuffer,
+   ",temperature:%d:\n,water_level:%d:\n,flow_rate:%d:\n,PH:%d:\n,batt_level:%d:\n,GNSS_latitude:%d:\n,GNSS_longitude:%d:\n,sensors_okay:%d:\n,error_state:%d:\n,node_okay:1:\n",
+                  receiveData.temperature, //1
+                  receiveData.water_level, //2
+                  receiveData.flow_rate, //3
+                  receiveData.PH, //4
+                  receiveData.batt_level, //5
+                  receiveData.GNSS_latitude, //6
+                  receiveData.GNSS_longitude, //7
+                  receiveData.sensors_okay, //8
+                  receiveData.error_state); //9
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
+        */
+
         sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
@@ -518,7 +533,7 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
         serialSize = sizeof(serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-*/
+
  
         /*
         sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
@@ -557,11 +572,11 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         
         */
         
-        
+        /*
         sprintf(serialBuffer,",sensors_okay:%d,",receiveData.sensors_okay);
         strcat(serialOut,serialBuffer);
         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-        
+        */
         /*
         sprintf(serialBuffer,",error_state:%d,",receiveData.error_state);
         strcat(serialOut,serialBuffer2);
@@ -573,7 +588,11 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
         serialSize = sizeof(serialOut);
         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
 */
-
+        
+        
+        strcpy(serialBuffer,",node_okay:1:\n");
+        serialSize = sizeof(serialBuffer);
+        HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
         
   }
 }

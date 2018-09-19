@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.20.1.5333 for 8051              17/Sep/2018  19:56:35
+// IAR C/C++ Compiler V10.20.1.5333 for 8051              19/Sep/2018  13:27:40
 // Copyright 2004-2018 IAR Systems AB.
 // Evaluation license - IAR Embedded Workbench for 8051, Evaluation version 10.20
 //
@@ -14,7 +14,7 @@
 //    Source file        =  
 //        C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c
 //    Command line       =  
-//        -f C:\Users\Re\AppData\Local\Temp\EW66F6.tmp
+//        -f C:\Users\Re\AppData\Local\Temp\EW7DB.tmp
 //        (C:\Users\Re\Documents\ZStack\ZStack-CC2530-2.3.1\Projects\zstack\Samples\SampleApp\Source\Coordinator.c
 //        -D ZTOOL_P1 -D MT_TASK -D MT_SYS_FUNC -D MT_ZDO_FUNC -D
 //        LCD_SUPPORTED=DEBUG -lC
@@ -126,6 +126,8 @@
         EXTERN ?BANKED_LEAVE_XDATA
         EXTERN ?BDISPATCH
         EXTERN ?DEALLOC_XSTACK8
+        EXTERN ?PUSH_XSTACK8_X_FOUR
+        EXTERN ?PUSH_XSTACK8_X_TWO
         EXTERN ?PUSH_XSTACK_I_ONE
         EXTERN ?PUSH_XSTACK_I_THREE
         EXTERN ?PUSH_XSTACK_I_TWO
@@ -164,7 +166,7 @@
         ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        LOCFRAME XSTACK, 13, STACK
+        LOCFRAME XSTACK, 15, STACK
         PUBLIC SampleApp_Init
         FUNCTION SampleApp_Init,0a1203H
         ARGFRAME XSTACK, 0, STACK
@@ -373,8 +375,8 @@ osal_start_timerEx  SYMBOL "osal_start_timerEx"
 `??osal_start_timerEx::?relay` SYMBOL "?relay", osal_start_timerEx
 sprintf             SYMBOL "sprintf"
 `??sprintf::?relay` SYMBOL "?relay", sprintf
-strcat              SYMBOL "strcat"
-`??strcat::?relay`  SYMBOL "?relay", strcat
+strcpy              SYMBOL "strcpy"
+`??strcpy::?relay`  SYMBOL "?relay", strcpy
 SampleApp_HandleKeys SYMBOL "SampleApp_HandleKeys"
 `??SampleApp_HandleKeys::?relay` SYMBOL "?relay", SampleApp_HandleKeys
 SampleApp_Init      SYMBOL "SampleApp_Init"
@@ -420,8 +422,8 @@ SampleApp_SendPeriodicMessage SYMBOL "SampleApp_SendPeriodicMessage"
         FUNCTION `??osal_start_timerEx::?relay`,00H
         EXTERN `??sprintf::?relay`
         FUNCTION `??sprintf::?relay`,00H
-        EXTERN `??strcat::?relay`
-        FUNCTION `??strcat::?relay`,00H
+        EXTERN `??strcpy::?relay`
+        FUNCTION `??strcpy::?relay`,00H
         EXTERN AF_DataRequest
         FUNCTION AF_DataRequest,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -531,11 +533,11 @@ SampleApp_SendPeriodicMessage SYMBOL "SampleApp_SendPeriodicMessage"
         FUNCTION sprintf,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 13, STACK
+        ARGFRAME XSTACK, 15, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN strcat
-        FUNCTION strcat,010202H
+        EXTERN strcpy
+        FUNCTION strcpy,010202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
         ARGFRAME XSTACK, 11, STACK
@@ -610,7 +612,7 @@ SampleApp_SendPeriodicMessage SYMBOL "SampleApp_SendPeriodicMessage"
 //   65 #include "ZDApp.h"
 //   66 #include "ZDObject.h"
 //   67 #include "ZDProfile.h"
-//   68 #include "stdio.h"
+//   68 #include "stdio.h"sprin
 //   69 #include "string.h"
 //   70 
 //   71 #include "SampleApp.h"
@@ -668,7 +670,7 @@ SampleApp_SendPeriodicMessage SYMBOL "SampleApp_SendPeriodicMessage"
 //  123 
 //  124 // This is the max byte count per OTA message.
 //  125 #if !defined( SAMPLE_APP_TX_MAX )
-//  126 #define SAMPLE_APP_TX_MAX  201
+//  126 #define SAMPLE_APP_TX_MAX  128
 //  127 #endif
 //  128 
 //  129 #define SAMPLE_APP_RSP_CNT  4
@@ -1740,21 +1742,21 @@ receiveData:
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  474 char serialOut[200] = "";
+//  474 char serialOut[150] = "";
 serialOut:
-        DS 200
+        DS 150
         REQUIRE __INIT_XDATA_Z
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  475 char serialBuffer[40];
+//  475 char serialBuffer[150] = "";
 serialBuffer:
-        DS 40
+        DS 150
         REQUIRE __INIT_XDATA_Z
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  476 char serialBuffer2[40];
+//  476 char serialBuffer2[40] = "";
 serialBuffer2:
         DS 40
         REQUIRE __INIT_XDATA_Z
@@ -1877,7 +1879,62 @@ SampleApp_HandleKeys:
         ARGFRAME XSTACK, 13, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL SampleApp_HandleKeys, strcat
+        FUNCALL SampleApp_HandleKeys, HalUARTWrite
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 11, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_HandleKeys, sprintf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 13, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 13, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_HandleKeys, HalUARTWrite
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 11, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_HandleKeys, sprintf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 15, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 15, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_HandleKeys, HalUARTWrite
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 11, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_HandleKeys, strcpy
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 11, STACK
@@ -2074,149 +2131,209 @@ SampleApp_HandleKeys:
 //  506       
 //  507       //sprintf(serialOut,"temperature:%d\n",receiveData.temperature);
 //  508         int serialSize;
-//  509 /*
-//  510         sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
-//  511         serialSize = sizeof(serialBuffer);
-//  512         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  513  
-//  514         sprintf(serialBuffer,",water_level:%d:\n",receiveData.water_level);
-//  515         serialSize = sizeof(serialBuffer);
-//  516         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  517         
-//  518         sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
-//  519         serialSize = sizeof(serialBuffer);
-//  520         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  521 */
-//  522  
-//  523         /*
-//  524         sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
-//  525         serialSize = sizeof(serialBuffer);
-//  526         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  527        
-//  528         // HalLedBlink(HAL_LED_2,4,50,1000);
-//  529         
-//  530         sprintf(serialBuffer,",batt_level:%d:\n",receiveData.batt_level);
-//  531         serialSize = sizeof(serialBuffer);
-//  532         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  533  
-//  534         sprintf(serialBuffer,",GNSS_latitude:%d:\n",receiveData.GNSS_latitude);
-//  535         serialSize = sizeof(serialBuffer);
-//  536         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  537  
-//  538         sprintf(serialBuffer,",GNSS_longitude:%d:\n",receiveData.GNSS_longitude);
-//  539         serialSize = sizeof(serialBuffer);
-//  540         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
-//  541         
-//  542 */
-//  543         
-//  544         /*
-//  545         
-//  546         sprintf(serialBuffer,",sensors_okay:%d:\n",receiveData.sensors_okay);
-//  547         serialSize = sizeof(serialBuffer);
-//  548         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  549  
-//  550         sprintf(serialBuffer,",error_state:%d:\n",receiveData.error_state);
-//  551         serialSize = sizeof(serialBuffer);
-//  552         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  553         
-//  554         strcpy(serialBuffer,",node_okay:1:\n");
-//  555         serialSize = sizeof(serialBuffer);
-//  556         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
-//  557         
-//  558         */
-//  559         
-//  560         
-//  561         sprintf(serialBuffer,",sensors_okay:%d,",receiveData.sensors_okay);
+//  509         /*
+//  510         sprintf(serialBuffer,
+//  511    ",temperature:%d:\n,water_level:%d:\n,flow_rate:%d:\n,PH:%d:\n,batt_level:%d:\n,GNSS_latitude:%d:\n,GNSS_longitude:%d:\n,sensors_okay:%d:\n,error_state:%d:\n,node_okay:1:\n",
+//  512                   receiveData.temperature, //1
+//  513                   receiveData.water_level, //2
+//  514                   receiveData.flow_rate, //3
+//  515                   receiveData.PH, //4
+//  516                   receiveData.batt_level, //5
+//  517                   receiveData.GNSS_latitude, //6
+//  518                   receiveData.GNSS_longitude, //7
+//  519                   receiveData.sensors_okay, //8
+//  520                   receiveData.error_state); //9
+//  521         serialSize = sizeof(serialBuffer);
+//  522         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
+//  523         */
+//  524 
+//  525         sprintf(serialBuffer,",temperature:%d:\n",receiveData.temperature);
         ; Setup parameters for call to function sprintf
-        MOV       DPTR,#receiveData + 14
-        MOVX      A,@DPTR
-        MOV       ?V0,A
-        MOV       ?V1,#0x0
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
+        MOV       DPTR,#receiveData
+        LCALL     ?PUSH_XSTACK8_X_TWO
           CFI CFA_XSP16 add(XSP16, 13)
-        MOV       R4,#`?<Constant ",sensors_okay:%d,">` & 0xff
-        MOV       R5,#(`?<Constant ",sensors_okay:%d,">` >> 8) & 0xff
+        MOV       R4,#`?<Constant ",temperature:%d:\\n">` & 0xff
+        MOV       R5,#(`?<Constant ",temperature:%d:\\n">` >> 8) & 0xff
         MOV       R2,#serialBuffer & 0xff
         MOV       R3,#(serialBuffer >> 8) & 0xff
         LCALL     `??sprintf::?relay`; Banked call to: sprintf
         MOV       A,#0x2
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 11)
-//  562         strcat(serialOut,serialBuffer);
-        ; Setup parameters for call to function strcat
-        MOV       R4,#serialBuffer & 0xff
-        MOV       R5,#(serialBuffer >> 8) & 0xff
-        MOV       R2,#serialOut & 0xff
-        MOV       R3,#(serialOut >> 8) & 0xff
-        LCALL     `??strcat::?relay`; Banked call to: strcat
-//  563         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+//  526         serialSize = sizeof(serialBuffer);
+//  527         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
         ; Setup parameters for call to function HalUARTWrite
-        MOV       R4,#0x0
+        MOV       R4,#-0x6a
+        MOV       R5,#0x0
+        MOV       R2,#serialBuffer & 0xff
+        MOV       R3,#(serialBuffer >> 8) & 0xff
+        MOV       R1,#0x0
+        LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+//  528  
+//  529         sprintf(serialBuffer,",water_level:%d:\n",receiveData.water_level);
+        ; Setup parameters for call to function sprintf
+        MOV       DPTR,#receiveData + 2
+        LCALL     ?PUSH_XSTACK8_X_TWO
+          CFI CFA_XSP16 add(XSP16, 13)
+        MOV       R4,#`?<Constant ",water_level:%d:\\n">` & 0xff
+        MOV       R5,#(`?<Constant ",water_level:%d:\\n">` >> 8) & 0xff
+        MOV       R2,#serialBuffer & 0xff
+        MOV       R3,#(serialBuffer >> 8) & 0xff
+        LCALL     `??sprintf::?relay`; Banked call to: sprintf
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 11)
+//  530         serialSize = sizeof(serialBuffer);
+//  531         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        ; Setup parameters for call to function HalUARTWrite
+        MOV       R4,#-0x6a
+        MOV       R5,#0x0
+        MOV       R2,#serialBuffer & 0xff
+        MOV       R3,#(serialBuffer >> 8) & 0xff
+        MOV       R1,#0x0
+        LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+//  532         
+//  533         sprintf(serialBuffer,",flow_rate:%d:\n",receiveData.flow_rate);
+        ; Setup parameters for call to function sprintf
+        MOV       DPTR,#receiveData + 4
+        LCALL     ?PUSH_XSTACK8_X_FOUR
+          CFI CFA_XSP16 add(XSP16, 15)
+        MOV       R4,#`?<Constant ",flow_rate:%d:\\n">` & 0xff
+        MOV       R5,#(`?<Constant ",flow_rate:%d:\\n">` >> 8) & 0xff
+        MOV       R2,#serialBuffer & 0xff
+        MOV       R3,#(serialBuffer >> 8) & 0xff
+        LCALL     `??sprintf::?relay`; Banked call to: sprintf
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 11)
+//  534         serialSize = sizeof(serialBuffer);
+//  535         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        ; Setup parameters for call to function HalUARTWrite
+        MOV       R4,#-0x6a
+        MOV       R5,#0x0
+        MOV       R2,#serialBuffer & 0xff
+        MOV       R3,#(serialBuffer >> 8) & 0xff
+        MOV       R1,#0x0
+        LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
+//  536 
+//  537  
+//  538         /*
+//  539         sprintf(serialBuffer,",PH:%d:\n",receiveData.PH);
+//  540         serialSize = sizeof(serialBuffer);
+//  541         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+//  542        
+//  543         // HalLedBlink(HAL_LED_2,4,50,1000);
+//  544         
+//  545         sprintf(serialBuffer,",batt_level:%d:\n",receiveData.batt_level);
+//  546         serialSize = sizeof(serialBuffer);
+//  547         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+//  548  
+//  549         sprintf(serialBuffer,",GNSS_latitude:%d:\n",receiveData.GNSS_latitude);
+//  550         serialSize = sizeof(serialBuffer);
+//  551         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+//  552  
+//  553         sprintf(serialBuffer,",GNSS_longitude:%d:\n",receiveData.GNSS_longitude);
+//  554         serialSize = sizeof(serialBuffer);
+//  555         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize); 
+//  556         
+//  557 */
+//  558         
+//  559         /*
+//  560         
+//  561         sprintf(serialBuffer,",sensors_okay:%d:\n",receiveData.sensors_okay);
+//  562         serialSize = sizeof(serialBuffer);
+//  563         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+//  564  
+//  565         sprintf(serialBuffer,",error_state:%d:\n",receiveData.error_state);
+//  566         serialSize = sizeof(serialBuffer);
+//  567         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+//  568         
+//  569         strcpy(serialBuffer,",node_okay:1:\n");
+//  570         serialSize = sizeof(serialBuffer);
+//  571         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+//  572         
+//  573         */
+//  574         
+//  575         /*
+//  576         sprintf(serialBuffer,",sensors_okay:%d,",receiveData.sensors_okay);
+//  577         strcat(serialOut,serialBuffer);
+//  578         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+//  579         */
+//  580         /*
+//  581         sprintf(serialBuffer,",error_state:%d,",receiveData.error_state);
+//  582         strcat(serialOut,serialBuffer2);
+//  583         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+//  584         
+//  585         strcat(serialOut,",node_okay:1:\n,");
+//  586         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+//  587         
+//  588         serialSize = sizeof(serialOut);
+//  589         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
+//  590 */
+//  591         
+//  592         
+//  593         strcpy(serialBuffer,",node_okay:1:\n");
+        ; Setup parameters for call to function strcpy
+        MOV       R4,#`?<Constant ",node_okay:1:\\n">` & 0xff
+        MOV       R5,#(`?<Constant ",node_okay:1:\\n">` >> 8) & 0xff
+        MOV       R2,#serialBuffer & 0xff
+        MOV       R3,#(serialBuffer >> 8) & 0xff
+        LCALL     `??strcpy::?relay`; Banked call to: strcpy
+//  594         serialSize = sizeof(serialBuffer);
+//  595         HalUARTWrite(SAMPLE_APP_PORT, serialBuffer, serialSize);
+        ; Setup parameters for call to function HalUARTWrite
+        MOV       R4,#-0x6a
         MOV       R5,#0x0
         MOV       R1,#0x0
         LCALL     `??HalUARTWrite::?relay`; Banked call to: HalUARTWrite
-//  564         
-//  565         /*
-//  566         sprintf(serialBuffer,",error_state:%d,",receiveData.error_state);
-//  567         strcat(serialOut,serialBuffer2);
-//  568         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-//  569         
-//  570         strcat(serialOut,",node_okay:1:\n,");
-//  571         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-//  572         
-//  573         serialSize = sizeof(serialOut);
-//  574         HalUARTWrite(SAMPLE_APP_PORT, serialOut, serialSize);
-//  575 */
-//  576 
-//  577         
-//  578   }
-//  579 }
+//  596         
+//  597   }
+//  598 }
 ??SampleApp_HandleKeys_3:
         LJMP      ?Subroutine0 & 0xFFFF
           CFI EndBlock cfiBlock6
-//  580 
-//  581 /*********************************************************************
-//  582  * LOCAL FUNCTIONS
-//  583  */
-//  584 
-//  585 /*********************************************************************
-//  586  * @fn      SampleApp_MessageMSGCB
-//  587  *
-//  588  * @brief   Data message processor callback.  This function processes
-//  589  *          any incoming data - probably from other devices.  So, based
-//  590  *          on cluster ID, perform the intended action.
-//  591  *
-//  592  * @param   none
-//  593  *
-//  594  * @return  none
-//  595   */
-//  596 /*
-//  597 typedef struct
-//  598 {
-//  599   int16 temperature;
-//  600   int16 water_level;
-//  601   int32 flow_rate;
-//  602   uint8 PH;
-//  603   uint8 batt_level;
-//  604   int16 GNSS_latitude;
-//  605   int16 GNSS_longitude;
-//  606   
-//  607   bool sensors_okay;
-//  608   bool node_okay;
-//  609   uint8 error_state;
-//  610 } packet_measurements;
-//  611 
-//  612 packet_measurements receiveData;
-//  613 */
+//  599 
+//  600 /*********************************************************************
+//  601  * LOCAL FUNCTIONS
+//  602  */
+//  603 
+//  604 /*********************************************************************
+//  605  * @fn      SampleApp_MessageMSGCB
+//  606  *
+//  607  * @brief   Data message processor callback.  This function processes
+//  608  *          any incoming data - probably from other devices.  So, based
+//  609  *          on cluster ID, perform the intended action.
+//  610  *
+//  611  * @param   none
+//  612  *
+//  613  * @return  none
+//  614   */
+//  615 /*
+//  616 typedef struct
+//  617 {
+//  618   int16 temperature;
+//  619   int16 water_level;
+//  620   int32 flow_rate;
+//  621   uint8 PH;
+//  622   uint8 batt_level;
+//  623   int16 GNSS_latitude;
+//  624   int16 GNSS_longitude;
+//  625   
+//  626   bool sensors_okay;
+//  627   bool node_okay;
+//  628   uint8 error_state;
+//  629 } packet_measurements;
+//  630 
+//  631 packet_measurements receiveData;
+//  632 */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  614 void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
+//  633 void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
 SampleApp_MessageMSGCB:
           CFI Block cfiBlock7 Using cfiCommon0
           CFI Function SampleApp_MessageMSGCB
         CODE
-//  615 {
+//  634 {
         FUNCALL SampleApp_MessageMSGCB, HalLcdWriteStringValue
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -2272,9 +2389,9 @@ SampleApp_MessageMSGCB:
         MOV       R6,A
         MOV       A,R3
         MOV       R7,A
-//  616   int dataSize; //Data size of received packet
-//  617   
-//  618   switch ( pkt->clusterId )
+//  635   int dataSize; //Data size of received packet
+//  636   
+//  637   switch ( pkt->clusterId )
         MOV       DPL,R2
         MOV       DPH,A
         INC       DPTR
@@ -2288,13 +2405,13 @@ SampleApp_MessageMSGCB:
         MOVX      A,@DPTR
 ??SampleApp_MessageMSGCB_0:
         JNZ       ??SampleApp_MessageMSGCB_1
-//  619   {
-//  620     case SAMPLEAPP_PERIODIC_CLUSTERID:
-//  621       break;
-//  622       
-//  623     case SAMPLEAPP_CLUSTERID1:
-//  624       dataSize = sizeof(packet_measurements);
-//  625       HalLcdWriteStringValue("Data Size:", dataSize, 10,HAL_LCD_LINE_1);
+//  638   {
+//  639     case SAMPLEAPP_PERIODIC_CLUSTERID:
+//  640       break;
+//  641       
+//  642     case SAMPLEAPP_CLUSTERID1:
+//  643       dataSize = sizeof(packet_measurements);
+//  644       HalLcdWriteStringValue("Data Size:", dataSize, 10,HAL_LCD_LINE_1);
         ; Setup parameters for call to function HalLcdWriteStringValue
         MOV       ?V0,#0x1
         MOV       R0,#?V0
@@ -2309,7 +2426,7 @@ SampleApp_MessageMSGCB:
 ??CrossCallReturnLabel_17:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 10)
-//  626       memcpy(&receiveData,pkt->cmd.Data,dataSize);
+//  645       memcpy(&receiveData,pkt->cmd.Data,dataSize);
         ; Setup parameters for call to function memcpy
         MOV       ?V0,#0x1b
         MOV       ?V1,#0x0
@@ -2330,20 +2447,20 @@ SampleApp_MessageMSGCB:
         MOV       A,#0x2
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 10)
-//  627       //HalLcdWriteStringValue("Data:", receiveData.testData2, 10, HAL_LCD_LINE_2);
-//  628       //HalLcdWriteStringValue("Byte: ", pkt->cmd.Data[4], 10,HAL_LCD_LINE_3);
-//  629       
-//  630       //char ptr[5] = {pkt->cmd.Data[4], pkt->cmd.Data[5], pkt->cmd.Data[6], pkt->cmd.Data[7], pkt->cmd.Data[8]};
-//  631       
-//  632       /*
-//  633       HalLcdWriteString((char*)pkt->cmd.Data[4],HAL_LCD_LINE_1);
-//  634  
-//  635       HalLcdWriteString((char*)pkt->cmd.Data[5],HAL_LCD_LINE_2);
-//  636       
-//  637       HalLcdWriteString((char*)pkt->cmd.Data[7],HAL_LCD_LINE_3);
-//  638       */ 
-//  639       
-//  640       HalLcdWriteStringValue("Byte: ", pkt->cmd.DataLength, 10,HAL_LCD_LINE_3);
+//  646       //HalLcdWriteStringValue("Data:", receiveData.testData2, 10, HAL_LCD_LINE_2);
+//  647       //HalLcdWriteStringValue("Byte: ", pkt->cmd.Data[4], 10,HAL_LCD_LINE_3);
+//  648       
+//  649       //char ptr[5] = {pkt->cmd.Data[4], pkt->cmd.Data[5], pkt->cmd.Data[6], pkt->cmd.Data[7], pkt->cmd.Data[8]};
+//  650       
+//  651       /*
+//  652       HalLcdWriteString((char*)pkt->cmd.Data[4],HAL_LCD_LINE_1);
+//  653  
+//  654       HalLcdWriteString((char*)pkt->cmd.Data[5],HAL_LCD_LINE_2);
+//  655       
+//  656       HalLcdWriteString((char*)pkt->cmd.Data[7],HAL_LCD_LINE_3);
+//  657       */ 
+//  658       
+//  659       HalLcdWriteStringValue("Byte: ", pkt->cmd.DataLength, 10,HAL_LCD_LINE_3);
         ; Setup parameters for call to function HalLcdWriteStringValue
         MOV       ?V0,#0x3
         MOV       R0,#?V0
@@ -2364,13 +2481,13 @@ SampleApp_MessageMSGCB:
 ??CrossCallReturnLabel_18:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 10)
-//  641       
-//  642       break;
-//  643 
-//  644     case SAMPLEAPP_FLASH_CLUSTERID:
-//  645       break;
-//  646   }
-//  647 }
+//  660       
+//  661       break;
+//  662 
+//  663     case SAMPLEAPP_FLASH_CLUSTERID:
+//  664       break;
+//  665   }
+//  666 }
 ??SampleApp_MessageMSGCB_1:
         LJMP      ??Subroutine7_0 & 0xFFFF
           CFI EndBlock cfiBlock7
@@ -2810,24 +2927,24 @@ SampleApp_MessageMSGCB:
           CFI EndBlock cfiCond32
           CFI EndBlock cfiCond33
           CFI EndBlock cfiPicker34
-//  648 
-//  649 /*********************************************************************
-//  650  * @fn      SampleApp_SendPeriodicMessage
-//  651  *
-//  652  * @brief   Send the periodic message.
-//  653  *
-//  654  * @param   none
-//  655  *
-//  656  * @return  none
-//  657  */
+//  667 
+//  668 /*********************************************************************
+//  669  * @fn      SampleApp_SendPeriodicMessage
+//  670  *
+//  671  * @brief   Send the periodic message.
+//  672  *
+//  673  * @param   none
+//  674  *
+//  675  * @return  none
+//  676  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  658 void SampleApp_SendPeriodicMessage( void )
+//  677 void SampleApp_SendPeriodicMessage( void )
 SampleApp_SendPeriodicMessage:
           CFI Block cfiBlock35 Using cfiCommon0
           CFI Function SampleApp_SendPeriodicMessage
         CODE
-//  659 {
+//  678 {
         FUNCALL SampleApp_SendPeriodicMessage, AF_DataRequest
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -2857,13 +2974,13 @@ SampleApp_SendPeriodicMessage:
           CFI CFA_XSP16 add(XSP16, 10)
         ; Saved register size: 10
         ; Auto size: 0
-//  660   if ( AF_DataRequest( &SampleApp_Periodic_DstAddr, &SampleApp_epDesc,
-//  661                        SAMPLEAPP_PERIODIC_CLUSTERID,
-//  662                        1,
-//  663                        (uint8*)&SampleAppPeriodicCounter,
-//  664                        &SampleApp_TransID,
-//  665                        AF_DISCV_ROUTE,
-//  666                        AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
+//  679   if ( AF_DataRequest( &SampleApp_Periodic_DstAddr, &SampleApp_epDesc,
+//  680                        SAMPLEAPP_PERIODIC_CLUSTERID,
+//  681                        1,
+//  682                        (uint8*)&SampleAppPeriodicCounter,
+//  683                        &SampleApp_TransID,
+//  684                        AF_DISCV_ROUTE,
+//  685                        AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
         ; Setup parameters for call to function AF_DataRequest
         MOV       ?V0,#0x1e
         MOV       R0,#?V0
@@ -2895,32 +3012,32 @@ SampleApp_SendPeriodicMessage:
         LCALL     `??AF_DataRequest::?relay`; Banked call to: AF_DataRequest
         MOV       A,#0x9
         LJMP      ?Subroutine1 & 0xFFFF
-//  667   {
-//  668   }
-//  669   else
-//  670   {
-//  671     // Error occurred in request to send.
-//  672   }
-//  673 }
+//  686   {
+//  687   }
+//  688   else
+//  689   {
+//  690     // Error occurred in request to send.
+//  691   }
+//  692 }
           CFI EndBlock cfiBlock35
-//  674 
-//  675 /*********************************************************************
-//  676  * @fn      SampleApp_SendFlashMessage
-//  677  *
-//  678  * @brief   Send the flash message to group 1.
-//  679  *
-//  680  * @param   flashTime - in milliseconds
-//  681  *
-//  682  * @return  none
-//  683  */
+//  693 
+//  694 /*********************************************************************
+//  695  * @fn      SampleApp_SendFlashMessage
+//  696  *
+//  697  * @brief   Send the flash message to group 1.
+//  698  *
+//  699  * @param   flashTime - in milliseconds
+//  700  *
+//  701  * @return  none
+//  702  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  684 void SampleApp_SendFlashMessage( uint16 flashTime )
+//  703 void SampleApp_SendFlashMessage( uint16 flashTime )
 SampleApp_SendFlashMessage:
           CFI Block cfiBlock36 Using cfiCommon0
           CFI Function SampleApp_SendFlashMessage
         CODE
-//  685 {
+//  704 {
         FUNCALL SampleApp_SendFlashMessage, AF_DataRequest
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -2953,8 +3070,8 @@ SampleApp_SendFlashMessage:
         MOV       A,#-0x3
         LCALL     ?ALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 13)
-//  686   uint8 buffer[3];
-//  687   buffer[0] = (uint8)(SampleAppFlashCounter++);
+//  705   uint8 buffer[3];
+//  706   buffer[0] = (uint8)(SampleAppFlashCounter++);
         MOV       DPTR,#SampleAppFlashCounter
         MOVX      A,@DPTR
         MOV       DPL,?XSP + 0
@@ -2964,24 +3081,24 @@ SampleApp_SendFlashMessage:
         MOVX      A,@DPTR
         INC       A
         MOVX      @DPTR,A
-//  688   buffer[1] = LO_UINT16( flashTime );
+//  707   buffer[1] = LO_UINT16( flashTime );
         MOV       A,#0x1
         LCALL     ?XSTACK_DISP0_8
         MOV       A,R2
         MOVX      @DPTR,A
-//  689   buffer[2] = HI_UINT16( flashTime );
+//  708   buffer[2] = HI_UINT16( flashTime );
         MOV       A,#0x2
         LCALL     ?XSTACK_DISP0_8
         MOV       A,R3
         MOVX      @DPTR,A
-//  690 
-//  691   if ( AF_DataRequest( &SampleApp_Flash_DstAddr, &SampleApp_epDesc,
-//  692                        SAMPLEAPP_FLASH_CLUSTERID,
-//  693                        3,
-//  694                        buffer,
-//  695                        &SampleApp_TransID,
-//  696                        AF_DISCV_ROUTE,
-//  697                        AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
+//  709 
+//  710   if ( AF_DataRequest( &SampleApp_Flash_DstAddr, &SampleApp_epDesc,
+//  711                        SAMPLEAPP_FLASH_CLUSTERID,
+//  712                        3,
+//  713                        buffer,
+//  714                        &SampleApp_TransID,
+//  715                        AF_DISCV_ROUTE,
+//  716                        AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
         ; Setup parameters for call to function AF_DataRequest
         MOV       ?V0,#0x1e
         MOV       R0,#?V0
@@ -3017,39 +3134,39 @@ SampleApp_SendFlashMessage:
         MOV       A,#0x9
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 13)
-//  698   {
-//  699   }
-//  700   else
-//  701   {
-//  702     // Error occurred in request to send.
-//  703   }
-//  704 }
+//  717   {
+//  718   }
+//  719   else
+//  720   {
+//  721     // Error occurred in request to send.
+//  722   }
+//  723 }
         MOV       A,#0x3
         SJMP      ?Subroutine1
           CFI EndBlock cfiBlock36
-//  705 
-//  706 /*********************************************************************
-//  707 *********************************************************************/
-//  708 
-//  709 /*********************************************************************
-//  710  * @fn      SampleApp_CallBack
-//  711  *
-//  712  * @brief   Send data OTA.
-//  713  *
-//  714  * @param   port - UART port.
-//  715  * @param   event - the UART port event flag.
-//  716  *
-//  717  * @return  none
-//  718  */
-//  719 
+//  724 
+//  725 /*********************************************************************
+//  726 *********************************************************************/
+//  727 
+//  728 /*********************************************************************
+//  729  * @fn      SampleApp_CallBack
+//  730  *
+//  731  * @brief   Send data OTA.
+//  732  *
+//  733  * @param   port - UART port.
+//  734  * @param   event - the UART port event flag.
+//  735  *
+//  736  * @return  none
+//  737  */
+//  738 
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  720 static void SampleApp_CallBack(uint8 port, uint8 event)
+//  739 static void SampleApp_CallBack(uint8 port, uint8 event)
 SampleApp_CallBack:
           CFI Block cfiBlock37 Using cfiCommon0
           CFI Function SampleApp_CallBack
         CODE
-//  721 {
+//  740 {
         FUNCALL SampleApp_CallBack, HalUARTRead
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -3095,26 +3212,26 @@ SampleApp_CallBack:
           CFI CFA_XSP16 add(XSP16, 91)
         MOV       A,R2
         MOV       R6,A
-//  722   (void)port;
-//  723   uint8 localBuf[81];
-//  724   uint16 receivedUARTLen;
-//  725 
-//  726   if ((event & (HAL_UART_RX_FULL | HAL_UART_RX_ABOUT_FULL | HAL_UART_RX_TIMEOUT)) &&
-//  727 #if SERIAL_APP_LOOPBACK
-//  728       (SampleApp_TxLen < SERIAL_APP_TX_MAX))
-//  729 #else
-//  730       !SampleApp_TxLen)
+//  741   (void)port;
+//  742   uint8 localBuf[81];
+//  743   uint16 receivedUARTLen;
+//  744 
+//  745   if ((event & (HAL_UART_RX_FULL | HAL_UART_RX_ABOUT_FULL | HAL_UART_RX_TIMEOUT)) &&
+//  746 #if SERIAL_APP_LOOPBACK
+//  747       (SampleApp_TxLen < SERIAL_APP_TX_MAX))
+//  748 #else
+//  749       !SampleApp_TxLen)
         MOV       A,#0x7
         ANL       A,R6
         JZ        ??SampleApp_CallBack_0
         MOV       DPTR,#SampleApp_TxLen
         MOVX      A,@DPTR
         JNZ       ??SampleApp_CallBack_0
-//  731 #endif
-//  732   {
-//  733     // buffer needed to be emptied for the new liner
-//  734     for(int i = 0; i < 81; i++){
-//  735       localBuf[i] = 0;
+//  750 #endif
+//  751   {
+//  752     // buffer needed to be emptied for the new liner
+//  753     for(int i = 0; i < 81; i++){
+//  754       localBuf[i] = 0;
         CLR       A
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
@@ -3123,10 +3240,10 @@ SampleApp_CallBack:
         MOVX      @DPTR,A
         INC       DPTR
         DJNZ      R0,??SampleApp_CallBack_1
-//  736     }   
-//  737     receivedUARTLen= HalUARTRead(SAMPLE_APP_PORT, localBuf, SAMPLE_APP_TX_MAX);
+//  755     }   
+//  756     receivedUARTLen= HalUARTRead(SAMPLE_APP_PORT, localBuf, SAMPLE_APP_TX_MAX);
         ; Setup parameters for call to function HalUARTRead
-        MOV       R4,#-0x37
+        MOV       R4,#-0x80
         MOV       R5,A
         MOV       R2,?XSP + 0
         MOV       R3,?XSP + 1
@@ -3136,7 +3253,7 @@ SampleApp_CallBack:
         MOV       ?V1,R3
         MOV       R4,?V0
         MOV       R5,?V1
-//  738     HalLcdWriteStringValue( localBuf,  receivedUARTLen, 16, HAL_LCD_LINE_3 ); 
+//  757     HalLcdWriteStringValue( localBuf,  receivedUARTLen, 16, HAL_LCD_LINE_3 ); 
         ; Setup parameters for call to function HalLcdWriteStringValue
         MOV       ?V0,#0x3
         MOV       R0,#?V0
@@ -3146,15 +3263,15 @@ SampleApp_CallBack:
         MOV       A,#0x1
         LCALL     ?XSTACK_DISP101_8
         LCALL     ??Subroutine6_0 & 0xFFFF
-//  739     
-//  740     
-//  741     //HalUARTWrite(SAMPLE_APP_PORT, *localBuf, 81);
-//  742     //SampleApp_Send();
-//  743   }
+//  758     
+//  759     
+//  760     //HalUARTWrite(SAMPLE_APP_PORT, *localBuf, 81);
+//  761     //SampleApp_Send();
+//  762   }
 ??CrossCallReturnLabel_19:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 91)
-//  744 }
+//  763 }
 ??SampleApp_CallBack_0:
         MOV       A,#0x51
           CFI EndBlock cfiBlock37
@@ -3319,8 +3436,23 @@ SampleApp_CallBack:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
-`?<Constant ",sensors_okay:%d,">`:
-        DB ",sensors_okay:%d,"
+`?<Constant ",temperature:%d:\\n">`:
+        DB ",temperature:%d:\012"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant ",water_level:%d:\\n">`:
+        DB ",water_level:%d:\012"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant ",flow_rate:%d:\\n">`:
+        DB ",flow_rate:%d:\012"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant ",node_okay:1:\\n">`:
+        DB ",node_okay:1:\012"
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
@@ -3333,22 +3465,22 @@ SampleApp_CallBack:
         DB "Byte: "
 
         END
-//  745 
-//  746 
-//  747 /*********************************************************************
-//  748 *********************************************************************/
+//  764 
+//  765 
+//  766 /*********************************************************************
+//  767 *********************************************************************/
 // 
-// 1 166 bytes in segment BANKED_CODE
+// 1 241 bytes in segment BANKED_CODE
 //    42 bytes in segment BANK_RELAYS
 //    27 bytes in segment XDATA_I
 //    27 bytes in segment XDATA_ID
-//   166 bytes in segment XDATA_ROM_C
-//   348 bytes in segment XDATA_Z
+//   215 bytes in segment XDATA_ROM_C
+//   408 bytes in segment XDATA_Z
 // 
 //    69 bytes of CODE     memory
-//   166 bytes of CONST    memory
-// 1 166 bytes of HUGECODE memory
-//   375 bytes of XDATA    memory
+//   215 bytes of CONST    memory
+// 1 241 bytes of HUGECODE memory
+//   435 bytes of XDATA    memory
 //
 //Errors: none
-//Warnings: 9
+//Warnings: 13
